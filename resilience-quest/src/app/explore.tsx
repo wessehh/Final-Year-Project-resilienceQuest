@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useApp } from '@/context/AppContext';
 import { useTelemetry } from '@/hooks/useTelemetry';
+import { SOSBeacon } from '@/components/emergency/SOSBeacon';
 
 // TypeScript interface defining offline shelter schema
 interface Shelter {
@@ -139,6 +140,9 @@ export default function ExploreScreen() {
             </Text>
           </TouchableOpacity>
         </View>
+
+        {/* Offline SOS Broadcast Beacon */}
+        <SOSBeacon/>
 
         {/* Directory Search & Title Header */}
         <View style={styles.headerSection}>
