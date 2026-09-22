@@ -23,6 +23,9 @@ interface AppContextType {
   toggleTask: (id: string) => void;
   toggleEmergencyMode: (active: boolean) => void;
   setSimulatedLocation: (location: LocationCoords | null) => void;
+  // Bulk actions for developer suite and reset features
+  completeAllTasks: () => void;
+  resetAllData: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -68,6 +71,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsEmergencyActive(active);
   };
 
+  /** 
+   * Bulk completes all tasks and calculates total XP in a single atomic update.
+   */
+  const completeAllTasks = async () => {
+    const updatedTasks =  tasks.map((t) => ({ ...t, completed: true}));
+    const totalXp = updatedTasks.reduce((sum, t) => sum + t.xpValue, 0);
+
+    setTasks(updatedTasks);
+    setXp(totalXp);
+    await storageService.saveTasks(updatedTasks);
+    await storageService.saveXP(totalXp);
+
+  };
+
+  /**
+   * Resets all tasks to imcomplete and clears stored XP back to zero
+   */
+  const resetAllData = async () => {
+    const updatedTasks = tasks.map((t) => ({ ...t, completed:false }));
+
+    setTasks(updatedTasks);
+    setXp(0);
+    await storageService.saveTasks(updatedTasks);
+    await storageService.saveXP(0);
+  };
+
+
   return (
     <AppContext.Provider
       value={{
@@ -79,6 +109,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toggleTask,
         toggleEmergencyMode,
         setSimulatedLocation,
+        completeAllTasks,
+        resetAllData,
       }}
     >
       {children}
