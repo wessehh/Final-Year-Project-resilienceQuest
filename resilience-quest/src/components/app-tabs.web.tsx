@@ -2,11 +2,6 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { Text } from 'react-native';
 
-/**
- * AppTabsWeb Component
- * Platform-specific web implementation for primary tab navigation.
- * Keeps route structure and styling synchronized with mobile tab navigation.
- */
 export default function AppTabsWeb() {
   return (
     <Tabs
@@ -20,7 +15,6 @@ export default function AppTabsWeb() {
         },
       }}
     >
-      {/* Home / Dashboard Route */}
       <Tabs.Screen
         name="index"
         options={{
@@ -28,8 +22,6 @@ export default function AppTabsWeb() {
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🏠</Text>,
         }}
       />
-
-      {/* Explore / Shelters Route */}
       <Tabs.Screen
         name="explore"
         options={{
@@ -37,13 +29,18 @@ export default function AppTabsWeb() {
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🧭</Text>,
         }}
       />
-
-      {/* Dedicated Survival Guides Route */}
       <Tabs.Screen
         name="guides"
         options={{
           title: 'Guides',
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>📖</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="dev"
+        options={{
+          title: 'Demo Suite',
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🛠️</Text>,
         }}
       />
     </Tabs>

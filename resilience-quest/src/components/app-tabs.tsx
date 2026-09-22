@@ -15,7 +15,6 @@ export default function AppTabs() {
         },
       }}
     >
-      {/* Home / Dashboard Route */}
       <Tabs.Screen
         name="index"
         options={{
@@ -23,8 +22,6 @@ export default function AppTabs() {
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🏠</Text>,
         }}
       />
-
-      {/* Explore / Shelters Route */}
       <Tabs.Screen
         name="explore"
         options={{
@@ -32,13 +29,20 @@ export default function AppTabs() {
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🧭</Text>,
         }}
       />
-
-      {/* Dedicated Survival Guides Route */}
       <Tabs.Screen
         name="guides"
         options={{
           title: 'Guides',
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>📖</Text>,
+        }}
+      />
+
+      {/* Standalone Developer & Evaluator Demo Tab */}
+      <Tabs.Screen
+        name="dev"
+        options={{
+          title: 'Demo Suite',
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🛠️</Text>,
         }}
       />
     </Tabs>
