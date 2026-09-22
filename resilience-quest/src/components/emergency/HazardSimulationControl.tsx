@@ -2,7 +2,6 @@
 // This allows developers to simulate shifting GPS coordinates into various 
 // hazard impact vectors (Flood zone, landslide risk, safe evacuation hub) 
 // and test real-time app reaction across the components
-
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -81,17 +80,18 @@ export const HazardSimulationControl: React.FC = () => {
       longitude: preset.longitude,
     });
 
-    // 2. Set Crisis state depending on preset threat severity
+    // 2. Set Crisis state: activate for HIGH risk, deactivate for MODERATE and SAFE
     if (preset.riskLevel === 'HIGH') {
       toggleEmergencyMode(true);
-    } else if (preset.riskLevel === 'SAFE') {
+    } else {
       toggleEmergencyMode(false);
     }
   };
 
   const handleResetToRealGPS = () => {
     setSelectedPresetId(null);
-    setSimulatedLocation(null); // Clears override so telemetry uses hardware GPS
+    setSimulatedLocation(null);
+    toggleEmergencyMode(false); // Reset emergency mode back to peacetime
     reSyncTelemetry();
   };
 
