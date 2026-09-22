@@ -103,7 +103,7 @@ export const AreaRiskCard: React.FC = () => {
   const isInsideHazardRadius =
     activeThreatZone && nearestDistance !== null && nearestDistance <= activeThreatZone.radiusKm;
 
-  const currentRiskLevel = isInsideHazardRadius ? activeThreatZone.riskLevel : 'SAFE';
+  const currentRiskLevel = isInsideHazardRadius ? activeThreatZone?.riskLevel ?? 'SAFE' : 'SAFE';
 
   // Helper function to return dynamic badge colors based on risk severity
   const getRiskColor = (level: string) => {
@@ -285,7 +285,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   radarGridBackground: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
