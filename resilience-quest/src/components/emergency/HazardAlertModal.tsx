@@ -1,211 +1,245 @@
 // Crisis alerts, SOS overlays, hazard warnings 
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Modal,
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
 
-// Component Props interface allowing optional custom dismiss callbacks
-interface HazardAlertModalProps {
-    /** Optional callback invoked when the user acknowledges and dismisses the alert modal */
-    onDismiss?: () => void;
-}
-
 /**
- * HazardAlertModal
- * High-priority emergency modal that displays urgent actionable guidance
- * and hazard location alerts whenever crisis mode is active globally. 
+ * HazardAlertModal Component
+ * Priority overlay rendered at root level in _layout.tsx.
+ * Activates when `isEmergencyActive` is true, but allows closing the modal 
+ * without canceling the underlying global crisis state.
  */
-export const HazardAlertModal: React.FC<HazardAlertModalProps> = ({onDismiss}) => {
-    // Access active emergency state and state-toggle handler from global AppContext
-    const {isEmergencyActive, toggleEmergencyMode } = useApp();
+export const HazardAlertModal: React.FC = () => {
+  const { isEmergencyActive } = useApp();
+  const [isDismissed, setIsDismissed] = useState<boolean>(false);
+  const router = useRouter();
 
-    /**
-     * Handles modal dismissal by executing custom onDismiss if provided,
-     * or deactivating emergency crisis mode across the global context.
-     */
+  // Reset local dismissed state whenever a new crisis mode is triggered
+  useEffect(() => {
+    if (isEmergencyActive) {
+      setIsDismissed(false);
+    }
+  }, [isEmergencyActive]);
 
-    const handleAcknowledge = () => {
-        if (onDismiss) {
-            onDismiss();
-        } else {
-            toggleEmergencyMode(false);
-        }
-    };
+  // Hide modal if crisis mode is inactive OR if user acknowledged the alert
+  if (!isEmergencyActive || isDismissed) {
+    return null;
+  }
 
-    return (
-        <Modal
-            // Modal visibility is driven by the global emergency state
-            visible={isEmergencyActive}
-            transparent={true}
-            animationType="slide"
-            // Hardware back button behavior on andriod devices
-            onRequestClose={handleAcknowledge}
-        >
-            {/* Dark semi transparent backdrop */}
-            <View style={styles.backdrop}>
-                {/* Main Alert Card Container with urgent high-contrast styling */}
-                <View style={styles.modalCard}>
+  const handleNavigateGuides = () => {
+    setIsDismissed(true); // Close modal overlay
+    router.push('/guides'); // Navigate while keeping crisis mode active
+  };
 
-                    {/* high-priority alert status badge */}
-                    <View  style={styles.headerBadge}>
-                        <Text style={styles.badgeText}> ⚠️ HIGH RISK HAZARD ALERT </Text>
-                    </View>
+  const handleNavigateShelters = () => {
+    setIsDismissed(true); // Close modal overlay
+    router.push('/explore'); // Navigate while keeping crisis mode active
+  };
 
-                    {/* Primary Hazard Title and proximity telemetry details */}
-                    <Text style={styles.title}>Flash Flood & Severe Weather Warning</Text>
-                    <Text style={styles.subtext}>
-                        Detected within <Text style={styles.boldText}>1.5km</Text> of your current GPS position.
-                    </Text>
+  const handleAcknowledge = () => {
+    setIsDismissed(true); // Close modal overlay
+  };
 
-                    {/* Visual section divider */}
-                    <View style={styles.divider}/>
+  return (
+    <Modal
+      visible={isEmergencyActive && !isDismissed}
+      animationType="slide"
+      transparent={false}
+      onRequestClose={handleAcknowledge}
+    >
+      <View style={styles.modalContainer}>
+        {/* Header Alert Title */}
+        <View style={styles.header}>
+          <Text style={styles.alertBadge}>🚨 HIGH SEVERITY ALERT</Text>
+          <Text style={styles.title}>EMERGENCY HAZARD DETECTED</Text>
+          <Text style={styles.subtitle}>
+            Your current coordinates put you near an active impact vector or high-risk hazard area.
+          </Text>
+        </View>
 
-                    {/* Scrollable list of critical offline safety steps */}
-                    <ScrollView style={styles.instructionScroll}>
-                        <Text style={styles.sectionHeading}>Immediate Action Steps:</Text>
+        {/* Immediate Safety Instructions */}
+        <ScrollView style={styles.bodyScroll} contentContainerStyle={styles.bodyContent}>
+          <View style={styles.instructionCard}>
+            <Text style={styles.instructionTitle}>Recommended Immediate Actions:</Text>
 
-                        <View style={styles.bulletRow}>
-                            <Text style={styles.bulletPoint}>1.</Text>
-                            <Text style={styles.bulletText}>
-                                Move to higher ground immediately. Avoid basements or low-lying pedestrain paths.
-                            </Text>
-                        </View>
-
-                        <View style={styles.bulletRow}>
-                            <Text style={styles.bulletPoint}>2.</Text>
-                            <Text style={styles.bulletText}>
-                                Do not attempt to walk, swim or drive through fast-moving floodwaters.
-                            </Text>
-                        </View>
-                        <View style={styles.bulletRow}>
-                            <Text style={styles.bulletPoint}>3.</Text>
-                            <Text style={styles.bulletText}>
-                                Check the Explore tab to locate your nearest offline emergency shelter
-                            </Text>
-                        </View>
-                    </ScrollView>
-
-                    {/* Primary User Action Button */}
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={styles.acknowledgeButton}
-                            onPress={handleAcknowledge}
-                            activeOpacity={0.8}
-                        >
-                            <Text style={styles.acknowledgeButtonText}> Acknowledge & Dismiss</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            <View style={styles.stepRow}>
+              <Text style={styles.stepNumber}>1</Text>
+              <Text style={styles.stepText}>
+                <Text style={styles.boldText}>Seek High/Safe Ground:</Text> Move away from inundated canal basins or steep slope boundaries immediately.
+              </Text>
             </View>
-        </Modal>
-    );
+
+            <View style={styles.stepRow}>
+              <Text style={styles.stepNumber}>2</Text>
+              <Text style={styles.stepText}>
+                <Text style={styles.boldText}>Locate Evacuation Hub:</Text> Check nearest offline community assembly centers for shelter.
+              </Text>
+            </View>
+
+            <View style={styles.stepRow}>
+              <Text style={styles.stepNumber}>3</Text>
+              <Text style={styles.stepText}>
+                <Text style={styles.boldText}>Stand By SOS Beacon:</Text> Use native SMS distress broadcasting if cellular data becomes unavailable.
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Action Buttons */}
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={[styles.button, styles.primaryButton]}
+            onPress={handleNavigateShelters}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.primaryButtonText}>🧭 Route to Nearby Shelters</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.secondaryButton]}
+            onPress={handleNavigateGuides}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.secondaryButtonText}>📖 View Offline Survival Guides</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.dismissButton]}
+            onPress={handleAcknowledge}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.dismissButtonText}>Acknowledge & Close Alert</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
+  modalContainer: {
     flex: 1,
-    // Semi-transparent black backdrop ensures high focus during crisis state
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#742a2a',
+    paddingTop: 60,
     paddingHorizontal: 20,
+    paddingBottom: 30,
+    justifyContent: 'space-between',
   },
-  modalCard: {
-    width: '100%',
-    maxHeight: '80%',
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 2,
-    // Red border styling signals urgent high-priority crisis status
-    borderColor: '#e53e3e',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+  header: {
+    marginBottom: 16,
   },
-  headerBadge: {
-    backgroundColor: '#fff5f5',
-    borderColor: '#feb2b2',
-    borderWidth: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+  alertBadge: {
+    backgroundColor: '#e53e3e',
+    color: '#ffffff',
+    fontSize: 11,
+    fontWeight: '900',
     alignSelf: 'flex-start',
-    marginBottom: 12,
-  },
-  badgeText: {
-    color: '#c53030',
-    fontSize: 12,
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    marginBottom: 10,
+    letterSpacing: 0.8,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#1a202c',
-    marginBottom: 6,
+    fontSize: 24,
+    fontWeight: '900',
+    color: '#ffffff',
+    lineHeight: 28,
+    marginBottom: 8,
   },
-  subtext: {
-    fontSize: 14,
-    color: '#4a5568',
-    marginBottom: 12,
-  },
-  boldText: {
-    fontWeight: '700',
-    color: '#e53e3e',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#edf2f7',
-    marginVertical: 10,
-  },
-  instructionScroll: {
-    maxHeight: 180,
-    marginVertical: 10,
-  },
-  sectionHeading: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#2d3748',
-    marginBottom: 10,
-  },
-  bulletRow: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  bulletPoint: {
+  subtitle: {
     fontSize: 13,
-    fontWeight: '700',
-    color: '#e53e3e',
-    width: 20,
-  },
-  bulletText: {
-    fontSize: 13,
-    color: '#4a5568',
-    flex: 1,
+    color: '#feb2b2',
     lineHeight: 18,
   },
-  buttonContainer: {
-    marginTop: 16,
+  bodyScroll: {
+    flex: 1,
+    marginVertical: 10,
   },
-  acknowledgeButton: {
+  bodyContent: {
+    paddingVertical: 4,
+  },
+  instructionCard: {
+    backgroundColor: '#9b2c2c',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#c53030',
+  },
+  instructionTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#ffffff',
+    marginBottom: 14,
+  },
+  stepRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    gap: 12,
+  },
+  stepNumber: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     backgroundColor: '#e53e3e',
-    paddingVertical: 12,
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  stepText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#fff5f5',
+    lineHeight: 18,
+  },
+  boldText: {
+    fontWeight: '800',
+    color: '#ffffff',
+  },
+  footer: {
+    gap: 10,
+    marginTop: 10,
+  },
+  button: {
+    paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
   },
-  acknowledgeButtonText: {
+  primaryButton: {
+    backgroundColor: '#ffffff',
+  },
+  primaryButtonText: {
+    color: '#9b2c2c',
+    fontSize: 14,
+    fontWeight: '900',
+  },
+  secondaryButton: {
+    backgroundColor: '#c53030',
+    borderWidth: 1,
+    borderColor: '#feb2b2',
+  },
+  secondaryButtonText: {
     color: '#ffffff',
-    fontSize: 15,
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  dismissButton: {
+    backgroundColor: 'transparent',
+  },
+  dismissButtonText: {
+    color: '#feb2b2',
+    fontSize: 13,
     fontWeight: '700',
   },
 });
