@@ -1,13 +1,12 @@
 // GPS and Sensor Status Matrix
 // Renders device sensor link diagnostics and real-time GPS coordinates 
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import * as Location from 'expo-location';
-import { TrackingStatus } from '@/types';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { TelemetryLocation } from '@/hooks/useTelemetry';
 
 interface TelemetryCardProps {
-  trackingStatus: TrackingStatus;
-  currentLocation: Location.LocationObjectCoords | null;
+  trackingStatus: 'INITIALIZING' | 'ACTIVE' | 'DENIED' | 'ERROR';
+  currentLocation: TelemetryLocation | null;
   onReSync: () => void;
 }
 
@@ -16,40 +15,35 @@ export const TelemetryCard: React.FC<TelemetryCardProps> = ({
   currentLocation,
   onReSync,
 }) => {
-  const isErrorState = trackingStatus === 'Unauthorised' || trackingStatus === 'Disabled';
-
   return (
-    <View style={styles.componentCard}>
-      <Text style={styles.sectionHeading}>System Telemetry Matrix</Text>
-      <Text style={styles.bodyDescription}>
-        Monitoring native device hardware sensor arrays for localised coordinate tracking.
-      </Text>
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Offline Telemetry Status</Text>
+        <TouchableOpacity style={styles.syncButton} onPress={onReSync}>
+          <Text style={styles.syncText}>🔄 Re-Sync</Text>
+        </TouchableOpacity>
+      </View>
 
-      <View style={styles.telemetryStatusRow}>
-        <Text style={styles.telemetryLabel}>Sensor Node Link:</Text>
-        <Text style={[styles.telemetryValue, isErrorState && styles.telemetryValueError]}>
+      <View style={styles.row}>
+        <Text style={styles.label}>GPS Signal Status:</Text>
+        <Text style={[styles.statusTag, trackingStatus === 'ACTIVE' ? styles.statusActive : styles.statusWarning]}>
           {trackingStatus}
         </Text>
       </View>
 
-      {currentLocation ? (
-        <View style={styles.coordinateGrid}>
-          <Text style={styles.geoText}>LAT: {currentLocation.latitude.toFixed(5)}</Text>
-          <Text style={styles.geoText}>LON: {currentLocation.longitude.toFixed(5)}</Text>
-        </View>
-      ) : (
-        <View style={styles.fallbackContainer}>
-          <Text style={styles.geoAwaitingText}>
-            {trackingStatus === 'Unauthorised'
-              ? 'GPS core connection offline due to restricted security permissions.'
-              : 'Awaiting hardware communication link verification...'}
-          </Text>
+      <View style={styles.row}>
+        <Text style={styles.label}>Coordinates:</Text>
+        <Text style={styles.coordsValue}>
+          {currentLocation
+            ? `${currentLocation.latitude.toFixed(4)}, ${currentLocation.longitude.toFixed(4)}`
+            : 'Acquiring location...'}
+        </Text>
+      </View>
 
-          {isErrorState && (
-            <TouchableOpacity style={styles.syncButton} onPress={onReSync} activeOpacity={0.7}>
-              <Text style={styles.syncButtonText}>Re-Sync Hardware Sensors</Text>
-            </TouchableOpacity>
-          )}
+      {currentLocation?.accuracy !== null && currentLocation?.accuracy !== undefined && (
+        <View style={styles.row}>
+          <Text style={styles.label}>Estimated Accuracy:</Text>
+          <Text style={styles.accuracyValue}>±{currentLocation.accuracy.toFixed(0)} meters</Text>
         </View>
       )}
     </View>
@@ -57,83 +51,70 @@ export const TelemetryCard: React.FC<TelemetryCardProps> = ({
 };
 
 const styles = StyleSheet.create({
-  componentCard: {
+  card: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 18,
+    borderRadius: 12,
+    padding: 16,
     marginBottom: 16,
+    borderColor: '#e2e8f0',
     borderWidth: 1,
-    borderColor: '#3f3e3f',
   },
-  sectionHeading: {
-    fontSize: 16,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  title: {
+    fontSize: 15,
     fontWeight: '700',
     color: '#2d3748',
   },
-  bodyDescription: {
-    fontSize: 13,
-    color: '#718096',
-    marginTop: 4,
-    marginBottom: 16,
-    lineHeight: 18,
+  syncButton: {
+    backgroundColor: '#ebf8ff',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 6,
   },
-  telemetryStatusRow: {
+  syncText: {
+    color: '#3182ce',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    alignItems: 'center',
+    paddingVertical: 4,
   },
-  telemetryLabel: {
-    fontSize: 13,
+  label: {
+    fontSize: 12,
+    color: '#718096',
+  },
+  coordsValue: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#2d3748',
+    fontFamily: 'Platform',
+  },
+  accuracyValue: {
+    fontSize: 12,
     fontWeight: '600',
     color: '#4a5568',
   },
-  telemetryValue: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#2b6cb0',
+  statusTag: {
+    fontSize: 11,
+    fontWeight: '800',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
   },
-  telemetryValueError: {
-    color: '#e53e3e',
+  statusActive: {
+    backgroundColor: '#c6f6d5',
+    color: '#22543d',
   },
-  coordinateGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#ebf8ff',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 6,
-  },
-  geoText: {
-    fontSize: 12,
-    fontFamily: 'monospace',
-    color: '#2b6cb0',
-    fontWeight: '700',
-  },
-  geoAwaitingText: {
-    fontSize: 12,
-    fontStyle: 'italic',
-    color: '#a0aec0',
-    marginTop: 6,
-    textAlign: 'center',
-  },
-  fallbackContainer: {
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  syncButton: {
-    backgroundColor: '#3182ce',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginTop: 12,
-    width: '100%',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#2b6cb0',
-  },
-  syncButtonText: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '700',
+  statusWarning: {
+    backgroundColor: '#feebc8',
+    color: '#744210',
   },
 });

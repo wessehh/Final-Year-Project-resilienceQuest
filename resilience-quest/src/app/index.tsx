@@ -22,6 +22,7 @@ export default function App() {
   return (
     <View style={styles.viewport}>
       <ScrollView contentContainerStyle={styles.scrollCanvas}>
+        {/* Core Gamification & Telemetry Dashboard */}
         <HeaderBlock xp={xp} />
         <QuestCard tasks={tasks} onTaskToggle={toggleTask} />
         

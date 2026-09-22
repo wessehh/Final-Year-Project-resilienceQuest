@@ -16,12 +16,10 @@ import {
 import { useApp } from '@/context/AppContext';
 import { useTelemetry } from '@/hooks/useTelemetry';
 
-// Enable smooth expand/collapse layout animation for Android hardware
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-// Preset hazard scenarios for testing offline vector threat reactions
 export interface SimulationPreset {
   id: string;
   name: string;
@@ -44,12 +42,12 @@ const SIMULATION_PRESETS: SimulationPreset[] = [
   },
   {
     id: 'preset_landslide',
-    name: 'Ridge Slope Tremor',
+    name: 'Northern Ridge Slope',
     hazardType: 'Landslide Hazard',
     riskLevel: 'MODERATE',
     latitude: 1.3650,
     longitude: 103.8310,
-    description: 'Simulates positioning near a unstable slope hazard boundary.',
+    description: 'Simulates positioning near an unstable slope hazard boundary.',
   },
   {
     id: 'preset_safe',
@@ -62,53 +60,44 @@ const SIMULATION_PRESETS: SimulationPreset[] = [
   },
 ];
 
-/**
- * HazardSimulationControl Component
- * Interactive demo action panel allowing instant simulation of location shifts
- * and crisis status toggles to evaluate real-time vector analysis UI reactions.
- */
 export const HazardSimulationControl: React.FC = () => {
-  // Global app state and hardware telemetry hooks
-  const { isEmergencyActive, toggleEmergencyMode } = useApp();
+  const { isEmergencyActive, toggleEmergencyMode, setSimulatedLocation, simulatedLocation } = useApp();
   const { reSyncTelemetry } = useTelemetry();
 
-  // Local state to toggle panel expansion and active preset
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [selectedPresetId, setSelectedPresetId] = useState<string>('preset_safe');
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
 
-  /**
-   * Toggles panel visibility with smooth layout transitions
-   */
   const togglePanel = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsExpanded(!isExpanded);
   };
 
-  /**
-   * Executes a simulated hazard scenario shift
-   */
   const handleApplyPreset = (preset: SimulationPreset) => {
     setSelectedPresetId(preset.id);
 
-    // If preset is HIGH risk, automatically trigger global emergency crisis state
+    // 1. Dispatch global coordinate override to AppContext
+    setSimulatedLocation({
+      latitude: preset.latitude,
+      longitude: preset.longitude,
+    });
+
+    // 2. Set Crisis state depending on preset threat severity
     if (preset.riskLevel === 'HIGH') {
       toggleEmergencyMode(true);
     } else if (preset.riskLevel === 'SAFE') {
       toggleEmergencyMode(false);
     }
+  };
 
-    // Trigger hardware telemetry re-sync to force vector recalculation
+  const handleResetToRealGPS = () => {
+    setSelectedPresetId(null);
+    setSimulatedLocation(null); // Clears override so telemetry uses hardware GPS
     reSyncTelemetry();
   };
 
   return (
     <View style={styles.cardContainer}>
-      {/* Header bar with expandable toggle */}
-      <TouchableOpacity
-        style={styles.headerBar}
-        onPress={togglePanel}
-        activeOpacity={0.8}
-      >
+      <TouchableOpacity style={styles.headerBar} onPress={togglePanel} activeOpacity={0.8}>
         <View style={styles.headerLeft}>
           <Text style={styles.headerBadge}>🛠️ DEMO CONTROLS</Text>
           <Text style={styles.headerTitle}>Hazard Vector Simulator</Text>
@@ -116,14 +105,12 @@ export const HazardSimulationControl: React.FC = () => {
         <Text style={styles.expandChevron}>{isExpanded ? '▲ Hide' : '▼ Expand'}</Text>
       </TouchableOpacity>
 
-      {/* Expanded Control Panel */}
       {isExpanded && (
         <View style={styles.panelContent}>
           <Text style={styles.sectionSubtitle}>
-            Select a preset scenario vector to test dynamic risk calculations across the app:
+            Select a preset scenario vector to trigger real-time distance and risk updates across all screens:
           </Text>
 
-          {/* Preset Buttons Grid */}
           <View style={styles.presetList}>
             {SIMULATION_PRESETS.map((preset) => {
               const isSelected = selectedPresetId === preset.id;
@@ -137,10 +124,7 @@ export const HazardSimulationControl: React.FC = () => {
               return (
                 <TouchableOpacity
                   key={preset.id}
-                  style={[
-                    styles.presetCard,
-                    isSelected && styles.presetCardSelected,
-                  ]}
+                  style={[styles.presetCard, isSelected && styles.presetCardSelected]}
                   onPress={() => handleApplyPreset(preset)}
                   activeOpacity={0.7}
                 >
@@ -160,9 +144,19 @@ export const HazardSimulationControl: React.FC = () => {
             })}
           </View>
 
-          {/* Direct Emergency Mode State Toggle Switch */}
+          {/* Reset button to clear simulation override */}
+          {simulatedLocation && (
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={handleResetToRealGPS}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.resetButtonText}>🔄 Clear Simulation Override (Use Real GPS)</Text>
+            </TouchableOpacity>
+          )}
+
           <View style={styles.actionRow}>
-            <Text style={styles.actionLabel}>Global Crisis State Override:</Text>
+            <Text style={styles.actionLabel}>Global Crisis Override:</Text>
             <TouchableOpacity
               style={[
                 styles.overrideButton,
@@ -184,7 +178,7 @@ export const HazardSimulationControl: React.FC = () => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: '#1a202c', // Dark contrast background to signal dev/simulation utility
+    backgroundColor: '#1a202c',
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
@@ -233,7 +227,7 @@ const styles = StyleSheet.create({
   },
   presetList: {
     gap: 8,
-    marginBottom: 14,
+    marginBottom: 12,
   },
   presetCard: {
     backgroundColor: '#2d3748',
@@ -270,12 +264,25 @@ const styles = StyleSheet.create({
   presetCoords: {
     fontSize: 10,
     color: '#e2e8f0',
-    fontFamily: 'Platform',
     marginBottom: 4,
   },
   presetDescription: {
     fontSize: 11,
     color: '#cbd5e0',
+  },
+  resetButton: {
+    backgroundColor: '#2d3748',
+    paddingVertical: 8,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#4a5568',
+  },
+  resetButtonText: {
+    color: '#63b3ed',
+    fontSize: 11,
+    fontWeight: '700',
   },
   actionRow: {
     flexDirection: 'row',

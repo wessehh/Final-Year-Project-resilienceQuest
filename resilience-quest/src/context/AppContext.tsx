@@ -1,83 +1,69 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Task } from '@/types';
-import { loadSaveProgress, saveProgressToDisk } from '@/services/storageService';
+import { storageService } from '@/services/storageService';
 
-// define the shape of the shared global application context state and actions
-interface AppContextType {
-
-    xp: number; // total user experience points accumulated
-    tasks: Task[]; // List of active preparedness quest tasks 
-    isEmergencyActive: boolean; // Flag to toggle crisis vs peacetime UI modes
-    isHydrated: boolean; // sotrage hydration guard flag
-    toggleTask: (id:number) => void; // handler to task task completion and calculate XP 
-    toggleEmergencyMode: (active:boolean) => void; //handler to trigger emergency mode switch
-
+export interface QuestTask {
+  id: string;
+  title: string;
+  xpValue: number;
+  completed: boolean;
 }
 
-// fallback initial task checklist if no saved progress exists on disk
-const INITIAL_TASKS: Task[] = [
+export interface LocationCoords {
+  latitude: number;
+  longitude: number;
+}
 
-    { id: 1, text: 'Pack 3 litres of fresh drinking water', completed:false, xpReward:30 },
-    { id: 2, text: 'Prepare non-perishable emergency rations', completed: false, xpReward: 30 },
-    { id: 3, text: 'Secure an offline AM/FM pocket radio', completed: false, xpReward: 40 },
+interface AppContextType {
+  xp: number;
+  tasks: QuestTask[];
+  isEmergencyActive: boolean;
+  isHydrated: boolean;
+  // Location simulation state for demo suite overrides
+  simulatedLocation: LocationCoords | null;
+  toggleTask: (id: string) => void;
+  toggleEmergencyMode: (active: boolean) => void;
+  setSimulatedLocation: (location: LocationCoords | null) => void;
+}
 
-];
-
-// create the context object
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Global State Hooks
   const [xp, setXp] = useState<number>(0);
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const [tasks, setTasks] = useState<QuestTask[]>([]);
   const [isEmergencyActive, setIsEmergencyActive] = useState<boolean>(false);
-  
-  // Hydration state prevents rendering UI with stale or zeroed state on app launch
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
+  
+  // Stores override coordinates dispatched from the Dev Demo Suite
+  const [simulatedLocation, setSimulatedLocation] = useState<LocationCoords | null>(null);
 
-  // On mount, load persisted XP and quest progress from AsyncStorage
   useEffect(() => {
-    const hydrateStorage = async () => {
-      const { xp: savedXp, tasks: savedTasks } = await loadSaveProgress();
-      
-      // Only override default state if saved values exist on the device
-      if (savedXp !== null) setXp(savedXp);
-      if (savedTasks !== null) setTasks(savedTasks);
-      
-      // Release the splash/loading guard once storage reading completes
+    const loadState = async () => {
+      const savedXp = await storageService.getXP();
+      const savedTasks = await storageService.getTasks();
+      setXp(savedXp);
+      setTasks(savedTasks);
       setIsHydrated(true);
     };
-
-    hydrateStorage();
+    loadState();
   }, []);
 
-  // Updates task completion status and recalculates total user XP
-  const toggleTask = (id: number) => {
-    let xpChange = 0;
-
-    // Immutably map over tasks to toggle completion status and extract XP delta
+  const toggleTask = async (id: string) => {
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
         const nextState = !task.completed;
-        // Grant XP if completed; revoke XP if user unchecks the task
-        xpChange = nextState ? task.xpReward : -task.xpReward;
+        const xpDelta = nextState ? task.xpValue : -task.xpValue;
+        const newXp = Math.max(0, xp + xpDelta);
+        setXp(newXp);
+        storageService.saveXP(newXp);
         return { ...task, completed: nextState };
       }
       return task;
     });
 
-    // Ensure XP never drops below zero
-    const newXp = Math.max(0, xp + xpChange);
-
-    // Commit state updates to React state
     setTasks(updatedTasks);
-    setXp(newXp);
-
-    // Persist new state directly to local storage to maintain offline state consistency
-    saveProgressToDisk(newXp, updatedTasks);
+    await storageService.saveTasks(updatedTasks);
   };
 
-  // Toggle crisis override mode across the app
   const toggleEmergencyMode = (active: boolean) => {
     setIsEmergencyActive(active);
   };
@@ -89,8 +75,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         tasks,
         isEmergencyActive,
         isHydrated,
+        simulatedLocation,
         toggleTask,
         toggleEmergencyMode,
+        setSimulatedLocation,
       }}
     >
       {children}
@@ -98,8 +86,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   );
 };
 
-// Custom hook providing type-safe consumption of the global AppContext
-export const useApp = (): AppContextType => {
+export const useApp = () => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error('useApp must be used within an AppProvider');
