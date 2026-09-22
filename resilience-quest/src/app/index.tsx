@@ -5,15 +5,12 @@ import { useTelemetry } from '@/hooks/useTelemetry';
 import { HeaderBlock } from '@/components/dashboard/HeaderBlock';
 import { QuestCard } from '@/components/dashboard/QuestCard';
 import { TelemetryCard } from '@/components/dashboard/TelemetryCard';
+import { AreaRiskCard } from '@/components/emergency/AreaRiskCard';
 
 export default function App() {
-  // Consume shared state and functions from AppContext
   const { xp, tasks, toggleTask, isHydrated } = useApp();
-  
-  // Custom hook fetching GPS coordinates and background location tracking status
   const { currentLocation, trackingStatus, reSyncTelemetry } = useTelemetry();
 
-  // Loading Gate: Block UI rendering until local storage hydration completes
   if (!isHydrated) {
     return (
       <View style={styles.centered}>
@@ -25,13 +22,12 @@ export default function App() {
   return (
     <View style={styles.viewport}>
       <ScrollView contentContainerStyle={styles.scrollCanvas}>
-        {/* Visual XP level progress indicator */}
         <HeaderBlock xp={xp} />
-
-        {/* Interactive preparedness task checklist */}
         <QuestCard tasks={tasks} onTaskToggle={toggleTask} />
+        
+        {/* Offline Area Risk & Vector Indicator */}
+        <AreaRiskCard />
 
-        {/* Real-time telemetry monitoring component */}
         <TelemetryCard
           trackingStatus={trackingStatus}
           currentLocation={currentLocation}
