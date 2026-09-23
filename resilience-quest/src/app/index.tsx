@@ -4,9 +4,13 @@ import { useApp } from '@/context/AppContext';
 import { useTelemetry } from '@/hooks/useTelemetry';
 import { HeaderBlock } from '@/components/dashboard/HeaderBlock';
 import { QuestCard } from '@/components/dashboard/QuestCard';
+import { BadgeGrid } from '@/components/dashboard/BadgeGrid';
 import { TelemetryCard } from '@/components/dashboard/TelemetryCard';
 import { AreaRiskCard } from '@/components/emergency/AreaRiskCard';
 
+/**
+ * Main dashboard Screen
+ */
 export default function App() {
   const { xp, tasks, toggleTask, isHydrated } = useApp();
   const { currentLocation, trackingStatus, reSyncTelemetry } = useTelemetry();
@@ -24,11 +28,17 @@ export default function App() {
       <ScrollView contentContainerStyle={styles.scrollCanvas}>
         {/* Core Gamification & Telemetry Dashboard */}
         <HeaderBlock xp={xp} />
+
+        {/* Quest & Tasks */}
         <QuestCard tasks={tasks} onTaskToggle={toggleTask} />
         
+        {/* Gamification Achievements & Badge Grid */}
+        <BadgeGrid/>
+
         {/* Offline Area Risk & Vector Indicator */}
         <AreaRiskCard />
 
+        {/* Hardware and Simulated Telemetry */}
         <TelemetryCard
           trackingStatus={trackingStatus}
           currentLocation={currentLocation}
