@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,110 +8,79 @@ import {
   TextInput,
   Linking,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useApp } from '@/context/AppContext';
 import { useTelemetry } from '@/hooks/useTelemetry';
 import { SOSBeacon } from '@/components/emergency/SOSBeacon';
-
-// TypeScript interface defining offline shelter schema
-interface Shelter {
-  id: string;
-  name: string;
-  type: 'Evacuation Center' | 'Medical Post' | 'Distribution Point';
-  address: string;
-  contact: string;
-  latitude: number;
-  longitude: number;
-  capacityStatus: 'Available' | 'Near Capacity' | 'Full';
-  supplies: string[];
-}
-
-// Static offline directory database (accessible without cellular/internet connection)
-const OFFLINE_SHELTER_DIRECTORY: Shelter[] = [
-  {
-    id: 'shelter_001',
-    name: 'Central Civic Community Center',
-    type: 'Evacuation Center',
-    address: '124 Sector 4 Main Boulevard',
-    contact: '+18005550199',
-    latitude: 1.3521,
-    longitude: 103.8198,
-    capacityStatus: 'Available',
-    supplies: ['Clean Water', 'Rations', 'Emergency Power', 'First Aid'],
-  },
-  {
-    id: 'shelter_002',
-    name: 'Northside District Hospital Outpost',
-    type: 'Medical Post',
-    address: '88 Healthcare Avenue',
-    contact: '+18005550122',
-    latitude: 1.3650,
-    longitude: 103.8310,
-    capacityStatus: 'Near Capacity',
-    supplies: ['Medical Care', 'Oxygen', 'Defibrillator'],
-  },
-  {
-    id: 'shelter_003',
-    name: 'St. Jude Emergency Relief Hub',
-    type: 'Distribution Point',
-    address: '45 Relief Road, Block B',
-    contact: '+18005550144',
-    latitude: 1.3400,
-    longitude: 103.8000,
-    capacityStatus: 'Available',
-    supplies: ['Blankets', 'Hygiene Kits', 'Dry Food Packs'],
-  },
-];
-
-// Utility function calculating straight-line distance (km) between GPS coordinates
-const calculateDistanceKm = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
-  const R = 6371; // Earth's mean radius in kilometers
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
+import { shelterService, SCDFShelter } from '@/services/shelterService';
 
 export default function ExploreScreen() {
-  // Consume shared emergency crisis state from global AppContext
-  const { isEmergencyActive, toggleEmergencyMode } = useApp();
-
-  // Consume live GPS location telemetry from hardware sensor hook
+  const { isEmergencyActive, toggleEmergencyMode, simulatedLocation } = useApp();
   const { currentLocation } = useTelemetry();
 
-  // Local state for instant client-side offline searching
+  // Active position priority: Dev Suite override -> Live GPS telemetry
+  const activeLocation = simulatedLocation || currentLocation;
+
+  // SCDF Shelter state
+  const [shelters, setShelters] = useState<SCDFShelter[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Native phone dialer dispatch for emergency contacts
-  const handleCallContact = (phoneNumber: string) => {
+  // Fetch SCDF shelters from cache or trigger live refresh
+  const fetchShelters = async (forceRefresh: boolean = false) => {
+    if (forceRefresh) {
+      setIsSyncing(true);
+    } else {
+      setIsLoading(true);
+    }
+
+    try {
+      if (forceRefresh) {
+        const freshData = await shelterService.loadShelters(true);
+        // Re-evaluate distances relative to active location
+        const evaluated = await shelterService.getNearbyShelters(activeLocation, 25);
+        setShelters(evaluated.length > 0 ? evaluated : freshData);
+      } else {
+        const data = await shelterService.getNearbyShelters(activeLocation, 25);
+        setShelters(data);
+      }
+    } catch (err) {
+      console.warn('Failed to load SCDF shelters:', err);
+    } finally {
+      setIsLoading(false);
+      setIsSyncing(false);
+    }
+  };
+
+  // Load shelters when screen mounts or when active location changes
+  useEffect(() => {
+    fetchShelters();
+  }, [simulatedLocation, currentLocation]);
+
+  // Native phone dialer dispatch for SCDF emergency contact
+  const handleCallEmergency = (phoneNumber: string = '995') => {
     Linking.openURL(`tel:${phoneNumber}`).catch(() => {
       Alert.alert('Call Error', 'Unable to initiate call on this device.');
     });
   };
 
-  // Filter offline shelter list based on name, shelter type, or available supplies
-  const filteredShelters = OFFLINE_SHELTER_DIRECTORY.filter(
-    (shelter) =>
-      shelter.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      shelter.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      shelter.supplies.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  // Instant client-side search filtering
+  const filteredShelters = shelters.filter((shelter) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      shelter.name.toLowerCase().includes(query) ||
+      shelter.address.toLowerCase().includes(query) ||
+      shelter.type.toLowerCase().includes(query) ||
+      shelter.postalCode.includes(query)
+    );
+  });
 
   return (
     <View style={styles.viewport}>
       <ScrollView contentContainerStyle={styles.scrollCanvas}>
-        {/* Emergency Mode Banner Header */}
+        {/* Crisis Mode Banner Header */}
         <View
           style={[
             styles.statusBanner,
@@ -119,19 +88,26 @@ export default function ExploreScreen() {
           ]}
         >
           <View style={styles.bannerTextContainer}>
-            <Text style={styles.bannerTitle}>
+            <Text
+              style={[
+                styles.bannerTitle,
+                isEmergencyActive ? styles.textEmergency : styles.textPeacetime,
+              ]}
+            >
               {isEmergencyActive ? '🚨 CRISIS MODE ACTIVE' : '🛡️ PEACETIME MODE'}
             </Text>
             <Text style={styles.bannerSubtitle}>
               {isEmergencyActive
-                ? 'Prioritizing nearest emergency evacuation points and emergency posts.'
-                : 'Browse local shelter directories and offline relief resources.'}
+                ? 'Prioritizing nearest SCDF emergency public shelters and medical points.'
+                : 'Browse local civil defence shelters and offline relief resources.'}
             </Text>
           </View>
-          
-          {/* Emergency Crisis Mode Simulation Toggle */}
+
           <TouchableOpacity
-            style={styles.modeToggleButton}
+            style={[
+              styles.modeToggleButton,
+              isEmergencyActive ? styles.btnEmergency : styles.btnPeacetime,
+            ]}
             onPress={() => toggleEmergencyMode(!isEmergencyActive)}
             activeOpacity={0.8}
           >
@@ -141,18 +117,47 @@ export default function ExploreScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Offline SOS Broadcast Beacon */}
-        <SOSBeacon/>
+        {/* Dynamic SCDF Data Sync Banner (Triggers if dataset is empty or on demand) */}
+        {shelters.length === 0 && !isLoading && (
+          <View style={styles.syncBanner}>
+            <View style={styles.syncBannerTextCol}>
+              <Text style={styles.syncBannerTitle}>⚠️ SCDF Cache Missing or Stale</Text>
+              <Text style={styles.syncBannerSub}>
+                Tap to sync official Civil Defence shelters directly from Data.gov.sg.
+              </Text>
+            </View>
 
-        {/* Directory Search & Title Header */}
+            <TouchableOpacity
+              style={styles.syncBtn}
+              onPress={() => fetchShelters(true)}
+              disabled={isSyncing}
+              activeOpacity={0.8}
+            >
+              {isSyncing ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text style={styles.syncBtnText}>🔄 Sync SCDF</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Offline SOS Broadcast Beacon */}
+        <SOSBeacon />
+
+        {/* Directory Search Header */}
         <View style={styles.headerSection}>
-          <Text style={styles.sectionTitle}>Offline Shelter Directory</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.sectionTitle}>SCDF Public Shelters</Text>
+            {isSyncing && <ActivityIndicator size="small" color="#3182ce" />}
+          </View>
           <Text style={styles.sectionDescription}>
-            Cached local database accessible during grid power failures or loss of network signal.
+            Offline-cached Singapore Civil Defence Force (SCDF) shelters accessible without internet connection.
           </Text>
+
           <TextInput
             style={styles.searchInput}
-            placeholder="Search shelter, type, or resource (e.g., Water)..."
+            placeholder="Search shelter name, MRT, postal code, or address..."
             placeholderTextColor="#a0aec0"
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -160,65 +165,57 @@ export default function ExploreScreen() {
         </View>
 
         {/* Shelter Resource Cards List */}
-        {filteredShelters.map((shelter) => {
-          // Dynamically compute user distance if live GPS telemetry coordinates are active
-          const distance = currentLocation
-            ? calculateDistanceKm(
-                currentLocation.latitude,
-                currentLocation.longitude,
-                shelter.latitude,
-                shelter.longitude
-              ).toFixed(2)
-            : null;
-
-          return (
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#3182ce" />
+            <Text style={styles.loadingText}>Locating nearest SCDF shelters...</Text>
+          </View>
+        ) : filteredShelters.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyTitle}>No matching shelters found</Text>
+            <Text style={styles.emptySub}>
+              Try searching for another MRT station, area, or postal code.
+            </Text>
+          </View>
+        ) : (
+          filteredShelters.map((shelter) => (
             <View key={shelter.id} style={styles.shelterCard}>
               <View style={styles.cardHeader}>
                 <View style={styles.titleWrapper}>
                   <Text style={styles.shelterName}>{shelter.name}</Text>
-                  <Text style={styles.shelterType}>{shelter.type}</Text>
+                  <Text style={styles.shelterType}>🏛️ {shelter.type}</Text>
                 </View>
-                <View
-                  style={[
-                    styles.statusBadge,
-                    shelter.capacityStatus === 'Available'
-                      ? styles.badgeAvailable
-                      : styles.badgeWarning,
-                  ]}
-                >
-                  <Text style={styles.statusBadgeText}>{shelter.capacityStatus}</Text>
+                <View style={styles.statusBadge}>
+                  <Text style={styles.statusBadgeText}>
+                    Cap: {shelter.capacity.toLocaleString()}
+                  </Text>
                 </View>
               </View>
 
               <Text style={styles.shelterAddress}>📍 {shelter.address}</Text>
 
-              {/* Distance readout derived from live GPS Telemetry */}
-              {distance && (
+              {shelter.postalCode ? (
+                <Text style={styles.postalText}>📮 Postal Code: {shelter.postalCode}</Text>
+              ) : null}
+
+              {/* Distance readout derived from Haversine calculation */}
+              {shelter.distanceKm !== undefined && (
                 <Text style={styles.distanceText}>
-                  📏 Approx. <Text style={styles.boldText}>{distance} km</Text> from current position
+                  📏 Approx. <Text style={styles.boldText}>{shelter.distanceKm} km</Text> away
                 </Text>
               )}
 
-              {/* Available Supplies Tag Cloud */}
-              <View style={styles.suppliesContainer}>
-                {shelter.supplies.map((item, index) => (
-                  <View key={index} style={styles.supplyChip}>
-                    <Text style={styles.supplyChipText}>{item}</Text>
-                  </View>
-                ))}
-              </View>
-
-              {/* Native Dial Action Button */}
+              {/* Emergency Call Action */}
               <TouchableOpacity
                 style={styles.callButton}
-                onPress={() => handleCallContact(shelter.contact)}
+                onPress={() => handleCallEmergency('995')}
                 activeOpacity={0.7}
               >
-                <Text style={styles.callButtonText}>📞 Call Emergency Contact ({shelter.contact})</Text>
+                <Text style={styles.callButtonText}>📞 Call SCDF Emergency Line (995)</Text>
               </TouchableOpacity>
             </View>
-          );
-        })}
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -237,7 +234,7 @@ const styles = StyleSheet.create({
   statusBanner: {
     padding: 16,
     borderRadius: 12,
-    marginBottom: 20,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -259,7 +256,12 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 14,
     fontWeight: '800',
+  },
+  textPeacetime: {
     color: '#2b6cb0',
+  },
+  textEmergency: {
+    color: '#c53030',
   },
   bannerSubtitle: {
     fontSize: 12,
@@ -267,18 +269,64 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   modeToggleButton: {
-    backgroundColor: '#3182ce',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 6,
+  },
+  btnPeacetime: {
+    backgroundColor: '#3182ce',
+  },
+  btnEmergency: {
+    backgroundColor: '#e53e3e',
   },
   modeToggleText: {
     color: '#ffffff',
     fontSize: 12,
     fontWeight: '700',
   },
+  syncBanner: {
+    backgroundColor: '#fffaf0',
+    borderColor: '#fbd38d',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  syncBannerTextCol: {
+    flex: 1,
+    marginRight: 10,
+  },
+  syncBannerTitle: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#c05621',
+  },
+  syncBannerSub: {
+    fontSize: 11,
+    color: '#9c4221',
+    marginTop: 2,
+  },
+  syncBtn: {
+    backgroundColor: '#dd6b20',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+  },
+  syncBtnText: {
+    color: '#ffffff',
+    fontSize: 11,
+    fontWeight: '800',
+  },
   headerSection: {
     marginBottom: 16,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   sectionTitle: {
     fontSize: 20,
@@ -301,6 +349,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2d3748',
   },
+  loadingContainer: {
+    paddingVertical: 40,
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 13,
+    color: '#718096',
+  },
+  emptyContainer: {
+    paddingVertical: 30,
+    alignItems: 'center',
+  },
+  emptyTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#4a5568',
+  },
+  emptySub: {
+    fontSize: 12,
+    color: '#a0aec0',
+    marginTop: 4,
+  },
   shelterCard: {
     backgroundColor: '#ffffff',
     borderRadius: 14,
@@ -320,8 +391,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   shelterName: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 15,
+    fontWeight: '800',
     color: '#2d3748',
   },
   shelterType: {
@@ -331,50 +402,33 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   statusBadge: {
+    backgroundColor: '#edf2f7',
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 6,
   },
-  badgeAvailable: {
-    backgroundColor: '#c6f6d5',
-  },
-  badgeWarning: {
-    backgroundColor: '#feebc8',
-  },
   statusBadgeText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#22543d',
+    color: '#4a5568',
   },
   shelterAddress: {
     fontSize: 13,
     color: '#4a5568',
+    marginBottom: 4,
+  },
+  postalText: {
+    fontSize: 12,
+    color: '#718096',
     marginBottom: 6,
   },
   distanceText: {
     fontSize: 12,
     color: '#2b6cb0',
-    marginBottom: 10,
-  },
-  boldText: {
-    fontWeight: '700',
-  },
-  suppliesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
     marginBottom: 12,
   },
-  supplyChip: {
-    backgroundColor: '#edf2f7',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 4,
-  },
-  supplyChipText: {
-    fontSize: 11,
-    color: '#4a5568',
-    fontWeight: '500',
+  boldText: {
+    fontWeight: '800',
   },
   callButton: {
     backgroundColor: '#3182ce',

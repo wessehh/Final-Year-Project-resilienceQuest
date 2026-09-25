@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native';
 import { useApp } from '@/context/AppContext';
 import { HazardSimulationControl } from '@/components/emergency/HazardSimulationControl';

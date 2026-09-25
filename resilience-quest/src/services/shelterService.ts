@@ -50,16 +50,15 @@ export function calculateHaversineDistance(
 export const shelterService = {
   /**
    * Developer utility: Clears local SCDF shelter cache and sync timestamp from AsyncStorage.
-   * Forces the next loadShelters() invocation to execute a live API ffetch or seef fallback.
+   * Forces the next loadShelters() invocation to execute a live API fetch or seed fallback.
    */    
   clearShelterCache: async (): Promise<void> => {
     try {
-        await AsyncStorage.removeItem(CACHE_KEY);
-        await AsyncStorage.removeItem(LAST_SYNC_KEY);
-        console.log('[Dev Suite] SCDF Shelter cache and timestamp purged.');
-
+      await AsyncStorage.removeItem(CACHE_KEY);
+      await AsyncStorage.removeItem(LAST_SYNC_KEY);
+      console.log('[Dev Suite] SCDF Shelter cache and timestamp purged.');
     } catch (error) {
-        console.error('failed to clear shelter cache:', error);
+      console.error('failed to clear shelter cache:', error);
     }
   },
 
@@ -69,8 +68,6 @@ export const shelterService = {
    * 2. Persists live payload to local AsyncStorage.
    * 3. Falls back to AsyncStorage if offline.
    * 4. Falls back to seed `sg_shelters.json` if storage is empty.
-   * Safe initialisation call on app launch:
-   * Only triggers and HTTP request if the data is older than STALE_THRESHOLD_MS or missing.
    */
   loadShelters: async (forceRefresh: boolean = false): Promise<SCDFShelter[]> => {
     const now = Date.now();
@@ -87,9 +84,8 @@ export const shelterService = {
           return JSON.parse(cachedData);
         }
       }
-      
 
-  // 2. IF STALE OR MISSING: Fetch live SCDF data from Data.gov.sg
+      // 2. IF STALE OR MISSING: Fetch live SCDF data from Data.gov.sg
       try {
         const response = await fetch(DATA_GOV_SCDF_URL, { method: 'GET' });
         if (response.ok) {
@@ -130,5 +126,34 @@ export const shelterService = {
 
     // 4. ULTIMATE FALLBACK: Return bundled seed asset
     return seedShelters as SCDFShelter[];
+  },
+
+  /**
+   * Calculates distance for all shelters relative to user coordinates, 
+   * filters by radius, and returns sorted results by proximity.
+   */
+  getNearbyShelters: async (
+    userLocation: LocationCoords | null,
+    maxDistanceKm: number = 25
+  ): Promise<SCDFShelter[]> => {
+    const shelters = await shelterService.loadShelters();
+
+    if (!userLocation) {
+      return shelters;
+    }
+
+    return shelters
+      .map((shelter) => {
+        const distanceKm = calculateHaversineDistance(userLocation, {
+          latitude: shelter.latitude,
+          longitude: shelter.longitude,
+        });
+        return {
+          ...shelter,
+          distanceKm,
+        };
+      })
+      .filter((shelter) => (shelter.distanceKm ?? 0) <= maxDistanceKm)
+      .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
   },
 };
