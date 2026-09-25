@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native';
 import { useApp } from '@/context/AppContext';
 import { HazardSimulationControl } from '@/components/emergency/HazardSimulationControl';
+import { shelterService } from '@/services/shelterService';
 
 /**
  * DevScreen Component
@@ -9,12 +10,41 @@ import { HazardSimulationControl } from '@/components/emergency/HazardSimulation
  */
 export default function DevScreen() {
   const { completeAllTasks, resetAllData } = useApp();
+  const [isSyncingShelters, setIsSyncingShelters] = useState<boolean>(false);
 
-  const handleConfirmReset = () => {
+
+  // Full system wipe (XP, task states, and shleter cache)
+  const handleConfirmReset = async () => {
     resetAllData();
-    Alert.alert('Demo Suite Reset', 'Local cache wiped and XP reset to 0.');
+    await shelterService.clearShelterCache();
+    Alert.alert('Demo Suite Reset', 'Local user progress, XP. and SCDF shelter cache wiped.');
   };
 
+  // Targeted cache clear for SCDF shelters 
+  const handleClearShelterCache = async () => {
+    await shelterService.clearShelterCache();
+    Alert.alert('Shelter Cache Purged', 'SCDF shelter cache and sync timestamp have been reset.');
+  }
+
+  // Force live API fetch from Data.gov.sg
+  const handleForceShelterSync = async () => {
+    setIsSyncingShelters(true);
+    try {
+      const shelters = await shelterService.loadShelters(true /* forceRefresh */);
+      Alert.alert(
+        'SCDF Live Sync Success',
+        `Successfully synchronized ${shelters.length} shelter records from Data.gov.sg.`
+      );
+    } catch (err) {
+      Alert.alert(
+        'Sync Warning',
+        'Could not reach Data.gov.sg. Falling back to local cache or seed asset.'
+      );
+    } finally {
+      setIsSyncingShelters(false);
+    }
+  };
+  
   return (
     <View style={styles.viewport}>
       <ScrollView contentContainerStyle={styles.scrollCanvas}>
@@ -26,6 +56,33 @@ export default function DevScreen() {
 
         {/* Interactive Threat Simulator */}
         <HazardSimulationControl />
+
+        {/* SCDF Shelter Cache & Sync Utilities */}
+        <View style={styles.utilityCard}>
+          <Text style={styles.utilityTitle}> SCDF Public Shelter Data Suite</Text>
+          <Text style={styles.utilitySubtitle}>Test offline caching, purge persistent storage, or tigger background Data.gov.sg fetches:</Text>
+
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.shelterSyncBtn]}
+              onPress={handleForceShelterSync}
+              disabled={isSyncingShelters}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.shelterSyncBtnText}>
+                {isSyncingShelters ? '⏳ Fetching SCDF Data...' : '🔄 Force Data.gov.sg Sync'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionButton, styles.shelterPurgeBtn]}
+              onPress={handleClearShelterCache}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.shelterPurgeBtnText}>🧹 Purge Shelter Cache Only</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {/* Demo Fast-Action Utilities */}
         <View style={styles.utilityCard}>
@@ -122,7 +179,27 @@ const styles = StyleSheet.create({
     borderColor: '#e53e3e',
   },
   resetBtnText: {
-    color: '#c53030',
+    color: '#090707',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  shelterSyncBtn: {
+    backgroundColor: '#e6fffa',
+    borderWidth: 1,
+    borderColor: '#319795',
+  },
+  shelterSyncBtnText: {
+    color: '#234e52',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  shelterPurgeBtn: {
+    backgroundColor: '#fffaf0',
+    borderWidth: 1,
+    borderColor: '#dd6b20',
+  },
+  shelterPurgeBtnText: {
+    color: '#9c4221',
     fontSize: 12,
     fontWeight: '800',
   },

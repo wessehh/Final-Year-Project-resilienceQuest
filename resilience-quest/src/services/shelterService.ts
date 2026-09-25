@@ -49,6 +49,21 @@ export function calculateHaversineDistance(
 
 export const shelterService = {
   /**
+   * Developer utility: Clears local SCDF shelter cache and sync timestamp from AsyncStorage.
+   * Forces the next loadShelters() invocation to execute a live API ffetch or seef fallback.
+   */    
+  clearShelterCache: async (): Promise<void> => {
+    try {
+        await AsyncStorage.removeItem(CACHE_KEY);
+        await AsyncStorage.removeItem(LAST_SYNC_KEY);
+        console.log('[Dev Suite] SCDF Shelter cache and timestamp purged.');
+
+    } catch (error) {
+        console.error('failed to clear shelter cache:', error);
+    }
+  },
+
+  /**
    * Primary data resolver:
    * 1. Attempts live pull from SCDF API if cache is missing or stale.
    * 2. Persists live payload to local AsyncStorage.
