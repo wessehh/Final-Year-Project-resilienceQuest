@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { storageService } from '@/services/storageService';
+import { shelterService } from '@/services/shelterService';
 
 export interface QuestTask {
   id: string;
@@ -41,12 +42,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const loadState = async () => {
-      const savedXp = await storageService.getXP();
-      const savedTasks = await storageService.getTasks();
-      setXp(savedXp);
-      setTasks(savedTasks);
-      setIsHydrated(true);
+      try{
+        // 1. Hydrate core user state from storage
+        const savedXp = await storageService.getXP();
+        const savedTasks = await storageService.getTasks();
+        setXp(savedXp);
+        setTasks(savedTasks);
+
+        // 2. Trigger SCDF shelter cache check (only fetches if stale or missing)
+        shelterService.loadShelters().catch((err) => {
+          console.warn('Background shelter sync deferred:', err);
+        });
+
+      } catch (error) {
+        console.warn('Error during app hydration:', error);
+
+      } finally {
+        setIsHydrated(true);
+      }
     };
+    
     loadState();
   }, []);
 
