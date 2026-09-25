@@ -6,7 +6,6 @@
     "type": "MRT Civil Defence Shelter",
     "latitude": 1.3508,
     "longitude": 103.8482,
-    "capacity": 3500,
     "postalCode": "579838"
   },
   {
@@ -16,7 +15,6 @@
     "type": "MRT Civil Defence Shelter",
     "latitude": 1.3699,
     "longitude": 103.8496,
-    "capacity": 4000,
     "postalCode": "569810"
   },
   {
@@ -26,7 +24,6 @@
     "type": "MRT Civil Defence Shelter",
     "latitude": 1.3532,
     "longitude": 103.9452,
-    "capacity": 4500,
     "postalCode": "529538"
   },
   {
@@ -36,7 +33,6 @@
     "type": "MRT Civil Defence Shelter",
     "latitude": 1.3332,
     "longitude": 103.7423,
-    "capacity": 5000,
     "postalCode": "609690"
   },
   {
@@ -46,7 +42,6 @@
     "type": "MRT Civil Defence Shelter",
     "latitude": 1.2802,
     "longitude": 103.8395,
-    "capacity": 3000,
     "postalCode": "169037"
   }
 ]

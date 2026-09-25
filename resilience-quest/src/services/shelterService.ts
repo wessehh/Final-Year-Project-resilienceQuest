@@ -4,6 +4,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocationCoords } from '@/context/AppContext';
 import seedShelters from '../assets/data/sg_shelters.json';
+import { oneMapService } from './oneMapService';
 
 const CACHE_KEY = '@resiliencequest_scdf_shelters';
 const LAST_SYNC_KEY = '@resiliencequest_scdf_shelters_last_sync';
@@ -93,18 +94,45 @@ export const shelterService = {
           const records = json?.result?.records || [];
 
           if (records.length > 0) {
-            const liveShelters: SCDFShelter[] = records.map((item: any, idx: number) => ({
-              id: item._id ? `scdf_${item._id}` : `scdf_live_${idx}`,
-              name: item.NAME || item.SHELTER_NAME || 'SCDF Civil Defence Shelter',
-              address: item.ADDRESS || item.STREET_NAME || 'Singapore',
-              type: item.DESCRIPTION || item.SHELTER_TYPE || 'Civil Defence Shelter',
-              latitude: parseFloat(item.LATITUDE) || 1.3521,
-              longitude: parseFloat(item.LONGITUDE) || 103.8198,
-              capacity: parseInt(item.CAPACITY, 10) || 2000,
-              postalCode: item.POSTALCODE || item.POSTAL_CODE || '',
-            }));
+            const liveShelters: SCDFShelter[] = await Promise.all(
+              records.map(async (item: any, idx: number) => {
+                const postalCode =
+                  item.POSTALCODE || item.POSTAL_CODE || item.postal_code || '';
+                const address =
+                  item.ADDRESS || item.STREET_NAME || item.address || 'Singapore';
+                const blkNo = item.BLK_NO || item.block || '';
 
-            // Save fresh data & update timestamp
+                // Build readable HDB title if name is missing or generic 'HDB'
+                const rawName = (item.NAME || item.SHELTER_NAME || '').trim();
+                let formattedName = rawName;
+                if (!formattedName || formattedName.toUpperCase() === 'HDB') {
+                  if (blkNo && address && address !== 'Singapore') {
+                    formattedName = `HDB Blk ${blkNo} (${address})`;
+                  } else if (address && address !== 'Singapore') {
+                    formattedName = `HDB Shelter - ${address}`;
+                  } else {
+                    formattedName = 'HDB Civil Defence Shelter';
+                  }
+                }
+
+                // Geocode via reusable OneMap service
+                let coords = await oneMapService.geocodeLocation(postalCode);
+                if (!coords) {
+                  coords = await oneMapService.geocodeLocation(address);
+                }
+
+                return {
+                  id: item._id ? `scdf_${item._id}` : `scdf_live_${idx}`,
+                  name: formattedName,
+                  address,
+                  type: item.DESCRIPTION || item.SHELTER_TYPE || 'Civil Defence Shelter',
+                  latitude: coords?.latitude ?? 1.3521,
+                  longitude: coords?.longitude ?? 103.8198,
+                  postalCode,
+                };
+              })
+            );
+
             await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(liveShelters));
             await AsyncStorage.setItem(LAST_SYNC_KEY, now.toString());
 
@@ -112,7 +140,7 @@ export const shelterService = {
           }
         }
       } catch (networkErr) {
-        console.warn('Network offline/failed during SCDF sync. Falling back to local cache:', networkErr);
+        console.warn('Network error during SCDF sync:', networkErr);
       }
 
       // 3. FALLBACK TO EXISTING CACHE (If offline during stale refresh)

@@ -185,11 +185,7 @@ export default function ExploreScreen() {
                   <Text style={styles.shelterName}>{shelter.name}</Text>
                   <Text style={styles.shelterType}>🏛️ {shelter.type}</Text>
                 </View>
-                <View style={styles.statusBadge}>
-                  <Text style={styles.statusBadgeText}>
-                    Cap: {shelter.capacity.toLocaleString()}
-                  </Text>
-                </View>
+                
               </View>
 
               <Text style={styles.shelterAddress}>📍 {shelter.address}</Text>
@@ -400,17 +396,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#3182ce',
     marginTop: 2,
-  },
-  statusBadge: {
-    backgroundColor: '#edf2f7',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-  },
-  statusBadgeText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#4a5568',
   },
   shelterAddress: {
     fontSize: 13,
