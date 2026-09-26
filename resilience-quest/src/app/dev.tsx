@@ -63,7 +63,12 @@ export default function DevScreen() {
 
   // Targeted cache clear for SCDF shelters 
   const handleClearShelterCache = async () => {
+    //clear old storage containing default lat/lon
     await shelterService.clearShelterCache();
+    // load shleters with forceRefresh = true to trigger OneMap batch geocoding 
+    const freshShelters = await shelterService.loadShelters(true);
+    console.log('Sample Geocoded Shelter:', freshShelters[0]);
+    
     await refreshStoragePreview();
     Alert.alert('Shelter Cache Purged', 'SCDF shelter cache and sync timestamp have been reset.');
   }
