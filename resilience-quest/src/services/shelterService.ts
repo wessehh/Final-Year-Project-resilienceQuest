@@ -8,10 +8,13 @@ import { oneMapService } from './oneMapService';
 const CACHE_KEY = '@resiliencequest_scdf_shelters';
 const LAST_SYNC_KEY = '@resiliencequest_scdf_shelters_last_sync';
 const GEOCODE_LOOKUP_KEY = '@resiliencequest_address_coords_map';
-const STALE_THRESHOLD_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+const CACHE_STALE_DAYS = 90;
+const CACHE_EXPIRY_MS = CACHE_STALE_DAYS * 24 * 60 * 60 * 1000; // 90 days (quarterly)
 
 // Optimal parallel requests to maximize throughput without hitting OneMap HTTP 429 limits
-const CONCURRENCY_LIMIT = 6;
+const CONCURRENCY_LIMIT = 3;
+// pace the requests to respect the SLA OneMap rate limits
+const BETWEEN_REQUEST_DELAY_MS = 150;
 
 const DATA_GOV_SCDF_URL =
   'https://data.gov.sg/api/action/datastore_search?resource_id=d_291795a678b8cf82f108780a6235ce18&limit=1000';
@@ -25,6 +28,52 @@ export interface SCDFShelter {
   longitude: number;
   postalCode: string;
   distanceKm?: number;
+  isGeocodeFallback?: boolean; // True if exact OneMap geocoding failed
+}
+
+/**
+ * In-flight request map to deduplicate concurrent requests for the exact same query
+ */
+const inFlightRequests = new Map<string, Promise<{ latitude: number; longitude: number } | null>>();
+
+/**
+ * Global persistent progress subscribers set
+ */
+const progressListeners = new Set<(progress: number) => void>();
+
+function broadcastProgress(progress: number) {
+  progressListeners.forEach((listener) => listener(progress));
+}
+
+async function deduplicatedGeocode(
+  query: string,
+  geocodeMap: Record<string, { latitude: number; longitude: number }>
+): Promise<{ latitude: number; longitude: number } | null> {
+  if (!query) return null;
+  const key = query.toLowerCase().trim();
+
+  // 1. Check persistent memory cache first
+  if (geocodeMap[key]) {
+    return geocodeMap[key];
+  }
+
+  // 2. If another worker is already fetching this exact query, attach to its Promise
+  if (inFlightRequests.has(key)) {
+    return inFlightRequests.get(key)!;
+  }
+
+  // 3. Otherwise, initiate a single network request and store the Promise in the map 
+  const requestPromise = geocodeWithRetry(query).then((coords) => {
+    if (coords) {
+      geocodeMap[key] = coords; // Immediately populate in-memory map for subsequent checks
+    }
+    return coords;
+  }).finally(() => {
+    inFlightRequests.delete(key); // Clean up completed request 
+  });
+
+  inFlightRequests.set(key, requestPromise);
+  return requestPromise;
 }
 
 // Active sync lock to prevent duplicate parallel sync loops across UI components
@@ -45,6 +94,8 @@ async function mapConcurrent<T, R>(
     while (currentIndex < items.length) {
       const index = currentIndex++;
       results[index] = await taskFn(items[index], index);
+      // Pacing delay to prevent rapid-fire burst limits on OneMap
+      await new Promise((resolve) => setTimeout(resolve, BETWEEN_REQUEST_DELAY_MS));
     }
   };
 
@@ -77,7 +128,6 @@ async function geocodeWithRetry(
 function prepareAddressVariants(rawAddress: string): string[] {
   if (!rawAddress) return [];
 
-  // 1. Strip title prefixes, unit numbers (#01-490, #B1-186), postal codes, and quotes
   let clean = rawAddress
     .replace(/^HDB Shelter\s*-\s*/i, '')
     .replace(/#\s*[a-zA-Z0-9-]+/g, '')     // #01-490, #B1-186
@@ -91,15 +141,12 @@ function prepareAddressVariants(rawAddress: string): string[] {
     .replace(/\s+/g, ' ')
     .trim();
 
-  // 2. Multi-block notation fix (e.g. "491D/491E" -> "491D", "219/220" -> "219")
   clean = clean.replace(/Blk\s+([0-9A-Za-z]+)\/[0-9A-Za-z]+/i, 'Blk $1');
   clean = clean.replace(/^([0-9A-Za-z]+)\/[0-9A-Za-z]+/, '$1');
 
-  // 3. Dataset typos & specific expansions
   clean = clean.replace(/Stratmore/gi, 'Strathmore');
   clean = clean.replace(/\bSt\s+George/gi, 'Saint George');
 
-  // Expanded variant (Dr -> Drive, St -> Street)
   const expanded = clean
     .replace(/\bSt\b|\bSt\.\b/gi, 'Street')
     .replace(/\bDr\b|\bDr\.\b/gi, 'Drive')
@@ -114,7 +161,6 @@ function prepareAddressVariants(rawAddress: string): string[] {
     .replace(/\s+/g, ' ')
     .trim();
 
-  // Abbreviated variant (Drive -> Dr, Street -> St)
   const abbreviated = clean
     .replace(/\bStreet\b/gi, 'St')
     .replace(/\bDrive\b/gi, 'Dr')
@@ -137,8 +183,8 @@ function prepareAddressVariants(rawAddress: string): string[] {
     } else {
       const noBlk = str.replace(/^Blk\s+/i, '').trim();
       const withBlk = str.startsWith('Blk ') ? str : `Blk ${str}`;
-      variants.push(noBlk);      // "491D Tampines St 45"
-      variants.push(withBlk);    // "Blk 491D Tampines St 45"
+      variants.push(noBlk);
+      variants.push(withBlk);
     }
   };
 
@@ -168,17 +214,26 @@ export function calculateHaversineDistance(
   return parseFloat((EARTH_RADIUS_KM * c).toFixed(2));
 }
 
-async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFShelter[]> {
+async function performLoadShelters(
+  forceRefresh: boolean = false
+): Promise<SCDFShelter[]> {
+  const seedMap = new Map<string, { latitude: number; longitude: number }>();
+  (seedShelters as SCDFShelter[]).forEach((s) => {
+    if (s.postalCode) seedMap.set(s.postalCode, { latitude: s.latitude, longitude: s.longitude });
+    if (s.address) seedMap.set(s.address.toLowerCase(), { latitude: s.latitude, longitude: s.longitude });
+  });
+
   const now = Date.now();
 
   try {
     const lastSyncStr = await AsyncStorage.getItem(LAST_SYNC_KEY);
     const lastSyncTime = lastSyncStr ? parseInt(lastSyncStr, 10) : 0;
-    const isStale = now - lastSyncTime > STALE_THRESHOLD_MS;
-
-    if (!isStale && !forceRefresh) {
+    const isStale = now - lastSyncTime > CACHE_EXPIRY_MS;
+    
+    if (!forceRefresh && !isStale) {
       const cachedData = await AsyncStorage.getItem(CACHE_KEY);
       if (cachedData) {
+        broadcastProgress(1);
         return JSON.parse(cachedData);
       }
     }
@@ -196,8 +251,9 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
             : {};
 
           let unpersistedCount = 0;
+          let completedCount = 0;
+          const totalRecords = records.length;
 
-          // Process records in parallel batches using concurrency limit
           const liveShelters = await mapConcurrent(records, CONCURRENCY_LIMIT, async (item: any, i: number) => {
             let postalCode = (
               item.POSTALCODE || item.POSTAL_CODE || item.postal_code || item.POSTAL || ''
@@ -208,7 +264,6 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
             const rawAddress = (item.ADDRESS || item.address || item.LOCATION || '').toString().trim();
             const rawName = (item.NAME || item.SHELTER_NAME || item.building || '').toString().replace(/\s+/g, ' ').trim();
 
-            // Regex fallback: Extract 6-digit Singapore postal code if missing from explicit JSON keys
             if (!postalCode || postalCode.length < 5) {
               const match = (rawAddress + ' ' + rawName).match(/\b(\d{6})\b/);
               if (match) {
@@ -219,7 +274,6 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
             const constructedAddress = [blkNo, rawStreet].filter(Boolean).join(' ');
             const fullAddress = (constructedAddress || rawAddress || 'Singapore').replace(/\s+/g, ' ').trim();
 
-            // Clean address for UI display (strips basement & unit numbers like #01-490, #B1-186)
             const cleanDisplayAddress = fullAddress
               .replace(/#\s*[a-zA-Z0-9-]+/g, '')
               .replace(/\b[bB]\d+-\d+\b/g, '')
@@ -240,40 +294,35 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
 
             let coords: { latitude: number; longitude: number } | null = null;
             const addressVariants = prepareAddressVariants(fullAddress);
-            const cacheKey = postalCode || addressVariants[0] || fullAddress;
+            const cacheKey = (postalCode || addressVariants[0] || fullAddress).toLowerCase().trim();
 
-            // Priority 0: Check Persistent Geocode Cache (0ms)
             if (geocodeMap[cacheKey]) {
               coords = geocodeMap[cacheKey];
             }
 
-            // Priority 1: Postal Code Geocoding
             if (!coords && postalCode && postalCode.length >= 5) {
-              coords = await geocodeWithRetry(postalCode);
+              coords = await deduplicatedGeocode(postalCode, geocodeMap);
             }
 
-            // Priority 2: Address Variants (Cleaned, Expanded, Abbreviated)
             if (!coords) {
               for (const variant of addressVariants) {
-                coords = await geocodeWithRetry(variant);
+                coords = await deduplicatedGeocode(variant, geocodeMap);
                 if (coords) break;
               }
             }
 
-            // Priority 3: Formatted Name Variants (e.g. Community Clubs)
             if (!coords && formattedName) {
               const nameVariants = prepareAddressVariants(formattedName);
               for (const nVariant of nameVariants) {
-                coords = await geocodeWithRetry(nVariant);
+                coords = await deduplicatedGeocode(nVariant, geocodeMap);
                 if (coords) break;
               }
             }
 
-            // Priority 4: Street Fallback
             if (!coords && rawStreet) {
               const streetVariants = prepareAddressVariants(rawStreet);
               for (const stVariant of streetVariants) {
-                coords = await geocodeWithRetry(stVariant);
+                coords = await deduplicatedGeocode(stVariant, geocodeMap);
                 if (coords) break;
               }
             }
@@ -283,14 +332,26 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
                 geocodeMap[cacheKey] = coords;
                 unpersistedCount++;
               }
-            } else {
-              console.warn(`[Geocode Fallback] ${formattedName} failed, using default coords.`);
             }
 
-            // Batch save new geocodes every 20 items asynchronously
+            const seedFallback = 
+              (postalCode ? seedMap.get(postalCode) : null) ||
+              seedMap.get(cleanDisplayAddress.toLowerCase());
+
+            const finalLatitude = coords?.latitude ?? seedFallback?.latitude ?? 1.3521;
+            const finalLongitude = coords?.longitude ?? seedFallback?.longitude ?? 103.8198;
+            const isFallback = !coords;
+
             if (unpersistedCount >= 20) {
               unpersistedCount = 0;
               AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap)).catch(() => {});
+            }
+
+            completedCount++;
+            broadcastProgress(completedCount / totalRecords);
+
+            if (completedCount % 5 === 0 || completedCount === totalRecords) {
+              await new Promise((resolve) => setTimeout(resolve, 0));
             }
 
             return {
@@ -298,13 +359,13 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
               name: formattedName,
               address: cleanDisplayAddress,
               type: item.DESCRIPTION || item.SHELTER_TYPE || 'Civil Defence Shelter',
-              latitude: coords?.latitude ?? 1.3521,
-              longitude: coords?.longitude ?? 103.8198,
+              latitude: finalLatitude,
+              longitude: finalLongitude,
               postalCode,
+              isGeocodeFallback: isFallback,
             };
           });
 
-          // Final persistence pass
           await AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap));
           await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(liveShelters));
           await AsyncStorage.setItem(LAST_SYNC_KEY, now.toString());
@@ -318,16 +379,25 @@ async function performLoadShelters(forceRefresh: boolean = false): Promise<SCDFS
 
     const existingCache = await AsyncStorage.getItem(CACHE_KEY);
     if (existingCache) {
+      broadcastProgress(1);
       return JSON.parse(existingCache);
     }
   } catch (err) {
     console.warn('Error evaluating shelter cache:', err);
   }
 
+  broadcastProgress(1);
   return seedShelters as SCDFShelter[];
 }
 
 export const shelterService = {
+  subscribeProgress: (listener: (progress: number) => void): (() => void) => {
+    progressListeners.add(listener);
+    return () => {
+      progressListeners.delete(listener);
+    };
+  },
+
   clearShelterCache: async (): Promise<void> => {
     try {
       await AsyncStorage.removeItem(CACHE_KEY);
@@ -339,8 +409,14 @@ export const shelterService = {
     }
   },
 
-  loadShelters: (forceRefresh: boolean = false): Promise<SCDFShelter[]> => {
-    // Return active promise if sync is already running
+  loadShelters: (
+    forceRefresh: boolean = false,
+    onProgress?: (progress: number) => void
+  ): Promise<SCDFShelter[]> => {
+    if (onProgress) {
+      progressListeners.add(onProgress);
+    }
+
     if (activeLoadPromise) {
       return activeLoadPromise;
     }
@@ -354,9 +430,11 @@ export const shelterService = {
 
   getNearbyShelters: async (
     userLocation: LocationCoords | null,
-    maxDistanceKm: number = 25
+    maxDistanceKm: number = 25,
+    forceRefresh: boolean = false,
+    onProgress?: (progress: number) => void
   ): Promise<SCDFShelter[]> => {
-    const shelters = await shelterService.loadShelters();
+    const shelters = await shelterService.loadShelters(forceRefresh, onProgress);
 
     if (!userLocation) {
       return shelters;
