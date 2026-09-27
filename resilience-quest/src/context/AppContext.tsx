@@ -16,14 +16,22 @@ export interface LocationCoords {
 
 interface AppContextType {
   xp: number;
+  userXp: number; // Alias for xp compatibility
   tasks: QuestTask[];
+  completedTaskIds: string[]; // List of completed task IDs
   isEmergencyActive: boolean;
   isHydrated: boolean;
+  
   // Location simulation state for demo suite overrides
   simulatedLocation: LocationCoords | null;
+  
+  // Task & XP actions
   toggleTask: (id: string) => void;
+  completeTask: (id: string) => Promise<void>;
+  addXp: (amount: number) => Promise<void>;
   toggleEmergencyMode: (active: boolean) => void;
   setSimulatedLocation: (location: LocationCoords | null) => void;
+  
   // Bulk actions for developer suite and reset features
   completeAllTasks: () => void;
   resetAllData: () => void;
@@ -40,9 +48,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Stores override coordinates dispatched from the Dev Demo Suite
   const [simulatedLocation, setSimulatedLocation] = useState<LocationCoords | null>(null);
 
+  // Derive completedTaskIds automatically from active task list state
+  const completedTaskIds = tasks.filter((t) => t.completed).map((t) => t.id);
+
   useEffect(() => {
     const loadState = async () => {
-      try{
+      try {
         // 1. Hydrate core user state from storage
         const savedXp = await storageService.getXP();
         const savedTasks = await storageService.getTasks();
@@ -56,7 +67,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       } catch (error) {
         console.warn('Error during app hydration:', error);
-
       } finally {
         setIsHydrated(true);
       }
@@ -65,21 +75,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     loadState();
   }, []);
 
+  const addXp = async (amount: number) => {
+    const newXp = Math.max(0, xp + amount);
+    setXp(newXp);
+    await storageService.saveXP(newXp);
+  };
+
   const toggleTask = async (id: string) => {
+    let xpDelta = 0;
+    let found = false;
+
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
+        found = true;
         const nextState = !task.completed;
-        const xpDelta = nextState ? task.xpValue : -task.xpValue;
-        const newXp = Math.max(0, xp + xpDelta);
-        setXp(newXp);
-        storageService.saveXP(newXp);
+        xpDelta = nextState ? task.xpValue : -task.xpValue;
         return { ...task, completed: nextState };
       }
       return task;
     });
 
+    // If task came from taskService and isn't in local tasks array yet
+    if (!found) {
+      updatedTasks.push({ id, title: 'Completed Quest', xpValue: 0, completed: true });
+    }
+
+    const newXp = Math.max(0, xp + xpDelta);
+    setXp(newXp);
     setTasks(updatedTasks);
+    await storageService.saveXP(newXp);
     await storageService.saveTasks(updatedTasks);
+  };
+
+  const completeTask = async (id: string) => {
+    const existingTask = tasks.find((t) => t.id === id);
+    if (!existingTask || !existingTask.completed) {
+      await toggleTask(id);
+    }
   };
 
   const toggleEmergencyMode = (active: boolean) => {
@@ -90,21 +122,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
    * Bulk completes all tasks and calculates total XP in a single atomic update.
    */
   const completeAllTasks = async () => {
-    const updatedTasks =  tasks.map((t) => ({ ...t, completed: true}));
+    // Standard default task IDs for demo fallback
+    const defaultIds = ['q1', 'q2', 'q3', 'q4', 'q5'];
+    
+    let updatedTasks = tasks.map((t) => ({ ...t, completed: true }));
+    
+    // Ensure standard quest IDs are included if tasks array is empty
+    defaultIds.forEach((id) => {
+      if (!updatedTasks.some((t) => t.id === id)) {
+        updatedTasks.push({ id, title: `Quest ${id}`, xpValue: 50, completed: true });
+      }
+    });
+
     const totalXp = updatedTasks.reduce((sum, t) => sum + t.xpValue, 0);
 
     setTasks(updatedTasks);
     setXp(totalXp);
     await storageService.saveTasks(updatedTasks);
     await storageService.saveXP(totalXp);
-
   };
 
   /**
-   * Resets all tasks to imcomplete and clears stored XP back to zero
+   * Resets all tasks to incomplete and clears stored XP back to zero
    */
   const resetAllData = async () => {
-    const updatedTasks = tasks.map((t) => ({ ...t, completed:false }));
+    const updatedTasks = tasks.map((t) => ({ ...t, completed: false }));
 
     setTasks(updatedTasks);
     setXp(0);
@@ -112,16 +154,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await storageService.saveXP(0);
   };
 
-
   return (
     <AppContext.Provider
       value={{
         xp,
+        userXp: xp, // Alias for backwards compatibility
         tasks,
+        completedTaskIds,
         isEmergencyActive,
         isHydrated,
         simulatedLocation,
         toggleTask,
+        completeTask,
+        addXp,
         toggleEmergencyMode,
         setSimulatedLocation,
         completeAllTasks,

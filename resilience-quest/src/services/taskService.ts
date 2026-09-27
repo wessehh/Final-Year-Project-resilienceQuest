@@ -1,64 +1,92 @@
 // rotate active user quests weekly based on the current ISO calendaor week number
-export interface WeeklyQuest {
+// services/taskService.ts
+
+export interface Task {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   xpReward: number;
-  category: 'PREPAREDNESS' | 'EQUIPMENT' | 'TRAINING';
-  isCompleted: boolean;
+  isCompleted?: boolean;
 }
 
-const MASTER_QUEST_POOL: Omit<WeeklyQuest, 'isCompleted'>[] = [
-  { id: 'q1', title: 'Locate Nearest SCDF Shelter', description: 'Open Explore tab and identify your nearest emergency shelter.', xpReward: 150, category: 'PREPAREDNESS' },
-  { id: 'q2', title: 'Emergency Bag Inspection', description: 'Check expiry dates on canned food and water in your SG Ready Bag.', xpReward: 200, category: 'EQUIPMENT' },
-  { id: 'q3', title: 'Find Nearby AED', description: 'Check AED directory and note down the nearest defibrillator in your sector.', xpReward: 100, category: 'PREPAREDNESS' },
-  { id: 'q4', title: 'AED & CPR Protocol Review', description: 'Complete the drag-and-drop emergency sequencer game.', xpReward: 250, category: 'TRAINING' },
-  { id: 'q5', title: 'Hazard Radius Test', description: 'Use Dev Suite to trigger a simulated flood alert and verify threat distance.', xpReward: 180, category: 'PREPAREDNESS' },
-  { id: 'q6', title: 'First-Aid Kit Audit', description: 'Verify sterile bandages, antiseptic, and tourniquets in home kit.', xpReward: 120, category: 'EQUIPMENT' },
-  { id: 'q7', title: 'Family Evacuation Route', description: 'Map out 2 clear exit paths from your residence to ground floor.', xpReward: 200, category: 'TRAINING' },
+/**
+ * Weekly Emergency Preparedness Quest Pool
+ * Tasks rotate dynamically or scale based on ISO week number.
+ */
+const QUEST_POOL: Omit<Task, 'isCompleted'>[] = [
+  {
+    id: 'q1',
+    title: 'Locate Your Nearest SCDF Shelter',
+    description: 'Use the Explore map to check the nearest public shelter to your home.',
+    xpReward: 50,
+  },
+  {
+    id: 'q2',
+    title: 'Check Home First Aid Kit Supplies',
+    description: 'Verify bandages, antiseptic wipes, and essential meds are unexpired.',
+    xpReward: 30,
+  },
+  {
+    id: 'q3',
+    title: 'Review Nearest AED Locations',
+    description: 'Find at least 2 public AED locations in your neighbourhood.',
+    xpReward: 40,
+  },
+  {
+    id: 'q4',
+    title: 'Prepare Emergency Grab Bag',
+    description: 'Pack key documents, power banks, torchlight, and clean water bottles.',
+    xpReward: 60,
+  },
+  {
+    id: 'q5',
+    title: 'Save Emergency Contact Numbers',
+    description: 'Store SCDF (995), Police (999), and family emergency numbers.',
+    xpReward: 25,
+  },
 ];
 
 /**
- * Calculates ISO Week Number to deterministically seed weekly tasks
+ * Calculates current ISO Week number (1 to 52/53)
  */
 function getISOWeekNumber(date: Date = new Date()): number {
-  const tempDate = new Date(date.valueOf());
-  const dayNum = (date.getDay() + 6) % 7;
-  tempDate.setDate(tempDate.getDate() - dayNum + 3);
-  const firstThursday = tempDate.valueOf();
-  tempDate.setMonth(0, 1);
-  if (tempDate.getDay() !== 4) {
-    tempDate.setMonth(0, 1 + ((4 - tempDate.getDay() + 7) % 7));
-  }
-  return 1 + Math.ceil((firstThursday - tempDate.valueOf()) / 604800000);
+  const tmpDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNumber = tmpDate.getUTCDay() || 7;
+  tmpDate.setUTCDate(tmpDate.getUTCDate() + 4 - dayNumber);
+  const yearStart = new Date(Date.UTC(tmpDate.getUTCFullYear(), 0, 1));
+  return Math.ceil(((tmpDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
 }
 
 export const taskService = {
   /**
-   * Returns 3 tasks deterministically selected based on week of the year
+   * Returns active weekly tasks formatted with completion status.
+   * Rotates task selection deterministically based on the current calendar week.
    */
-  getWeeklyTasks(completedTaskIds: string[] = []): WeeklyQuest[] {
-    const weekNum = getISOWeekNumber();
-    const totalQuests = MASTER_QUEST_POOL.length;
+  getWeeklyTasks(completedTaskIds: string[] = []): Task[] {
+    const currentWeek = getISOWeekNumber();
+    
+    // Pick 3 tasks deterministically based on current week number
+    const startIndex = (currentWeek * 3) % QUEST_POOL.length;
+    const selectedTasks: Task[] = [];
 
-    // Pick 3 offsets based on week number
-    const idx1 = weekNum % totalQuests;
-    const idx2 = (weekNum + 2) % totalQuests;
-    const idx3 = (weekNum + 4) % totalQuests;
+    for (let i = 0; i < 3; i++) {
+      const taskIndex = (startIndex + i) % QUEST_POOL.length;
+      const task = QUEST_POOL[taskIndex];
+      
+      selectedTasks.push({
+        ...task,
+        isCompleted: completedTaskIds.includes(task.id),
+      });
+    }
 
-    const selected = [
-      MASTER_QUEST_POOL[idx1],
-      MASTER_QUEST_POOL[idx2],
-      MASTER_QUEST_POOL[idx3],
-    ];
-
-    return selected.map((q) => ({
-      ...q,
-      isCompleted: completedTaskIds.includes(q.id),
-    }));
+    return selectedTasks;
   },
 
+  /**
+   * Returns formatted ISO week title label for UI headers.
+   */
   getCurrentWeekLabel(): string {
-    return `Week ${getISOWeekNumber()} Challenge Set`;
+    const weekNum = getISOWeekNumber();
+    return `Week ${weekNum} Challenge Set`;
   },
 };

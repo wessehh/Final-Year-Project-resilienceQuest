@@ -10,7 +10,7 @@ import {
 import { useApp } from '@/context/AppContext';
 import { useTelemetry } from '@/hooks/useTelemetry';
 import { HeaderBlock } from '@/components/dashboard/HeaderBlock';
-import { QuestCard } from '@/components/dashboard/QuestCard';
+import { QuestCard } from '@/components/gamification/QuestCard';
 import { BadgeGrid } from '@/components/dashboard/BadgeGrid';
 import { TelemetryCard } from '@/components/dashboard/TelemetryCard';
 import { AreaRiskCard } from '@/components/emergency/AreaRiskCard';
@@ -20,6 +20,7 @@ import { AreaRiskCard } from '@/components/emergency/AreaRiskCard';
  * Suppresses gamification by default during Crisis Mode while offering
  * a collapsible toggle for on-demand task and checklist access.
  */
+
 export default function App() {
   const { xp, tasks, toggleTask, isHydrated, isEmergencyActive } = useApp();
   const { currentLocation, trackingStatus, reSyncTelemetry } = useTelemetry();
