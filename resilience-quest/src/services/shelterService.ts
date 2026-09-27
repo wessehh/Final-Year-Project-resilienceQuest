@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocationCoords } from '@/context/AppContext';
 import seedShelters from '../assets/data/sg_shelters.json';
 import { oneMapService } from './oneMapService';
+import { calculateDistanceKm } from '@/utils/geoUtils';
 
 const CACHE_KEY = '@resiliencequest_scdf_shelters';
 const LAST_SYNC_KEY = '@resiliencequest_scdf_shelters_last_sync';
@@ -195,24 +196,6 @@ function prepareAddressVariants(rawAddress: string): string[] {
   return Array.from(new Set(variants)).filter(Boolean);
 }
 
-export function calculateHaversineDistance(
-  coords1: LocationCoords,
-  coords2: LocationCoords
-): number {
-  const EARTH_RADIUS_KM = 6371;
-  const dLat = ((coords2.latitude - coords1.latitude) * Math.PI) / 180;
-  const dLon = ((coords2.longitude - coords1.longitude) * Math.PI) / 180;
-
-  const lat1Rad = (coords1.latitude * Math.PI) / 180;
-  const lat2Rad = (coords2.latitude * Math.PI) / 180;
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return parseFloat((EARTH_RADIUS_KM * c).toFixed(2));
-}
 
 async function performLoadShelters(
   forceRefresh: boolean = false
@@ -442,10 +425,14 @@ export const shelterService = {
 
     return shelters
       .map((shelter) => {
-        const distanceKm = calculateHaversineDistance(userLocation, {
-          latitude: shelter.latitude,
-          longitude: shelter.longitude,
-        });
+        const distanceKm = parseFloat(
+          calculateDistanceKm(
+            userLocation.latitude,
+            userLocation.longitude,
+            shelter.latitude,
+            shelter.longitude
+          ).toFixed(2)
+        );
         return {
           ...shelter,
           distanceKm,
