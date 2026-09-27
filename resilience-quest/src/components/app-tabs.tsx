@@ -23,6 +23,13 @@ export default function AppTabs() {
         }}
       />
       <Tabs.Screen
+        name="aed-search"
+        options={{
+          title: 'AED Search',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 18 }}>⚡</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
