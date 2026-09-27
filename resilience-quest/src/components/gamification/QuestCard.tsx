@@ -1,5 +1,8 @@
-// Gamified Checklist UI
-// Renders the peacetime preparation checklist, integrates taskService, and handles interactive item toggles
+/**
+ *  Gamified Checklist UI
+ *  Renders the peacetime preparation checklist, integrates taskService, and handles interactive item toggles
+ */
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useApp, QuestTask } from '@/context/AppContext';
@@ -11,11 +14,10 @@ interface QuestCardProps {
 }
 
 export const QuestCard: React.FC<QuestCardProps> = ({ tasks: propsTasks, onTaskToggle }) => {
-  const { completedTaskIds = [], completeTask, addXp, simulatedWeekOffset = 0 } = useApp();
+  const { completedTaskIds = [], toggleTask, simulatedWeekOffset = 0 } = useApp();
   const [weeklyTasks, setWeeklyTasks] = useState<Task[]>([]);
   const [weekLabel, setWeekLabel] = useState<string>('');
 
-  // Fetch dynamic weekly tasks from taskService if props are not provided directly
   useEffect(() => {
     if (!propsTasks) {
       const currentTasks = taskService.getWeeklyTasks(completedTaskIds, simulatedWeekOffset);
@@ -25,7 +27,6 @@ export const QuestCard: React.FC<QuestCardProps> = ({ tasks: propsTasks, onTaskT
     }
   }, [completedTaskIds, propsTasks, simulatedWeekOffset]);
 
-  // Normalize display items whether sourced from props or taskService
   const displayTasks = propsTasks
     ? propsTasks.map((t) => ({
         id: t.id,
@@ -39,17 +40,15 @@ export const QuestCard: React.FC<QuestCardProps> = ({ tasks: propsTasks, onTaskT
   const completedCount = displayTasks.filter((t) => t.isCompleted).length;
   const totalCount = displayTasks.length;
   const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-  
-  
-  const handleToggle = async (taskId: string, xpReward: number, isCompleted: boolean = false) => {
+
+  const handleToggle = async (taskId: string, xpReward: number) => {
     if (onTaskToggle) {
       onTaskToggle(taskId);
       return;
     }
 
-    if (!isCompleted) {
-      if (completeTask) await completeTask(taskId);
-      if (addXp) await addXp(xpReward);
+    if (toggleTask) {
+      await toggleTask(taskId, xpReward);
     }
   };
 
@@ -77,8 +76,8 @@ export const QuestCard: React.FC<QuestCardProps> = ({ tasks: propsTasks, onTaskT
           <TouchableOpacity
             key={task.id}
             style={[styles.taskRow, task.isCompleted && styles.taskCompleted]}
-            onPress={() => handleToggle(task.id, task.xpReward, task.isCompleted)}
-            activeOpacity={task.isCompleted ? 1 : 0.7}
+            onPress={() => handleToggle(task.id, task.xpReward)}
+            activeOpacity={0.7}
           >
             <View style={[styles.checkbox, task.isCompleted && styles.checkboxChecked]}>
               {task.isCompleted && <Text style={styles.checkmark}>✓</Text>}

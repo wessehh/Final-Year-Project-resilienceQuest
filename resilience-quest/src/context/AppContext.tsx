@@ -88,23 +88,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await storageService.saveXP(newXp);
   };
 
-  const toggleTask = async (id: string) => {
+  const toggleTask = async (id: string, xpRewardOverride?: number) => {
+    const existing = tasks.find((t) => t.id === id);
+    let updatedTasks: QuestTask[];
     let xpDelta = 0;
-    let found = false;
 
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        found = true;
-        const nextState = !task.completed;
-        xpDelta = nextState ? task.xpValue : -task.xpValue;
-        return { ...task, completed: nextState };
-      }
-      return task;
-    });
-
-    // If task came from taskService and isn't in local tasks array yet
-    if (!found) {
-      updatedTasks.push({ id, title: 'Completed Quest', xpValue: 0, completed: true });
+    if (existing) {
+      const nextState = !existing.completed;
+      const taskXp = existing.xpValue || xpRewardOverride || 30;
+      xpDelta = nextState ? taskXp : -taskXp;
+      updatedTasks = tasks.map((t) =>
+        t.id === id ? { ...t, completed: nextState } : t
+      );
+    } else {
+      // First time completing this task
+      const taskXp = xpRewardOverride || 30;
+      xpDelta = taskXp;
+      updatedTasks = [...tasks, { id, title: 'Quest Task', xpValue: taskXp, completed: true }];
     }
 
     const newXp = Math.max(0, xp + xpDelta);
