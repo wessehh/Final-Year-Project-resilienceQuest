@@ -1,4 +1,6 @@
-// Crisis alerts, SOS overlays, hazard warnings 
+/*
+Crisis alerts, SOS overlays, hazard warnings 
+*/
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
