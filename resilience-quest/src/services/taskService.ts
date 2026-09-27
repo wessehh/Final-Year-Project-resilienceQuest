@@ -1,5 +1,5 @@
 // rotate active user quests weekly based on the current ISO calendaor week number
-// services/taskService.ts
+
 
 export interface Task {
   id: string;
@@ -9,10 +9,6 @@ export interface Task {
   isCompleted?: boolean;
 }
 
-/**
- * Weekly Emergency Preparedness Quest Pool
- * Tasks rotate dynamically or scale based on ISO week number.
- */
 const QUEST_POOL: Omit<Task, 'isCompleted'>[] = [
   {
     id: 'q1',
@@ -46,9 +42,6 @@ const QUEST_POOL: Omit<Task, 'isCompleted'>[] = [
   },
 ];
 
-/**
- * Calculates current ISO Week number (1 to 52/53)
- */
 function getISOWeekNumber(date: Date = new Date()): number {
   const tmpDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   const dayNumber = tmpDate.getUTCDay() || 7;
@@ -60,12 +53,15 @@ function getISOWeekNumber(date: Date = new Date()): number {
 export const taskService = {
   /**
    * Returns active weekly tasks formatted with completion status.
-   * Rotates task selection deterministically based on the current calendar week.
+   * @param completedTaskIds List of completed IDs
+   * @param weekOffset Number of weeks to offset from current date (+1, -1, etc.)
    */
-  getWeeklyTasks(completedTaskIds: string[] = []): Task[] {
-    const currentWeek = getISOWeekNumber();
+  getWeeklyTasks(completedTaskIds: string[] = [], weekOffset: number = 0): Task[] {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + weekOffset * 7);
+    const currentWeek = getISOWeekNumber(targetDate);
     
-    // Pick 3 tasks deterministically based on current week number
+    // Pick 3 tasks deterministically based on week number
     const startIndex = (currentWeek * 3) % QUEST_POOL.length;
     const selectedTasks: Task[] = [];
 
@@ -85,8 +81,10 @@ export const taskService = {
   /**
    * Returns formatted ISO week title label for UI headers.
    */
-  getCurrentWeekLabel(): string {
-    const weekNum = getISOWeekNumber();
+  getCurrentWeekLabel(weekOffset: number = 0): string {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + weekOffset * 7);
+    const weekNum = getISOWeekNumber(targetDate);
     return `Week ${weekNum} Challenge Set`;
   },
 };

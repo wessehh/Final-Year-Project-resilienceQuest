@@ -35,6 +35,10 @@ interface AppContextType {
   // Bulk actions for developer suite and reset features
   completeAllTasks: () => void;
   resetAllData: () => void;
+
+  // task cycling weekly
+  simulatedWeekOffset: number;
+  setSimulatedWeekOffset: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -45,6 +49,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isEmergencyActive, setIsEmergencyActive] = useState<boolean>(false);
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
   
+  // task cycle weekly
+  const [simulatedWeekOffset, setSimulatedWeekOffset] = useState<number>(0);
+
   // Stores override coordinates dispatched from the Dev Demo Suite
   const [simulatedLocation, setSimulatedLocation] = useState<LocationCoords | null>(null);
 
@@ -171,6 +178,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setSimulatedLocation,
         completeAllTasks,
         resetAllData,
+        simulatedWeekOffset,
+        setSimulatedWeekOffset,
       }}
     >
       {children}

@@ -11,19 +11,19 @@ interface QuestCardProps {
 }
 
 export const QuestCard: React.FC<QuestCardProps> = ({ tasks: propsTasks, onTaskToggle }) => {
-  const { completedTaskIds = [], completeTask, addXp } = useApp();
+  const { completedTaskIds = [], completeTask, addXp, simulatedWeekOffset = 0 } = useApp();
   const [weeklyTasks, setWeeklyTasks] = useState<Task[]>([]);
   const [weekLabel, setWeekLabel] = useState<string>('');
 
   // Fetch dynamic weekly tasks from taskService if props are not provided directly
   useEffect(() => {
     if (!propsTasks) {
-      const currentTasks = taskService.getWeeklyTasks(completedTaskIds);
-      const label = taskService.getCurrentWeekLabel();
+      const currentTasks = taskService.getWeeklyTasks(completedTaskIds, simulatedWeekOffset);
+      const label = taskService.getCurrentWeekLabel(simulatedWeekOffset);
       setWeeklyTasks(currentTasks);
       setWeekLabel(label);
     }
-  }, [completedTaskIds, propsTasks]);
+  }, [completedTaskIds, propsTasks, simulatedWeekOffset]);
 
   // Normalize display items whether sourced from props or taskService
   const displayTasks = propsTasks

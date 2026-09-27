@@ -22,7 +22,7 @@ import { AreaRiskCard } from '@/components/emergency/AreaRiskCard';
  */
 
 export default function App() {
-  const { xp, tasks, toggleTask, isHydrated, isEmergencyActive } = useApp();
+  const { xp, isHydrated, isEmergencyActive } = useApp();
   const { currentLocation, trackingStatus, reSyncTelemetry } = useTelemetry();
 
   // Local state to control collapsible access to gamification during emergencies
@@ -72,7 +72,7 @@ export default function App() {
         {isGamificationVisible && (
           <>
             <HeaderBlock xp={xp} />
-            <QuestCard tasks={tasks} onTaskToggle={toggleTask} />
+            <QuestCard />
             <BadgeGrid />
           </>
         )}
