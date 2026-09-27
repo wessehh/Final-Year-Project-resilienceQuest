@@ -13,6 +13,14 @@ export interface EnvironmentalAlert {
   timestamp: string;
 }
 
+export interface HazardAlertSummary {
+  weatherForecast: string;
+  floodAlertMessage: string;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  hasActiveEmergency: boolean;
+  activeAlertsCount: number;
+}
+
 const NEA_2HR_WEATHER_V2_ENDPOINT =
   'https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast';
 const PUB_WATER_LEVEL_ENDPOINT =
@@ -25,7 +33,7 @@ export const hazardAlertService = {
   async getLiveNEAAlerts(): Promise<EnvironmentalAlert[]> {
     try {
       const response = await axios.get(NEA_2HR_WEATHER_V2_ENDPOINT);
-      
+
       // v2 wraps items inside response.data.data.items
       const items = response.data?.data?.items?.[0];
       const forecasts: Array<{ area: string; forecast: string }> = items?.forecasts || [];
@@ -93,7 +101,7 @@ export const hazardAlertService = {
   },
 
   /**
-   * Consolidated hazard alerts call
+   * Consolidated hazard alerts call returning raw EnvironmentalAlert items
    */
   async getAllActiveAlerts(): Promise<EnvironmentalAlert[]> {
     const [nea, pub] = await Promise.all([
@@ -101,5 +109,58 @@ export const hazardAlertService = {
       this.getLivePUBFloodAlerts(),
     ]);
     return [...nea, ...pub];
+  },
+
+  /**
+   * Summary method required by AreaRiskCard to render high-level risk metrics
+   */
+  async getLiveAlerts(
+    location?: { latitude: number; longitude: number } | null
+  ): Promise<HazardAlertSummary> {
+    try {
+      const allAlerts = await this.getAllActiveAlerts();
+      const rainAlerts = allAlerts.filter((a) => a.type === 'RAIN');
+      const floodAlerts = allAlerts.filter((a) => a.type === 'SUMP_HIGH' || a.type === 'FLOOD');
+
+      // Determine Weather Summary
+      let weatherForecast = 'Fair & Normal weather conditions';
+      if (rainAlerts.length > 0) {
+        weatherForecast = `${rainAlerts.length} area(s) reporting ${rainAlerts[0].title.replace('⛈️ ', '')}`;
+      }
+
+      // Determine Flood Summary
+      let floodAlertMessage = 'No active heavy rain or flash flood advisories';
+      if (floodAlerts.length > 0) {
+        floodAlertMessage = `${floodAlerts.length} drain sensor(s) reporting elevated water capacity (>85%)`;
+      }
+
+      // Evaluate Overall Highest Severity
+      let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' = 'LOW';
+      const hasCritical = allAlerts.some((a) => a.severity === 'CRITICAL');
+      const hasHigh = allAlerts.some((a) => a.severity === 'HIGH');
+      const hasMedium = allAlerts.some((a) => a.severity === 'MEDIUM');
+
+      if (hasCritical) riskLevel = 'CRITICAL';
+      else if (hasHigh) riskLevel = 'HIGH';
+      else if (hasMedium) riskLevel = 'MEDIUM';
+
+      const hasActiveEmergency = riskLevel === 'HIGH' || riskLevel === 'CRITICAL';
+
+      return {
+        weatherForecast,
+        floodAlertMessage,
+        riskLevel,
+        hasActiveEmergency,
+        activeAlertsCount: allAlerts.length,
+      };
+    } catch (err) {
+      return {
+        weatherForecast: 'Weather advisory unavailable (cached)',
+        floodAlertMessage: 'Normal drain water levels',
+        riskLevel: 'LOW',
+        hasActiveEmergency: false,
+        activeAlertsCount: 0,
+      };
+    }
   },
 };

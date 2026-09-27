@@ -1,11 +1,15 @@
-// this component uses offline telemetry to compare your current GPS 
-// coordinates against a cached hazard dataset, computing real-time 
-// proximity risk levels wihtout relying on extermap map tile
-// servers or internet connectivity
+/* this component uses offline telemetry to compare your current GPS 
+* coordinates against a cached hazard dataset, computing real-time 
+* proximity risk levels wihtout relying on external map tile
+* servers or internet connectivity, augmented with live NEA/PUB hazard feeds.
+*/
 
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useTelemetry } from '@/hooks/useTelemetry';
+import { useApp } from '@/context/AppContext';
+import { hazardAlertService, HazardAlertSummary } from '@/services/hazardAlertService';
+import { calculateDistanceKm } from '@/utils/geoUtils';
 
 // TypeScript schema for defined offline hazard risk zones
 export interface HazardZone {
@@ -49,36 +53,53 @@ const OFFLINE_HAZARD_ZONES: HazardZone[] = [
   },
 ];
 
-// Utility Haversine distance calculator (Km)
-const calculateDistanceKm = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
-  const R = 6371; // Earth's mean radius in km
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
-
 /**
  * AreaRiskCard
- * Evaluates current GPS telemetry against cached offline hazard zones to render 
- * visual threat assessments and localized safety badges.
+ * Evaluates current GPS telemetry against cached offline hazard zones & live NEA/PUB 
+ * alerts to render visual threat assessments and localized safety badges.
  */
 export const AreaRiskCard: React.FC = () => {
-  // Consume real-time GPS telemetry from hardware hook
   const { currentLocation, reSyncTelemetry } = useTelemetry();
+  const { isEmergencyActive, toggleEmergencyMode } = useApp();
 
-  // Evaluate closest hazard zone based on GPS coordinates
+  // Live hazard alert state
+  const [hazardSummary, setHazardSummary] = useState<HazardAlertSummary | null>(null);
+  const [isLoadingLive, setIsLoadingLive] = useState<boolean>(true);
+  const [lastRefreshed, setLastRefreshed] = useState<string>('');
+
+  // Fetch live NEA weather & PUB flood advisories
+  const fetchLiveHazards = async () => {
+    setIsLoadingLive(true);
+    try {
+      const summary = await hazardAlertService.getLiveAlerts(currentLocation);
+      setHazardSummary(summary);
+      setLastRefreshed(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+
+      // Auto-trigger emergency mode if live feed detects an active emergency
+      if (summary.hasActiveEmergency && !isEmergencyActive) {
+        toggleEmergencyMode(true);
+      }
+    } catch (error) {
+      console.warn('Live hazard sync deferred:', error);
+    } finally {
+      setIsLoadingLive(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLiveHazards();
+
+    // Auto-poll live alerts every 5 minutes
+    const interval = setInterval(fetchLiveHazards, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [currentLocation]);
+
+  const handleSyncAll = () => {
+    reSyncTelemetry();
+    fetchLiveHazards();
+  };
+
+  // Evaluate closest offline hazard zone based on GPS coordinates
   let activeThreatZone: HazardZone | null = null;
   let nearestDistance: number | null = null;
 
@@ -91,7 +112,6 @@ export const AreaRiskCard: React.FC = () => {
         zone.longitude
       );
 
-      // Check if user location falls within the hazard radius, or find nearest zone
       if (nearestDistance === null || dist < nearestDistance) {
         nearestDistance = dist;
         activeThreatZone = zone;
@@ -99,18 +119,27 @@ export const AreaRiskCard: React.FC = () => {
     }
   }
 
-  // Determine current overall risk status
+  // Determine current offline risk status
   const isInsideHazardRadius =
     activeThreatZone && nearestDistance !== null && nearestDistance <= activeThreatZone.radiusKm;
 
-  const currentRiskLevel = isInsideHazardRadius ? activeThreatZone?.riskLevel ?? 'SAFE' : 'SAFE';
+  const offlineRiskLevel = isInsideHazardRadius ? activeThreatZone?.riskLevel ?? 'SAFE' : 'SAFE';
+
+  // Elevate overall threat if live feeds OR offline vectors detect high risk
+  const isElevated =
+    offlineRiskLevel === 'HIGH' ||
+    hazardSummary?.riskLevel === 'HIGH' ||
+    hazardSummary?.riskLevel === 'CRITICAL' ||
+    isEmergencyActive;
 
   // Helper function to return dynamic badge colors based on risk severity
   const getRiskColor = (level: string) => {
     switch (level) {
       case 'HIGH':
+      case 'CRITICAL':
         return { bg: '#fff5f5', border: '#feb2b2', text: '#e53e3e', indicator: '#e53e3e' };
       case 'MODERATE':
+      case 'MEDIUM':
         return { bg: '#fffaf0', border: '#fbd38d', text: '#dd6b20', indicator: '#dd6b20' };
       case 'LOW':
       case 'SAFE':
@@ -119,20 +148,25 @@ export const AreaRiskCard: React.FC = () => {
     }
   };
 
-  const riskTheme = getRiskColor(currentRiskLevel);
+  const riskTheme = getRiskColor(isElevated ? 'HIGH' : offlineRiskLevel);
 
   return (
     <View style={styles.cardContainer}>
-      {/* Header section with telemetry sync trigger */}
+      {/* Header section with telemetry & hazard sync trigger */}
       <View style={styles.cardHeader}>
         <View style={styles.titleContainer}>
-          <Text style={styles.cardTitle}>Offline Area Risk Indicator</Text>
+          <Text style={styles.cardTitle}>Real-Time & Offline Area Risk</Text>
           <Text style={styles.cardSubtitle}>
-            Local vector threat analysis computed offline
+            {lastRefreshed ? `Live feeds updated at ${lastRefreshed}` : 'Evaluating localized risk vectors...'}
           </Text>
         </View>
-        <TouchableOpacity style={styles.refreshButton} onPress={reSyncTelemetry} activeOpacity={0.7}>
-          <Text style={styles.refreshButtonText}>📡 Sync</Text>
+
+        <TouchableOpacity style={styles.refreshButton} onPress={handleSyncAll} activeOpacity={0.7}>
+          {isLoadingLive ? (
+            <ActivityIndicator size="small" color="#2b6cb0" />
+          ) : (
+            <Text style={styles.refreshButtonText}>📡 Sync</Text>
+          )}
         </TouchableOpacity>
       </View>
 
@@ -146,9 +180,9 @@ export const AreaRiskCard: React.FC = () => {
         <View style={styles.statusRow}>
           <View style={[styles.statusDot, { backgroundColor: riskTheme.indicator }]} />
           <Text style={[styles.statusTitleText, { color: riskTheme.text }]}>
-            {currentRiskLevel === 'HIGH'
-              ? '⚠️ HIGH RISK HAZARD ZONE'
-              : currentRiskLevel === 'MODERATE'
+            {isElevated
+              ? '⚠️ HIGH RISK HAZARD ZONE DETECTED'
+              : offlineRiskLevel === 'MODERATE'
               ? '⚡ MODERATE HAZARD PROXIMITY'
               : '🛡️ CURRENT AREA SAFE'}
           </Text>
@@ -158,12 +192,37 @@ export const AreaRiskCard: React.FC = () => {
           {isInsideHazardRadius && activeThreatZone
             ? `Located inside ${activeThreatZone.name} (${activeThreatZone.type}). Exercise caution.`
             : nearestDistance !== null && activeThreatZone
-            ? `Nearest hazard: ${activeThreatZone.name} (${nearestDistance.toFixed(2)} km away).`
+            ? `Nearest offline hazard: ${activeThreatZone.name} (${nearestDistance.toFixed(2)} km away).`
             : 'Acquiring GPS location telemetry...'}
         </Text>
       </View>
 
-      {/* Offline Grid Visual Representation (map simulation) */}
+      {/* Live Hazard Feeds Section (NEA & PUB Alerts) */}
+      <View style={styles.liveFeedContainer}>
+        <Text style={styles.sectionHeaderTitle}>Live NEA & PUB Environmental Feeds:</Text>
+        
+        <View style={styles.hazardRow}>
+          <Text style={styles.hazardIcon}>🌦️</Text>
+          <View style={styles.hazardInfo}>
+            <Text style={styles.hazardLabel}>NEA 2-Hr Forecast</Text>
+            <Text style={styles.hazardValue}>
+              {hazardSummary?.weatherForecast || 'Fetching live weather status...'}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.hazardRow}>
+          <Text style={styles.hazardIcon}>🌊</Text>
+          <View style={styles.hazardInfo}>
+            <Text style={styles.hazardLabel}>PUB Flood Advisory</Text>
+            <Text style={styles.hazardValue}>
+              {hazardSummary?.floodAlertMessage || 'Checking drainage sensors...'}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Offline Grid Visual Representation (radar simulation) */}
       <View style={styles.radarContainer}>
         <View style={styles.radarGridBackground}>
           <View style={styles.radarCrosshairH} />
@@ -228,12 +287,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '800',
     color: '#1a202c',
   },
   cardSubtitle: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#718096',
     marginTop: 2,
   },
@@ -242,9 +301,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 6,
+    minWidth: 60,
+    alignItems: 'center',
   },
   refreshButtonText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
     color: '#2b6cb0',
   },
@@ -266,16 +327,54 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   statusTitleText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '800',
   },
   statusDescriptionText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#4a5568',
     marginLeft: 18,
   },
+  liveFeedContainer: {
+    marginBottom: 14,
+    gap: 8,
+  },
+  sectionHeaderTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#2d3748',
+    marginBottom: 4,
+  },
+  hazardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f7fafc',
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#edf2f7',
+  },
+  hazardIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  hazardInfo: {
+    flex: 1,
+  },
+  hazardLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#718096',
+    textTransform: 'uppercase',
+  },
+  hazardValue: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#2d3748',
+    marginTop: 1,
+  },
   radarContainer: {
-    height: 90,
+    height: 80,
     backgroundColor: '#1a202c',
     borderRadius: 10,
     justifyContent: 'center',
@@ -306,9 +405,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#2d3748',
   },
   radarPing: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderWidth: 2,
     opacity: 0.7,
   },
@@ -318,13 +417,12 @@ const styles = StyleSheet.create({
     left: 10,
     color: '#a0aec0',
     fontSize: 10,
-    fontFamily: 'Platform',
   },
   listHeaderTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
     color: '#2d3748',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   zoneRow: {
     flexDirection: 'row',
@@ -339,14 +437,14 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   zoneName: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     color: '#2d3748',
   },
   zoneType: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#718096',
-    marginTop: 2,
+    marginTop: 1,
   },
   zoneMetrics: {
     alignItems: 'flex-end',
@@ -359,11 +457,11 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   miniBadgeText: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: '800',
   },
   zoneDistance: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#4a5568',
     fontWeight: '600',
   },
