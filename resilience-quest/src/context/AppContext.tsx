@@ -26,7 +26,8 @@ interface AppContextType {
   simulatedLocation: LocationCoords | null;
   
   // Task & XP actions
-  toggleTask: (id: string) => void;
+  // update toggleTask signature to accept optional xpRewardOvverride 
+  toggleTask: (id: string, xpRewardOverride?: number) => void;
   completeTask: (id: string) => Promise<void>;
   addXp: (amount: number) => Promise<void>;
   toggleEmergencyMode: (active: boolean) => void;
