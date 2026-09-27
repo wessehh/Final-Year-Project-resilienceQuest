@@ -34,6 +34,11 @@ export default function DevScreen() {
   const [diagLogs, setDiagLogs] = useState<string[]>([]);
   const [isRunningDiag, setIsRunningDiag] = useState<boolean>(false);
 
+  // week simulator for tasks 
+  const { simulatedWeekOffset, setSimulatedWeekOffset } = useApp();
+  const currentLabel = taskService.getCurrentWeekLabel(simulatedWeekOffset);
+
+
   // Subscribe globally to shelter sync progress from ANY caller (Dev Suite or Explore)
   useEffect(() => {
     const unsubscribe = shelterService.subscribeProgress((progress) => {
@@ -187,6 +192,43 @@ export default function DevScreen() {
 
         {/* Interactive Threat Simulator */}
         <HazardSimulationControl />
+
+        {/* Weekly Task sycling Simulator */}
+        <View style={styles.utilityCard}>
+          <Text style={styles.utilityTitle}>🗓️ Quest Week Simulator</Text>
+          <Text style={styles.statusText}>
+            Current View: <Text style={styles.highlight}>{currentLabel}</Text>
+          </Text>
+          <Text style={styles.subtext}>
+            Offset: {simulatedWeekOffset === 0 ? '0 (Current Real Week)' : `${simulatedWeekOffset > 0 ? '+' : ''}${simulatedWeekOffset} Week(s)`}
+          </Text>
+
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => setSimulatedWeekOffset((prev) => prev - 1)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.btnText}>◀ Prev Week</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionButton, styles.resetBtn]}
+              onPress={() => setSimulatedWeekOffset(0)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.resetBtnText}>Reset</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => setSimulatedWeekOffset((prev) => prev + 1)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.btnText}>Next Week ▶</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {/* Live Service Diagnostics Test Card */}
         <View style={styles.utilityCard}>
@@ -574,5 +616,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#3182ce',
     fontWeight: '700',
+  },
+  statusText: {
+    fontSize: 12,
+    color: '#4a5568',
+    marginBottom: 2,
+  },
+  subtext: {
+    fontSize: 11,
+    color: '#718096',
+    marginBottom: 12,
+  },
+  btnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#2d3748',
   },
 });
