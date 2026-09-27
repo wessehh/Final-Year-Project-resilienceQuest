@@ -27,6 +27,7 @@ export const AEDCard: React.FC<AEDCardProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  
   const loadNearbyAEDs = useCallback(async () => {
     try {
       const data = await aedService.getNearbyAEDs(userLocation, limit);
@@ -43,9 +44,12 @@ export const AEDCard: React.FC<AEDCardProps> = ({
     loadNearbyAEDs();
   }, [loadNearbyAEDs]);
 
-  const handleManualSync = () => {
+  const handleManualSync = async () => {
     setRefreshing(true);
-    loadNearbyAEDs();
+    // Passing forceSync = true triggers an immediate remote check
+    const updatedData = await aedService.getNearbyAEDs(userLocation, limit, true);
+    setAedList(updatedData);
+    setRefreshing(false);
   };
 
   const openNavigation = (aed: AEDLocation) => {

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "aed-1",
+    "buildingName": "Junction 8 Shopping Centre",
+    "locationDetails": "Level 1 Fire Command Centre",
+    "postalCode": "579837",
+    "latitude": 1.3506,
+    "longitude": 103.8488
+  },
+  {
+    "id": "aed-2",
+    "buildingName": "Lycee Francais De Singapour",
+    "locationDetails": "Level 1 Block K, Opposite Reception Office K1-07",
+    "postalCode": "569935",
+    "latitude": 1.3678,
+    "longitude": 103.8683
+  }
+]
