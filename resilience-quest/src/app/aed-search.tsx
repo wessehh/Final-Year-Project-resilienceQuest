@@ -1,4 +1,5 @@
 /**
+ * 
  * Real-time text searching (by building name, address or postal code), a 24/7 access filter chip
  */
 
