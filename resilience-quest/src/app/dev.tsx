@@ -1,3 +1,7 @@
+/**
+ * Dev suite
+ */
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -5,6 +9,10 @@ import { useApp } from '@/context/AppContext';
 import { HazardSimulationControl } from '@/components/emergency/HazardSimulationControl';
 import { SCDFShelter, shelterService } from '@/services/shelterService';
 import seedShelters from '../assets/data/sg_shelters.json';
+import { calculateDistanceKm } from '@/utils/geoUtils';
+import { hazardAlertService } from '@/services/hazardAlertService';
+import { aedService } from '@/services/aedService';
+import { taskService } from '@/services/taskService';
 
 const CACHE_KEY = '@resiliencequest_scdf_shelters';
 const LAST_SYNC_KEY = '@resiliencequest_scdf_shelters_last_sync';
@@ -21,6 +29,10 @@ export default function DevScreen() {
   const [cachedCount, setCachedCount] = useState<number>(0);
   const [lastSyncTimeStr, setLastSyncTimeStr] = useState<string>('Never');
   const [failedSheltersList, setFailedSheltersList] = useState<SCDFShelter[]>([]);
+
+  // Diagnostics State
+  const [diagLogs, setDiagLogs] = useState<string[]>([]);
+  const [isRunningDiag, setIsRunningDiag] = useState<boolean>(false);
 
   // Subscribe globally to shelter sync progress from ANY caller (Dev Suite or Explore)
   useEffect(() => {
@@ -68,6 +80,39 @@ export default function DevScreen() {
   useEffect(() => {
     refreshStoragePreview();
   }, []);
+
+  // Live Service & Utility Diagnostics Runner
+  const handleRunDiagnostics = async () => {
+    setIsRunningDiag(true);
+    const logs: string[] = [];
+
+    try {
+      // 1. geoUtils
+      const dist = calculateDistanceKm(1.3048, 103.8318, 1.2838, 103.8591);
+      logs.push(`✅ geoUtils: Orchard -> MBS = ${dist.toFixed(2)} km`);
+
+      // 2. aedService
+      const aeds = await aedService.getNearbyAEDs({ latitude: 1.2991, longitude: 103.8458 }, 2);
+      logs.push(`✅ aedService: ${aeds.length} AEDs nearby (Nearest: ${aeds[0]?.buildingName || 'N/A'})`);
+
+      // 3. taskService
+      const tasks = taskService.getWeeklyTasks();
+      const weekLabel = taskService.getCurrentWeekLabel();
+      logs.push(`✅ taskService: Loaded ${tasks.length} quests for "${weekLabel}"`);
+
+      // 4. hazardAlertService
+      const alerts = await hazardAlertService.getAllActiveAlerts();
+      logs.push(`✅ hazardAlertService: ${alerts.length} active threat alert(s) returned`);
+
+      setDiagLogs(logs);
+      Alert.alert('Diagnostics Complete', 'All 4 service utilities executed successfully.');
+    } catch (err) {
+      logs.push(`❌ Diagnostic Error: ${String(err)}`);
+      setDiagLogs(logs);
+    } finally {
+      setIsRunningDiag(false);
+    }
+  };
 
   // Full system wipe
   const handleConfirmReset = async () => {
@@ -142,6 +187,35 @@ export default function DevScreen() {
 
         {/* Interactive Threat Simulator */}
         <HazardSimulationControl />
+
+        {/* Live Service Diagnostics Test Card */}
+        <View style={styles.utilityCard}>
+          <Text style={styles.utilityTitle}>🧪 Live Services Diagnostic Suite</Text>
+          <Text style={styles.utilitySubtitle}>
+            Verify live functionality of geoUtils, aedService, taskService, and hazardAlertService:
+          </Text>
+
+          <TouchableOpacity
+            style={[styles.actionButton, styles.diagBtn, isRunningDiag && styles.disabledBtn]}
+            disabled={isRunningDiag}
+            onPress={handleRunDiagnostics}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.diagBtnText}>
+              {isRunningDiag ? '⏳ Running Diagnostics...' : '▶ Run All Service Tests'}
+            </Text>
+          </TouchableOpacity>
+
+          {diagLogs.length > 0 && (
+            <View style={styles.diagLogBox}>
+              {diagLogs.map((log, idx) => (
+                <Text key={idx} style={styles.diagLogText}>
+                  {log}
+                </Text>
+              ))}
+            </View>
+          )}
+        </View>
 
         {/* SCDF Shelter Cache & Sync Utilities */}
         <View style={styles.utilityCard}>
@@ -354,6 +428,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     alignItems: 'center',
+  },
+  disabledBtn: {
+    opacity: 0.6,
+  },
+  diagBtn: {
+    backgroundColor: '#2b6cb0',
+  },
+  diagBtnText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  diagLogBox: {
+    backgroundColor: '#1a202c',
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 10,
+  },
+  diagLogText: {
+    color: '#68d391',
+    fontFamily: 'Courier',
+    fontSize: 11,
+    marginBottom: 4,
   },
   completeBtn: {
     backgroundColor: '#ebf8ff',

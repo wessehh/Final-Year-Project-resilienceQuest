@@ -1,5 +1,5 @@
 // manage public Automated External Defibrillator locations with coordinate distance calculation
-import { calculateDistanceKm } from '../utils/geoUtils'; // existing haversine utility
+import { calculateDistanceKm } from '@/utils/geoUtils'; // existing haversine utility
 
 export interface AEDLocation {
   id: string;
