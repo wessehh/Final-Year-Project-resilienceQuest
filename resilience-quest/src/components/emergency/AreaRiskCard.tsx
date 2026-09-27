@@ -4,7 +4,7 @@
 * servers or internet connectivity, augmented with live NEA/PUB hazard feeds.
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useTelemetry } from '@/hooks/useTelemetry';
 import { useApp } from '@/context/AppContext';
@@ -64,16 +64,18 @@ export const AreaRiskCard: React.FC = () => {
 
   // Live hazard alert state
   const [hazardSummary, setHazardSummary] = useState<HazardAlertSummary | null>(null);
-  const [isLoadingLive, setIsLoadingLive] = useState<boolean>(true);
-  const [lastRefreshed, setLastRefreshed] = useState<string>('');
+  const [isLoadingLive, setIsLoadingLive] = useState<boolean>(false);
+  const [lastRefreshed, setLastRefreshed] = useState<string>('Not synced yet');
 
   // Fetch live NEA weather & PUB flood advisories
-  const fetchLiveHazards = async () => {
+  const fetchLiveHazards = useCallback(async () => {
     setIsLoadingLive(true);
     try {
       const summary = await hazardAlertService.getLiveAlerts(currentLocation);
       setHazardSummary(summary);
-      setLastRefreshed(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setLastRefreshed(
+        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      );
 
       // Auto-trigger emergency mode if live feed detects an active emergency
       if (summary.hasActiveEmergency && !isEmergencyActive) {
@@ -84,19 +86,24 @@ export const AreaRiskCard: React.FC = () => {
     } finally {
       setIsLoadingLive(false);
     }
-  };
+  }, [currentLocation, isEmergencyActive, toggleEmergencyMode]);
 
+  // Initial load and background polling every 5 minutes
   useEffect(() => {
     fetchLiveHazards();
 
-    // Auto-poll live alerts every 5 minutes
-    const interval = setInterval(fetchLiveHazards, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, [currentLocation]);
+    const interval = setInterval(() => {
+      fetchLiveHazards();
+    }, 5 * 60 * 1000);
 
-  const handleSyncAll = () => {
-    reSyncTelemetry();
-    fetchLiveHazards();
+    return () => clearInterval(interval);
+  }, []);
+
+  // Manual Trigger: Re-sync telemetry + refetch live environmental feeds
+  const handleSyncAll = async () => {
+    if (isLoadingLive) return;
+    if (reSyncTelemetry) reSyncTelemetry();
+    await fetchLiveHazards();
   };
 
   // Evaluate closest offline hazard zone based on GPS coordinates
@@ -132,7 +139,7 @@ export const AreaRiskCard: React.FC = () => {
     hazardSummary?.riskLevel === 'CRITICAL' ||
     isEmergencyActive;
 
-  // Helper function to return dynamic badge colors based on risk severity
+  // Dynamic badge color scheme based on risk severity
   const getRiskColor = (level: string) => {
     switch (level) {
       case 'HIGH':
@@ -157,15 +164,22 @@ export const AreaRiskCard: React.FC = () => {
         <View style={styles.titleContainer}>
           <Text style={styles.cardTitle}>Real-Time & Offline Area Risk</Text>
           <Text style={styles.cardSubtitle}>
-            {lastRefreshed ? `Live feeds updated at ${lastRefreshed}` : 'Evaluating localized risk vectors...'}
+            {lastRefreshed !== 'Not synced yet'
+              ? `Last updated at ${lastRefreshed}`
+              : 'Evaluating localized risk vectors...'}
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.refreshButton} onPress={handleSyncAll} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={[styles.refreshButton, isLoadingLive && styles.refreshButtonDisabled]}
+          onPress={handleSyncAll}
+          disabled={isLoadingLive}
+          activeOpacity={0.7}
+        >
           {isLoadingLive ? (
-            <ActivityIndicator size="small" color="#2b6cb0" />
+            <ActivityIndicator size="small" color="#ffffff" />
           ) : (
-            <Text style={styles.refreshButtonText}>📡 Sync</Text>
+            <Text style={styles.refreshButtonText}>🔄 Sync</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -200,7 +214,7 @@ export const AreaRiskCard: React.FC = () => {
       {/* Live Hazard Feeds Section (NEA & PUB Alerts) */}
       <View style={styles.liveFeedContainer}>
         <Text style={styles.sectionHeaderTitle}>Live NEA & PUB Environmental Feeds:</Text>
-        
+
         <View style={styles.hazardRow}>
           <Text style={styles.hazardIcon}>🌦️</Text>
           <View style={styles.hazardInfo}>
@@ -229,7 +243,10 @@ export const AreaRiskCard: React.FC = () => {
           <View style={styles.radarCrosshairV} />
           <View style={[styles.radarPing, { borderColor: riskTheme.indicator }]} />
           <Text style={styles.radarText}>
-            GPS: {currentLocation ? `${currentLocation.latitude.toFixed(4)}, ${currentLocation.longitude.toFixed(4)}` : 'Scanning...'}
+            GPS:{' '}
+            {currentLocation
+              ? `${currentLocation.latitude.toFixed(4)}, ${currentLocation.longitude.toFixed(4)}`
+              : 'Scanning...'}
           </Text>
         </View>
       </View>
@@ -252,11 +269,20 @@ export const AreaRiskCard: React.FC = () => {
           <View key={zone.id} style={styles.zoneRow}>
             <View style={styles.zoneInfo}>
               <Text style={styles.zoneName}>{zone.name}</Text>
-              <Text style={styles.zoneType}>{zone.type} • {zone.radiusKm} km radius</Text>
+              <Text style={styles.zoneType}>
+                {zone.type} • {zone.radiusKm} km radius
+              </Text>
             </View>
             <View style={styles.zoneMetrics}>
-              <View style={[styles.miniBadge, { backgroundColor: zoneTheme.bg, borderColor: zoneTheme.border }]}>
-                <Text style={[styles.miniBadgeText, { color: zoneTheme.text }]}>{zone.riskLevel}</Text>
+              <View
+                style={[
+                  styles.miniBadge,
+                  { backgroundColor: zoneTheme.bg, borderColor: zoneTheme.border },
+                ]}
+              >
+                <Text style={[styles.miniBadgeText, { color: zoneTheme.text }]}>
+                  {zone.riskLevel}
+                </Text>
               </View>
               <Text style={styles.zoneDistance}>{zoneDist} km</Text>
             </View>
@@ -297,17 +323,21 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   refreshButton: {
-    backgroundColor: '#edf2f7',
+    backgroundColor: '#2b6cb0',
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     borderRadius: 6,
-    minWidth: 60,
+    minWidth: 72,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  refreshButtonDisabled: {
+    backgroundColor: '#a0aec0',
   },
   refreshButtonText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#2b6cb0',
+    color: '#ffffff',
   },
   statusBanner: {
     padding: 12,
