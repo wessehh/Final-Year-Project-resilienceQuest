@@ -25,24 +25,33 @@ const CACHE_KEY_LAST_SYNC = '@aed_cache_last_sync';
 const QUARTER_IN_MS = 90 * 24 * 60 * 60 * 1000; // 90 days in milliseconds
 
 const DATASET_ID = 'd_e8934d28896a1eceecfe86f42dd3c077';
-const DIRECT_ENDPOINT = `https://data.gov.sg/api/action/datastore_search?resource_id=${DATASET_ID}&limit=10000`;
+const DIRECT_ENDPOINT = `https://data.gov.sg/api/action/datastore_search?resource_id=${DATASET_ID}&limit=12000`;
 
-// Parse minified bundled JSON records
+// Parse bundled local JSON records
 const PARSED_BUNDLED_AEDS: AEDLocation[] = (BUNDLED_AEDS as any[]).map((item, index) => {
-  const postalCode = item.p || item.postalCode || item.Postal_Code || '';
-  const lat = parseFloat(item.latitude || item.Latitude || '1.3521');
-  const lng = parseFloat(item.longitude || item.Longitude || '103.8198');
+  const postalCode = item.postalCode || item.p || item.Postal_Code || '';
+  
+  const lat = typeof item.latitude === 'number' ? item.latitude : parseFloat(item.latitude || item.Latitude || '1.3521');
+  const lng = typeof item.longitude === 'number' ? item.longitude : parseFloat(item.longitude || item.Longitude || '103.8198');
 
   return {
     id: item.id || `aed-bundled-${index}`,
-    buildingName: item.b || item.buildingName || item.Building_Name || 'Public AED Station',
+    buildingName: item.buildingName || item.b || item.Building_Name || 'Public AED Station',
     address: postalCode ? `Singapore ${postalCode}` : 'Singapore',
     postalCode: String(postalCode),
-    locationDetails: item.l || item.locationDetails || item.Location_Description || 'Publicly Accessible Area',
-    latitude: !isNaN(lat) && lat !== 0 ? lat : 1.3521,
-    longitude: !isNaN(lng) && lng !== 0 ? lng : 103.8198,
+    locationDetails: item.locationDetails || item.l || item.Location_Description || 'Publicly Accessible Area',
+    latitude: !isNaN(lat) ? lat : 1.3521,
+    longitude: !isNaN(lng) ? lng : 103.8198,
     is24Hours: true,
   };
+});
+
+// Create a fast map of postal codes -> bundled coordinates to preserve valid locations during sync
+const BUNDLED_GEO_MAP = new Map<string, { latitude: number; longitude: number }>();
+PARSED_BUNDLED_AEDS.forEach((aed) => {
+  if (aed.postalCode && aed.latitude !== 1.3521) {
+    BUNDLED_GEO_MAP.set(aed.postalCode, { latitude: aed.latitude, longitude: aed.longitude });
+  }
 });
 
 export const aedService = {
@@ -58,12 +67,10 @@ export const aedService = {
       const lastSync = lastSyncStr ? parseInt(lastSyncStr, 10) : 0;
       const isStale = Date.now() - lastSync > QUARTER_IN_MS;
 
-      // If data is stale or sync is explicitly forced by user, sync in background
-      if (forceSync || isStale || !cachedDataStr) {
+      if (forceSync || isStale) {
         this.syncWithRemote().catch(() => {});
       }
 
-      // Return cached remote data if available; otherwise return bundled seed
       if (cachedDataStr) {
         return JSON.parse(cachedDataStr);
       }
@@ -90,15 +97,24 @@ export const aedService = {
           record.Building_Name || record.building_name || 'Public AED Station';
         const locationDetails =
           record.Location_Description || record.location_description || 'Publicly Accessible Area';
-        const postalCode = record.Postal_Code || record.postal_code || '';
-        const lat = parseFloat(record.Latitude || record.latitude || record.lat || '1.3521');
-        const lng = parseFloat(record.Longitude || record.longitude || record.lng || '103.8198');
+        const postalCode = String(record.Postal_Code || record.postal_code || '');
+
+        // Check if live record provides raw lat/lng
+        let lat = parseFloat(record.Latitude || record.latitude || record.lat);
+        let lng = parseFloat(record.Longitude || record.longitude || record.lng);
+
+        // Fallback to bundled seed coordinates for matching postal code if live record lacks coordinates
+        if ((isNaN(lat) || lat === 0) && BUNDLED_GEO_MAP.has(postalCode)) {
+          const cachedGeo = BUNDLED_GEO_MAP.get(postalCode)!;
+          lat = cachedGeo.latitude;
+          lng = cachedGeo.longitude;
+        }
 
         return {
           id: record._id ? `aed-${record._id}` : `aed-live-${index}`,
           buildingName,
           address: postalCode ? `Singapore ${postalCode}` : 'Singapore',
-          postalCode: String(postalCode),
+          postalCode,
           locationDetails,
           latitude: !isNaN(lat) && lat !== 0 ? lat : 1.3521,
           longitude: !isNaN(lng) && lng !== 0 ? lng : 103.8198,
@@ -126,23 +142,32 @@ export const aedService = {
   ): Promise<AEDLocation[]> {
     let dataset = await this.fetchAllAEDs(forceSync);
 
-    if (currentLoc) {
+    if (currentLoc && currentLoc.latitude && currentLoc.longitude) {
       dataset = dataset
-        .map((aed) => ({
-          ...aed,
-          distanceKm: parseFloat(
-            calculateDistanceKm(
-              currentLoc.latitude,
-              currentLoc.longitude,
-              aed.latitude,
-              aed.longitude
-            ).toFixed(2)
-          ),
-        }))
+        .map((aed) => {
+          const dist = calculateDistanceKm(
+            currentLoc.latitude,
+            currentLoc.longitude,
+            aed.latitude,
+            aed.longitude
+          );
+
+          return {
+            ...aed,
+            distanceKm: parseFloat(dist.toFixed(2)),
+          };
+        })
         .sort((a, b) => (a.distanceKm || 0) - (b.distanceKm || 0));
     }
 
-    // Return the full dataset if limit is omitted
     return limit ? dataset.slice(0, limit) : dataset;
   },
+
+  /**
+   * Clears corrupted AsyncStorage cache (useful for testing)
+   */
+  async clearCache(): Promise<void> {
+    await AsyncStorage.removeItem(CACHE_KEY_AEDS);
+    await AsyncStorage.removeItem(CACHE_KEY_LAST_SYNC);
+  }
 };

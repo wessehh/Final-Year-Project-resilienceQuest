@@ -38,7 +38,6 @@ export default function DevScreen() {
   const { simulatedWeekOffset, setSimulatedWeekOffset } = useApp();
   const currentLabel = taskService.getCurrentWeekLabel(simulatedWeekOffset);
 
-
   // Subscribe globally to shelter sync progress from ANY caller (Dev Suite or Explore)
   useEffect(() => {
     const unsubscribe = shelterService.subscribeProgress((progress) => {
@@ -123,8 +122,9 @@ export default function DevScreen() {
   const handleConfirmReset = async () => {
     resetAllData();
     await shelterService.clearShelterCache();
+    await aedService.clearCache();
     await refreshStoragePreview();
-    Alert.alert('Demo Suite Reset', 'Local user progress, XP, and SCDF shelter cache wiped.');
+    Alert.alert('Demo Suite Reset', 'Local user progress, XP, shelter cache, and AED cache wiped.');
   };
 
   // Targeted cache clear for SCDF shelters 
@@ -149,6 +149,16 @@ export default function DevScreen() {
     } finally {
       setIsSyncingShelters(false);
       setSyncProgress(0);
+    }
+  };
+
+  // Targeted cache clear for AEDs
+  const handleClearAEDCache = async () => {
+    try {
+      await aedService.clearCache();
+      Alert.alert('AED Cache Purged', 'Local AED AsyncStorage cache wiped. Future loads will use clean seed data.');
+    } catch (err) {
+      Alert.alert('Purge Error', 'Failed to purge AED cache.');
     }
   };
 
@@ -193,7 +203,7 @@ export default function DevScreen() {
         {/* Interactive Threat Simulator */}
         <HazardSimulationControl />
 
-        {/* Weekly Task sycling Simulator */}
+        {/* Weekly Task Cycling Simulator */}
         <View style={styles.utilityCard}>
           <Text style={styles.utilityTitle}>🗓️ Quest Week Simulator</Text>
           <Text style={styles.statusText}>
@@ -259,6 +269,22 @@ export default function DevScreen() {
           )}
         </View>
 
+        {/* AED Cache Utilities */}
+        <View style={styles.utilityCard}>
+          <Text style={styles.utilityTitle}>🚑 AED Dataset Cache Suite</Text>
+          <Text style={styles.utilitySubtitle}>
+            Purge local AED AsyncStorage cache to fix default fallback distances or force clean seed reload:
+          </Text>
+
+          <TouchableOpacity
+            style={[styles.actionButton, styles.shelterPurgeBtn]}
+            onPress={handleClearAEDCache}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.shelterPurgeBtnText}>🧹 Purge AED Cache Only</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* SCDF Shelter Cache & Sync Utilities */}
         <View style={styles.utilityCard}>
           <Text style={styles.utilityTitle}>SCDF Public Shelter Data Suite</Text>
@@ -267,7 +293,6 @@ export default function DevScreen() {
           </Text>
 
           {isSyncingShelters ? (
-            /* Progress Bar when syncing */
             <View style={styles.progressBarContainer}>
               <View style={styles.progressHeader}>
                 <Text style={styles.progressLabel}>⏳ Fetching & Geocoding SCDF Data...</Text>
@@ -278,7 +303,6 @@ export default function DevScreen() {
               </View>
             </View>
           ) : (
-            /* Action Buttons when idle */
             <View style={styles.buttonRow}>
               <TouchableOpacity
                 style={[styles.actionButton, styles.shelterSyncBtn]}

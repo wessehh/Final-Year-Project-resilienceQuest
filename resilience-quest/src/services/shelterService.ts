@@ -14,7 +14,7 @@ const CACHE_EXPIRY_MS = CACHE_STALE_DAYS * 24 * 60 * 60 * 1000; // 90 days (quar
 
 // Optimal parallel requests to maximize throughput without hitting OneMap HTTP 429 limits
 const CONCURRENCY_LIMIT = 3;
-// pace the requests to respect the SLA OneMap rate limits
+// Pace the requests to respect the SLA OneMap rate limits
 const BETWEEN_REQUEST_DELAY_MS = 150;
 
 const DATA_GOV_SCDF_URL =
@@ -77,8 +77,8 @@ async function deduplicatedGeocode(
   return requestPromise;
 }
 
-// Active sync lock to prevent duplicate parallel sync loops across UI components
-let activeLoadPromise: Promise<SCDFShelter[]> | null = null;
+// Active background sync lock to prevent duplicate parallel sync loops across UI components
+let activeSyncPromise: Promise<SCDFShelter[]> | null = null;
 
 /**
  * Concurrency Pool Helper: Executes `taskFn` on `items` using a maximum of `limit` parallel workers.
@@ -196,10 +196,11 @@ function prepareAddressVariants(rawAddress: string): string[] {
   return Array.from(new Set(variants)).filter(Boolean);
 }
 
-
-async function performLoadShelters(
-  forceRefresh: boolean = false
-): Promise<SCDFShelter[]> {
+/**
+ * Background worker task: Fetches SCDF shelters from Data.gov.sg, geocodes missing entries,
+ * and updates AsyncStorage cache silently.
+ */
+async function syncFromApiInBackground(): Promise<SCDFShelter[]> {
   const seedMap = new Map<string, { latitude: number; longitude: number }>();
   (seedShelters as SCDFShelter[]).forEach((s) => {
     if (s.postalCode) seedMap.set(s.postalCode, { latitude: s.latitude, longitude: s.longitude });
@@ -209,168 +210,148 @@ async function performLoadShelters(
   const now = Date.now();
 
   try {
-    const lastSyncStr = await AsyncStorage.getItem(LAST_SYNC_KEY);
-    const lastSyncTime = lastSyncStr ? parseInt(lastSyncStr, 10) : 0;
-    const isStale = now - lastSyncTime > CACHE_EXPIRY_MS;
-    
-    if (!forceRefresh && !isStale) {
-      const cachedData = await AsyncStorage.getItem(CACHE_KEY);
-      if (cachedData) {
-        broadcastProgress(1);
-        return JSON.parse(cachedData);
-      }
+    const response = await fetch(DATA_GOV_SCDF_URL, { method: 'GET' });
+    if (!response.ok) {
+      throw new Error(`Data.gov.sg API returned status ${response.status}`);
     }
 
-    try {
-      const response = await fetch(DATA_GOV_SCDF_URL, { method: 'GET' });
-      if (response.ok) {
-        const json = await response.json();
-        const records = json?.result?.records || [];
+    const json = await response.json();
+    const records = json?.result?.records || [];
 
-        if (records.length > 0) {
-          const savedLookupStr = await AsyncStorage.getItem(GEOCODE_LOOKUP_KEY);
-          const geocodeMap: Record<string, { latitude: number; longitude: number }> = savedLookupStr
-            ? JSON.parse(savedLookupStr)
-            : {};
+    if (records.length === 0) {
+      throw new Error('No shelter records found in response');
+    }
 
-          let unpersistedCount = 0;
-          let completedCount = 0;
-          const totalRecords = records.length;
+    const savedLookupStr = await AsyncStorage.getItem(GEOCODE_LOOKUP_KEY);
+    const geocodeMap: Record<string, { latitude: number; longitude: number }> = savedLookupStr
+      ? JSON.parse(savedLookupStr)
+      : {};
 
-          const liveShelters = await mapConcurrent(records, CONCURRENCY_LIMIT, async (item: any, i: number) => {
-            let postalCode = (
-              item.POSTALCODE || item.POSTAL_CODE || item.postal_code || item.POSTAL || ''
-            ).toString().trim();
+    let unpersistedCount = 0;
+    let completedCount = 0;
+    const totalRecords = records.length;
 
-            const blkNo = (item.BLK_NO || item.block || item.BLOCK || '').toString().trim();
-            const rawStreet = (item.STREET_NAME || item.street || item.STREET || item.ROAD_NAME || '').toString().trim();
-            const rawAddress = (item.ADDRESS || item.address || item.LOCATION || '').toString().trim();
-            const rawName = (item.NAME || item.SHELTER_NAME || item.building || '').toString().replace(/\s+/g, ' ').trim();
+    const liveShelters = await mapConcurrent(records, CONCURRENCY_LIMIT, async (item: any, i: number) => {
+      let postalCode = (
+        item.POSTALCODE || item.POSTAL_CODE || item.postal_code || item.POSTAL || ''
+      ).toString().trim();
 
-            if (!postalCode || postalCode.length < 5) {
-              const match = (rawAddress + ' ' + rawName).match(/\b(\d{6})\b/);
-              if (match) {
-                postalCode = match[1];
-              }
-            }
+      const blkNo = (item.BLK_NO || item.block || item.BLOCK || '').toString().trim();
+      const rawStreet = (item.STREET_NAME || item.street || item.STREET || item.ROAD_NAME || '').toString().trim();
+      const rawAddress = (item.ADDRESS || item.address || item.LOCATION || '').toString().trim();
+      const rawName = (item.NAME || item.SHELTER_NAME || item.building || '').toString().replace(/\s+/g, ' ').trim();
 
-            const constructedAddress = [blkNo, rawStreet].filter(Boolean).join(' ');
-            const fullAddress = (constructedAddress || rawAddress || 'Singapore').replace(/\s+/g, ' ').trim();
-
-            const cleanDisplayAddress = fullAddress
-              .replace(/#\s*[a-zA-Z0-9-]+/g, '')
-              .replace(/\b[bB]\d+-\d+\b/g, '')
-              .replace(/\b\d{2}-\d{2,4}\b/g, '')
-              .replace(/\s+/g, ' ')
-              .trim();
-
-            let formattedName = rawName;
-            if (!formattedName || formattedName.toUpperCase() === 'HDB') {
-              if (blkNo && rawStreet) {
-                formattedName = `HDB Blk ${blkNo} (${rawStreet})`;
-              } else if (cleanDisplayAddress !== 'Singapore') {
-                formattedName = `HDB Shelter - ${cleanDisplayAddress}`;
-              } else {
-                formattedName = 'HDB Civil Defence Shelter';
-              }
-            }
-
-            let coords: { latitude: number; longitude: number } | null = null;
-            const addressVariants = prepareAddressVariants(fullAddress);
-            const cacheKey = (postalCode || addressVariants[0] || fullAddress).toLowerCase().trim();
-
-            if (geocodeMap[cacheKey]) {
-              coords = geocodeMap[cacheKey];
-            }
-
-            if (!coords && postalCode && postalCode.length >= 5) {
-              coords = await deduplicatedGeocode(postalCode, geocodeMap);
-            }
-
-            if (!coords) {
-              for (const variant of addressVariants) {
-                coords = await deduplicatedGeocode(variant, geocodeMap);
-                if (coords) break;
-              }
-            }
-
-            if (!coords && formattedName) {
-              const nameVariants = prepareAddressVariants(formattedName);
-              for (const nVariant of nameVariants) {
-                coords = await deduplicatedGeocode(nVariant, geocodeMap);
-                if (coords) break;
-              }
-            }
-
-            if (!coords && rawStreet) {
-              const streetVariants = prepareAddressVariants(rawStreet);
-              for (const stVariant of streetVariants) {
-                coords = await deduplicatedGeocode(stVariant, geocodeMap);
-                if (coords) break;
-              }
-            }
-
-            if (coords) {
-              if (!geocodeMap[cacheKey]) {
-                geocodeMap[cacheKey] = coords;
-                unpersistedCount++;
-              }
-            }
-
-            const seedFallback = 
-              (postalCode ? seedMap.get(postalCode) : null) ||
-              seedMap.get(cleanDisplayAddress.toLowerCase());
-
-            const finalLatitude = coords?.latitude ?? seedFallback?.latitude ?? 1.3521;
-            const finalLongitude = coords?.longitude ?? seedFallback?.longitude ?? 103.8198;
-            const isFallback = !coords;
-
-            if (unpersistedCount >= 20) {
-              unpersistedCount = 0;
-              AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap)).catch(() => {});
-            }
-
-            completedCount++;
-            broadcastProgress(completedCount / totalRecords);
-
-            if (completedCount % 5 === 0 || completedCount === totalRecords) {
-              await new Promise((resolve) => setTimeout(resolve, 0));
-            }
-
-            return {
-              id: item._id ? `scdf_${item._id}` : `scdf_live_${i}`,
-              name: formattedName,
-              address: cleanDisplayAddress,
-              type: item.DESCRIPTION || item.SHELTER_TYPE || 'Civil Defence Shelter',
-              latitude: finalLatitude,
-              longitude: finalLongitude,
-              postalCode,
-              isGeocodeFallback: isFallback,
-            };
-          });
-
-          await AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap));
-          await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(liveShelters));
-          await AsyncStorage.setItem(LAST_SYNC_KEY, now.toString());
-
-          return liveShelters;
+      if (!postalCode || postalCode.length < 5) {
+        const match = (rawAddress + ' ' + rawName).match(/\b(\d{6})\b/);
+        if (match) {
+          postalCode = match[1];
         }
       }
-    } catch (networkErr) {
-      console.warn('Network error during SCDF sync:', networkErr);
-    }
 
-    const existingCache = await AsyncStorage.getItem(CACHE_KEY);
-    if (existingCache) {
-      broadcastProgress(1);
-      return JSON.parse(existingCache);
-    }
+      const constructedAddress = [blkNo, rawStreet].filter(Boolean).join(' ');
+      const fullAddress = (constructedAddress || rawAddress || 'Singapore').replace(/\s+/g, ' ').trim();
+
+      const cleanDisplayAddress = fullAddress
+        .replace(/#\s*[a-zA-Z0-9-]+/g, '')
+        .replace(/\b[bB]\d+-\d+\b/g, '')
+        .replace(/\b\d{2}-\d{2,4}\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      let formattedName = rawName;
+      if (!formattedName || formattedName.toUpperCase() === 'HDB') {
+        if (blkNo && rawStreet) {
+          formattedName = `HDB Blk ${blkNo} (${rawStreet})`;
+        } else if (cleanDisplayAddress !== 'Singapore') {
+          formattedName = `HDB Shelter - ${cleanDisplayAddress}`;
+        } else {
+          formattedName = 'HDB Civil Defence Shelter';
+        }
+      }
+
+      let coords: { latitude: number; longitude: number } | null = null;
+      const addressVariants = prepareAddressVariants(fullAddress);
+      const cacheKey = (postalCode || addressVariants[0] || fullAddress).toLowerCase().trim();
+
+      if (geocodeMap[cacheKey]) {
+        coords = geocodeMap[cacheKey];
+      }
+
+      if (!coords && postalCode && postalCode.length >= 5) {
+        coords = await deduplicatedGeocode(postalCode, geocodeMap);
+      }
+
+      if (!coords) {
+        for (const variant of addressVariants) {
+          coords = await deduplicatedGeocode(variant, geocodeMap);
+          if (coords) break;
+        }
+      }
+
+      if (!coords && formattedName) {
+        const nameVariants = prepareAddressVariants(formattedName);
+        for (const nVariant of nameVariants) {
+          coords = await deduplicatedGeocode(nVariant, geocodeMap);
+          if (coords) break;
+        }
+      }
+
+      if (!coords && rawStreet) {
+        const streetVariants = prepareAddressVariants(rawStreet);
+        for (const stVariant of streetVariants) {
+          coords = await deduplicatedGeocode(stVariant, geocodeMap);
+          if (coords) break;
+        }
+      }
+
+      if (coords) {
+        if (!geocodeMap[cacheKey]) {
+          geocodeMap[cacheKey] = coords;
+          unpersistedCount++;
+        }
+      }
+
+      const seedFallback = 
+        (postalCode ? seedMap.get(postalCode) : null) ||
+        seedMap.get(cleanDisplayAddress.toLowerCase());
+
+      const finalLatitude = coords?.latitude ?? seedFallback?.latitude ?? 1.3521;
+      const finalLongitude = coords?.longitude ?? seedFallback?.longitude ?? 103.8198;
+      const isFallback = !coords;
+
+      if (unpersistedCount >= 20) {
+        unpersistedCount = 0;
+        AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap)).catch(() => {});
+      }
+
+      completedCount++;
+      broadcastProgress(completedCount / totalRecords);
+
+      if (completedCount % 5 === 0 || completedCount === totalRecords) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
+
+      return {
+        id: item._id ? `scdf_${item._id}` : `scdf_live_${i}`,
+        name: formattedName,
+        address: cleanDisplayAddress,
+        type: item.DESCRIPTION || item.SHELTER_TYPE || 'Civil Defence Shelter',
+        latitude: finalLatitude,
+        longitude: finalLongitude,
+        postalCode,
+        isGeocodeFallback: isFallback,
+      };
+    });
+
+    await AsyncStorage.setItem(GEOCODE_LOOKUP_KEY, JSON.stringify(geocodeMap));
+    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(liveShelters));
+    await AsyncStorage.setItem(LAST_SYNC_KEY, now.toString());
+
+    return liveShelters;
   } catch (err) {
-    console.warn('Error evaluating shelter cache:', err);
+    console.warn('Background shelter sync error:', err);
+    throw err;
   }
-
-  broadcastProgress(1);
-  return seedShelters as SCDFShelter[];
 }
 
 export const shelterService = {
@@ -392,7 +373,11 @@ export const shelterService = {
     }
   },
 
-  loadShelters: (
+  /**
+   * Reads instantly from cached AsyncStorage data or bundled sg_shelters.json (0ms lag),
+   * and asynchronously triggers a background fetch if data is stale or forced.
+   */
+  loadShelters: async (
     forceRefresh: boolean = false,
     onProgress?: (progress: number) => void
   ): Promise<SCDFShelter[]> => {
@@ -400,15 +385,41 @@ export const shelterService = {
       progressListeners.add(onProgress);
     }
 
-    if (activeLoadPromise) {
-      return activeLoadPromise;
+    const now = Date.now();
+    let immediateShelters: SCDFShelter[] = seedShelters as SCDFShelter[];
+    let isStale = false;
+
+    try {
+      const [cachedData, lastSyncStr] = await Promise.all([
+        AsyncStorage.getItem(CACHE_KEY),
+        AsyncStorage.getItem(LAST_SYNC_KEY),
+      ]);
+
+      if (cachedData) {
+        immediateShelters = JSON.parse(cachedData);
+      }
+
+      const lastSyncTime = lastSyncStr ? parseInt(lastSyncStr, 10) : 0;
+      if (now - lastSyncTime > CACHE_EXPIRY_MS) {
+        isStale = true;
+      }
+    } catch (err) {
+      console.warn('Error reading shelter cache, using bundled static JSON:', err);
+      immediateShelters = seedShelters as SCDFShelter[];
     }
 
-    activeLoadPromise = performLoadShelters(forceRefresh).finally(() => {
-      activeLoadPromise = null;
-    });
+    // Trigger background sync if forced or stale, without blocking immediate returns
+    if (forceRefresh || isStale) {
+      if (!activeSyncPromise) {
+        activeSyncPromise = syncFromApiInBackground().finally(() => {
+          activeSyncPromise = null;
+        });
+      }
+    } else {
+      broadcastProgress(1);
+    }
 
-    return activeLoadPromise;
+    return immediateShelters;
   },
 
   getNearbyShelters: async (

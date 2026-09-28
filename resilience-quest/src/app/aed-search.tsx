@@ -38,6 +38,7 @@ export default function AEDSearchScreen() {
 
     async function initializeData() {
       setLoading(true);
+
       let coords: { latitude: number; longitude: number } | null = null;
 
       try {
@@ -57,7 +58,7 @@ export default function AEDSearchScreen() {
       }
 
       // Fetch full AED registry sorted by distance from user (or central SG if null)
-      const data = await aedService.getNearbyAEDs(coords, 100);
+      const data = await aedService.getNearbyAEDs(coords);
       if (isMounted) {
         setAedList(data);
         setLoading(false);
