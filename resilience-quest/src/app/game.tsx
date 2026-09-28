@@ -5,14 +5,14 @@ import { useApp } from '@/context/AppContext';
 import { useRouter } from 'expo-router';
 
 export default function GameScreen() {
-  const { addXp, xp, isCrisisMode } = useApp();
+  const { addXp, xp, isEmergencyActive } = useApp();
   const router = useRouter();
 
   const handleXPGranted = (xpAmount: number) => {
     addXp(xpAmount);
   };
 
-  if (isCrisisMode) {
+  if (isEmergencyActive) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.crisisContainer}>
