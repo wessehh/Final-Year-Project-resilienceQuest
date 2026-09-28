@@ -237,7 +237,7 @@ export const AreaRiskCard: React.FC = () => {
       </View>
 
       {/* Offline Grid Visual Representation (radar simulation) */}
-      <View style={styles.radarContainer}>
+      {/* <View style={styles.radarContainer}>
         <View style={styles.radarGridBackground}>
           <View style={styles.radarCrosshairH} />
           <View style={styles.radarCrosshairV} />
@@ -249,7 +249,7 @@ export const AreaRiskCard: React.FC = () => {
               : 'Scanning...'}
           </Text>
         </View>
-      </View>
+      </View> */}
 
       {/* List of Nearby Cached Hazard Vectors */}
       <Text style={styles.listHeaderTitle}>Nearby Offline Hazard Zones:</Text>

@@ -57,7 +57,7 @@ PARSED_BUNDLED_AEDS.forEach((aed) => {
 export const aedService = {
   /**
    * Retrieves active dataset from local AsyncStorage cache or bundled seed fallback.
-   * Auto-triggers remote sync if cache is older than 90 days (quarterly).
+   * Auto-triggers remote sync if cache is older than 90 days (quarterly) or if forceSync is true.
    */
   async fetchAllAEDs(forceSync: boolean = false): Promise<AEDLocation[]> {
     try {
@@ -67,7 +67,13 @@ export const aedService = {
       const lastSync = lastSyncStr ? parseInt(lastSyncStr, 10) : 0;
       const isStale = Date.now() - lastSync > QUARTER_IN_MS;
 
-      if (forceSync || isStale) {
+      // If forceSync is explicitly requested, await the sync directly so fresh data is returned
+      if (forceSync) {
+        return await this.syncWithRemote();
+      }
+
+      // Trigger background sync if data is stale
+      if (isStale) {
         this.syncWithRemote().catch(() => {});
       }
 
@@ -164,7 +170,7 @@ export const aedService = {
   },
 
   /**
-   * Clears corrupted AsyncStorage cache (useful for testing)
+   * Clears local AED AsyncStorage cache keys
    */
   async clearCache(): Promise<void> {
     await AsyncStorage.removeItem(CACHE_KEY_AEDS);

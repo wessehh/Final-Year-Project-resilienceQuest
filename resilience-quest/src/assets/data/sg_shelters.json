@@ -54,108 +54,108 @@
     "name": "Tampines West CC",
     "address": "10 Tampines Street 81",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.348031395258908,
-    "longitude": 103.9355665669229,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "529014",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_7",
     "name": "Tampines East CC",
     "address": "10 Tampines Street 23",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.35335683374898,
+    "longitude": 103.9546204577829,
     "postalCode": "529341",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_8",
     "name": "Punggol CC",
     "address": "3 Hougang Ave 6",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.374369988219469,
-    "longitude": 103.8919119303212,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "538808",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_9",
     "name": "Teck Ghee CC",
     "address": "861 Ang Mo Kio Ave 10",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.363106005257572,
+    "longitude": 103.8535605086277,
     "postalCode": "569734",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_10",
     "name": "Ang Mo Kio CC",
     "address": "795 Ang Mo Kio Ave 1",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.366861255273488,
-    "longitude": 103.8406851914611,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "569976",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_11",
     "name": "Bishan CC",
     "address": "51 Bishan Street 13",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.349478346230655,
+    "longitude": 103.8507462048994,
     "postalCode": "579799",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_12",
     "name": "Nanyang CC",
     "address": "60 Jurong West Street 91",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.342428289441089,
-    "longitude": 103.6924351631345,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "649040",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_13",
     "name": "Jurong Green CC",
     "address": "6 Jurong West Ave 1",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.350547171512804,
+    "longitude": 103.7253976807254,
     "postalCode": "649520",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_14",
     "name": "Hong Kah North CC",
     "address": "30 Bukit Batok Street 31",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.359033397249325,
-    "longitude": 103.7494868198429,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "659440",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_15",
     "name": "Bukit Batok CC",
     "address": "21 Bukit Batok Central",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.350038268994882,
+    "longitude": 103.7475708620135,
     "postalCode": "659959",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_16",
     "name": "Zheng Hua CC",
     "address": "1 Segar Road",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.386889001359788,
-    "longitude": 103.7717195852274,
+    "latitude": 1.386776581332976,
+    "longitude": 103.7715753922954,
     "postalCode": "677738",
     "isGeocodeFallback": false
   },
@@ -174,20 +174,20 @@
     "name": "Choa Chu Kang CC",
     "address": "35 Teck Whye Ave",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.381155291170583,
-    "longitude": 103.751903879838,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "688892",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_19",
     "name": "Nee Soon East CC",
     "address": "1 Yishun Ave 9",
     "type": "Civil Defence Public Shelter (Community Club/Centre)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.430771055149032,
+    "longitude": 103.8385982235699,
     "postalCode": "768893",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_20",
@@ -214,20 +214,20 @@
     "name": "HDB Shelter - Blk 82 Stratmore Ave",
     "address": "Blk 82 Stratmore Ave",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.294545258795082,
-    "longitude": 103.8087510736057,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "141082",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_23",
     "name": "HDB Shelter - Blk 35 Jalan Rumah Tinggi",
     "address": "Blk 35 Jalan Rumah Tinggi",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.287965957091092,
+    "longitude": 103.8089558484682,
     "postalCode": "150035",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_24",
@@ -244,10 +244,10 @@
     "name": "HDB Shelter - Blk 82 Redhill Lane",
     "address": "Blk 82 Redhill Lane",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.287415991089298,
-    "longitude": 103.8194747709198,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "150082",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_26",
@@ -264,10 +264,10 @@
     "name": "HDB Shelter - Blk 123 Kim Tian Road",
     "address": "Blk 123 Kim Tian Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.283851579478432,
+    "longitude": 103.8289647025335,
     "postalCode": "160123",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_28",
@@ -284,10 +284,10 @@
     "name": "HDB Shelter - Blk 30A Holland Close",
     "address": "Blk 30A Holland Close",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.307469052854102,
-    "longitude": 103.7971867182403,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "271030",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_30",
@@ -304,10 +304,10 @@
     "name": "HDB Shelter - Blk 43 Toa Payoh Lor 5",
     "address": "Blk 43 Toa Payoh Lor 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.335906923454508,
+    "longitude": 103.8543145963817,
     "postalCode": "310043",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_32",
@@ -324,10 +324,10 @@
     "name": "HDB Shelter - Blk 86 Toa Payoh Lor 2",
     "address": "Blk 86 Toa Payoh Lor 2",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.335762248328456,
-    "longitude": 103.8476311107911,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "310086",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_34",
@@ -344,10 +344,10 @@
     "name": "HDB Shelter - Blk 172A Toa Payoh Lor 1",
     "address": "Blk 172A Toa Payoh Lor 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.330277548069321,
+    "longitude": 103.842448857691,
     "postalCode": "311172",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_36",
@@ -364,10 +364,10 @@
     "name": "HDB Shelter - Blk 115 Whampoa Road",
     "address": "Blk 115 Whampoa Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.326262709345345,
-    "longitude": 103.8573413149532,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "320115",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_38",
@@ -384,10 +384,10 @@
     "name": "HDB Shelter - Blk 6 Boon Keng Road",
     "address": "Blk 6 Boon Keng Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.317088035046195,
+    "longitude": 103.8608966880045,
     "postalCode": "330006",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_40",
@@ -404,10 +404,10 @@
     "name": "HDB Shelter - Blk 55 Pipit Road",
     "address": "Blk 55 Pipit Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.323738755932097,
-    "longitude": 103.8883784215907,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "370055",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_42",
@@ -424,10 +424,10 @@
     "name": "HDB Shelter - Blk 651 Jalan Tenaga",
     "address": "Blk 651 Jalan Tenaga",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.332192432112507,
+    "longitude": 103.9073635284381,
     "postalCode": "410651",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_44",
@@ -444,10 +444,10 @@
     "name": "HDB Shelter - Blk 660 Jalan Tenaga",
     "address": "Blk 660 Jalan Tenaga",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.334393302459962,
-    "longitude": 103.9067417998578,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "410660",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_46",
@@ -464,10 +464,10 @@
     "name": "HDB Shelter - Blk 671 Jalan Damai",
     "address": "Blk 671 Jalan Damai",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.332453427099814,
+    "longitude": 103.9088722130274,
     "postalCode": "410671",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_48",
@@ -494,10 +494,10 @@
     "name": "HDB Shelter - Blk 136 Pasir Ris Street 11",
     "address": "Blk 136 Pasir Ris Street 11",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.364689131882346,
+    "longitude": 103.9579505931347,
     "postalCode": "510136",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_51",
@@ -534,10 +534,10 @@
     "name": "HDB Shelter - Blk 185 Pasir Ris St 11",
     "address": "Blk 185 Pasir Ris St 11",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.365613501049949,
+    "longitude": 103.9600440814902,
     "postalCode": "510185",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_55",
@@ -564,20 +564,20 @@
     "name": "HDB Shelter - Blk 207 Pasir Ris St 21",
     "address": "Blk 207 Pasir Ris St 21",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.366303329425134,
-    "longitude": 103.9622877614086,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510207",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_58",
     "name": "HDB Shelter - Blk 212 Pasir Ris St 21",
     "address": "Blk 212 Pasir Ris St 21",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.367778552395317,
+    "longitude": 103.9607656971682,
     "postalCode": "510212",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_59",
@@ -594,30 +594,30 @@
     "name": "HDB Shelter - Blk 221 Pasir Ris St 21",
     "address": "Blk 221 Pasir Ris St 21",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.370194735344646,
+    "longitude": 103.9616146666124,
     "postalCode": "510221",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_61",
     "name": "HDB Shelter - Blk 226 Pasir Ris St 21",
     "address": "Blk 226 Pasir Ris St 21",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.371012120626376,
-    "longitude": 103.9617258726466,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510226",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_62",
     "name": "HDB Shelter - Blk 230 Pasir Ris St 21",
     "address": "Blk 230 Pasir Ris St 21",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.372561563639684,
+    "longitude": 103.9609986848572,
     "postalCode": "510230",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_63",
@@ -704,40 +704,40 @@
     "name": "HDB Shelter - Blk 453 Pasir Ris Dr 6",
     "address": "Blk 453 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.371847278483878,
-    "longitude": 103.9573732963152,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510453",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_72",
     "name": "HDB Shelter - Blk 454 Pasir Ris Dr 6",
     "address": "Blk 454 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.37200972461679,
-    "longitude": 103.9580892634003,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510454",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_73",
     "name": "HDB Shelter - Blk 472 Pasir Ris Dr 6",
     "address": "Blk 472 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.37416575605544,
+    "longitude": 103.9572699052369,
     "postalCode": "510472",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_74",
     "name": "HDB Shelter - Blk 473 Pasir Ris Dr 6",
     "address": "Blk 473 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.374495021193445,
-    "longitude": 103.9573625302495,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510473",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_75",
@@ -764,20 +764,20 @@
     "name": "HDB Shelter - Blk 476 Pasir Ris Dr 6",
     "address": "Blk 476 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.375197837859368,
+    "longitude": 103.9583430601195,
     "postalCode": "510476",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_78",
     "name": "HDB Shelter - Blk 477 Pasir Ris Dr 6",
     "address": "Blk 477 Pasir Ris Dr 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.374475956034679,
-    "longitude": 103.9584418238406,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510477",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_79",
@@ -804,20 +804,20 @@
     "name": "HDB Shelter - Blk 506 Pasir Ris St 52",
     "address": "Blk 506 Pasir Ris St 52",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.376987940945691,
+    "longitude": 103.9448462215138,
     "postalCode": "510506",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_82",
     "name": "HDB Shelter - Blk 515 Pasir Ris St 52",
     "address": "Blk 515 Pasir Ris St 52",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.374144156445486,
-    "longitude": 103.942957213353,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510515",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_83",
@@ -834,10 +834,10 @@
     "name": "HDB Shelter - Blk 560 Pasir Ris St 51",
     "address": "Blk 560 Pasir Ris St 51",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.366764133732622,
+    "longitude": 103.9504228113278,
     "postalCode": "510560",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_85",
@@ -854,10 +854,10 @@
     "name": "HDB Shelter - Blk 570 Pasir Ris St 53",
     "address": "Blk 570 Pasir Ris St 53",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.372769056225075,
-    "longitude": 103.946510452269,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510570",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_87",
@@ -874,10 +874,10 @@
     "name": "HDB Shelter - Blk 585 Pasir Ris St 53",
     "address": "Blk 585 Pasir Ris St 53",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.375350847007753,
+    "longitude": 103.9473765634927,
     "postalCode": "510585",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_89",
@@ -894,10 +894,10 @@
     "name": "HDB Shelter - Blk 614 Elias Road",
     "address": "Blk 614 Elias Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.375690256473436,
-    "longitude": 103.9415941462067,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510614",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_91",
@@ -914,10 +914,10 @@
     "name": "HDB Shelter - Blk 626 Pasir Ris Dr 3",
     "address": "Blk 626 Pasir Ris Dr 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.379800854741727,
+    "longitude": 103.9409187573915,
     "postalCode": "510626",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_93",
@@ -934,10 +934,10 @@
     "name": "HDB Shelter - Blk 634 Pasir Ris Dr 1",
     "address": "Blk 634 Pasir Ris Dr 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.377579268602453,
-    "longitude": 103.9406595852001,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510634",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_95",
@@ -954,10 +954,10 @@
     "name": "HDB Shelter - Blk 644 Pasir Ris Dr 10",
     "address": "Blk 644 Pasir Ris Dr 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.378048652666805,
+    "longitude": 103.937574532149,
     "postalCode": "510644",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_97",
@@ -974,10 +974,10 @@
     "name": "HDB Shelter - Blk 716 Pasir Ris St 72",
     "address": "Blk 716 Pasir Ris St 72",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.38310038084332,
-    "longitude": 103.9367967678087,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510716",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_99",
@@ -994,10 +994,10 @@
     "name": "HDB Shelter - Blk 739 Pasir Ris Dr 10",
     "address": "Blk 739 Pasir Ris Dr 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.37850572542888,
+    "longitude": 103.9367961943678,
     "postalCode": "510739",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_101",
@@ -1014,10 +1014,10 @@
     "name": "HDB Shelter - Blk 750 Pasir Ris St 71",
     "address": "Blk 750 Pasir Ris St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378208601476709,
-    "longitude": 103.9346460867382,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510750",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_103",
@@ -1034,10 +1034,10 @@
     "name": "HDB Shelter - Blk 760 Pasir Ris St 71",
     "address": "Blk 760 Pasir Ris St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.376400202642964,
+    "longitude": 103.9335397888945,
     "postalCode": "510760",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_105",
@@ -1054,10 +1054,10 @@
     "name": "HDB Shelter - Blk 775 Pasir Ris St 71",
     "address": "Blk 775 Pasir Ris St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.374091376267882,
-    "longitude": 103.9371340127691,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "510775",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_107",
@@ -1074,10 +1074,10 @@
     "name": "HDB Shelter - Blk 243 Simei Street 5",
     "address": "Blk 243 Simei Street 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.343959280330435,
+    "longitude": 103.9551681980659,
     "postalCode": "520243",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_109",
@@ -1104,10 +1104,10 @@
     "name": "HDB Shelter - Blk 313 Tampines St 33",
     "address": "Blk 313 Tampines St 33",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.352217047755365,
+    "longitude": 103.9568040599815,
     "postalCode": "520313",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_112",
@@ -1124,20 +1124,20 @@
     "name": "HDB Shelter - Blk 328 Tampines St 32",
     "address": "Blk 328 Tampines St 32",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.353166175345287,
+    "longitude": 103.9582875190334,
     "postalCode": "520328",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_114",
     "name": "HDB Shelter - Blk 333 Tampines St 32",
     "address": "Blk 333 Tampines St 32",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.353357194611449,
-    "longitude": 103.9611297437736,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "520333",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_115",
@@ -1164,20 +1164,20 @@
     "name": "HDB Shelter - Blk 345 Tampines St 33",
     "address": "Blk 345 Tampines St 33",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.351918779858811,
+    "longitude": 103.9622668615752,
     "postalCode": "520345",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_118",
     "name": "HDB Shelter - Blk 349 Tampines St 33",
     "address": "Blk 349 Tampines St 33",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.35341689800133,
-    "longitude": 103.9630117553522,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "520349",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_119",
@@ -1204,20 +1204,20 @@
     "name": "HDB Shelter - Blk 361 Tampines St 34",
     "address": "Blk 361 Tampines St 34",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.356044163622365,
+    "longitude": 103.9625760384768,
     "postalCode": "520361",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_122",
     "name": "HDB Shelter - Blk 364 Tampines St 34",
     "address": "Blk 364 Tampines St 34",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.356938009521423,
-    "longitude": 103.9598734982921,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "520364",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_123",
@@ -1264,10 +1264,10 @@
     "name": "HDB Shelter - Blk 487A Tampines Ave 9",
     "address": "Blk 487A Tampines Ave 9",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.35955070322444,
-    "longitude": 103.9578141022532,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "520487",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_128",
@@ -1284,20 +1284,20 @@
     "name": "HDB Shelter - Blk 493D/493E Tampines St 43",
     "address": "Blk 493D/493E Tampines St 43",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.362558830623949,
+    "longitude": 103.9524631230814,
     "postalCode": "520493",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_130",
     "name": "HDB Shelter - Blk 494B Tampines Ave 9",
     "address": "Blk 494B Tampines Ave 9",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.363008289405472,
-    "longitude": 103.9527048975022,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "520494",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_131",
@@ -1324,8 +1324,8 @@
     "name": "HDB Shelter - Blk 702 Tampines St 71",
     "address": "Blk 702 Tampines St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.356172537137512,
-    "longitude": 103.9374799230018,
+    "latitude": 1.356163987045717,
+    "longitude": 103.937481306728,
     "postalCode": "520702",
     "isGeocodeFallback": false
   },
@@ -1434,20 +1434,20 @@
     "name": "HDB Shelter - Blk 487B Tampines St 45",
     "address": "Blk 487B Tampines St 45",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.360265248826736,
-    "longitude": 103.9583723501878,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "521487",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_145",
     "name": "HDB Shelter - Blk 488B Tampines St 45",
     "address": "Blk 488B Tampines St 45",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.360329216933668,
+    "longitude": 103.9569805724074,
     "postalCode": "521488",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_146",
@@ -1704,30 +1704,30 @@
     "name": "HDB Shelter - Blk 440 Hougang Ave 8",
     "address": "Blk 440 Hougang Ave 8",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.37913196653043,
-    "longitude": 103.8935307694602,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530440",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_172",
     "name": "HDB Shelter - Blk 444 Hougang Ave 8",
     "address": "Blk 444 Hougang Ave 8",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.379488751698946,
+    "longitude": 103.8938485346478,
     "postalCode": "530444",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_173",
     "name": "HDB Shelter - Blk 444 Hougang Ave 8",
     "address": "Blk 444 Hougang Ave 8",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.379488751698946,
+    "longitude": 103.8938485346478,
     "postalCode": "530444",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_174",
@@ -1744,10 +1744,10 @@
     "name": "HDB Shelter - Blk 446 Hougang Ave 8",
     "address": "Blk 446 Hougang Ave 8",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378804587622338,
-    "longitude": 103.8942838044826,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530446",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_176",
@@ -1764,10 +1764,10 @@
     "name": "HDB Shelter - Blk 448 Hougang Ave 10",
     "address": "Blk 448 Hougang Ave 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.379115140560995,
+    "longitude": 103.8951191253208,
     "postalCode": "530448",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_178",
@@ -1784,30 +1784,30 @@
     "name": "HDB Shelter - Blk 450 Hougang Ave 10",
     "address": "Blk 450 Hougang Ave 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.379102594395624,
-    "longitude": 103.8956683785837,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530450",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_180",
     "name": "HDB Shelter - Blk 451 Hougang Ave 10",
     "address": "Blk 451 Hougang Ave 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.378836782499113,
+    "longitude": 103.8959162090806,
     "postalCode": "530451",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_181",
     "name": "HDB Shelter - Blk 452 Hougang Ave 10",
     "address": "Blk 452 Hougang Ave 10",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378491447691109,
-    "longitude": 103.8963079931598,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530452",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_182",
@@ -1834,20 +1834,20 @@
     "name": "HDB Shelter - Blk 534 Hougang St 52",
     "address": "Blk 534 Hougang St 52",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.377154446778355,
+    "longitude": 103.8904913119177,
     "postalCode": "530534",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_185",
     "name": "HDB Shelter - Blk 535 Hougang Street 52",
     "address": "Blk 535 Hougang Street 52",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.376441744706763,
-    "longitude": 103.8901337748519,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530535",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_186",
@@ -1934,10 +1934,10 @@
     "name": "HDB Shelter - Blk 570 Hougang St 51",
     "address": "Blk 570 Hougang St 51",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.377965041609462,
-    "longitude": 103.8882199831311,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530570",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_195",
@@ -1954,20 +1954,20 @@
     "name": "HDB Shelter - Blk 580 Hougang Ave 4",
     "address": "Blk 580 Hougang Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.378952246152391,
+    "longitude": 103.8867769998542,
     "postalCode": "530580",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_197",
     "name": "HDB Shelter - Blk 836 Hougang Central",
     "address": "Blk 836 Hougang Central",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.370083449711094,
-    "longitude": 103.8907953347619,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530836",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_198",
@@ -1984,20 +1984,20 @@
     "name": "HDB Shelter - Blk 911 Hougang St 91",
     "address": "Blk 911 Hougang St 91",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378937488784993,
-    "longitude": 103.8838570810137,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530911",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_200",
     "name": "HDB Shelter - Blk 915 Hougang St 91",
     "address": "Blk 915 Hougang St 91",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.377521837491769,
+    "longitude": 103.8838132760168,
     "postalCode": "530915",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_201",
@@ -2014,20 +2014,20 @@
     "name": "HDB Shelter - Blk 919 Hougang Ave 9",
     "address": "Blk 919 Hougang Ave 9",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.375998643589893,
+    "longitude": 103.8841214076109,
     "postalCode": "530919",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_203",
     "name": "HDB Shelter - Blk 925 Hougang Ave 9",
     "address": "Blk 925 Hougang Ave 9",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.376705846051377,
-    "longitude": 103.8824972364236,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "530925",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_204",
@@ -2054,30 +2054,30 @@
     "name": "HDB Shelter - Blk 512 Serangoon North Ave 4",
     "address": "Blk 512 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.371512357819688,
+    "longitude": 103.8752466436285,
     "postalCode": "550512",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_207",
     "name": "HDB Shelter - Blk 517 Serangoon North Ave 4",
     "address": "Blk 517 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.371323427660869,
-    "longitude": 103.8740856352666,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "550517",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_208",
     "name": "HDB Shelter - Blk 518 Serangoon North Ave 4",
     "address": "Blk 518 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.37164118155194,
+    "longitude": 103.8741031240125,
     "postalCode": "550518",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_209",
@@ -2094,8 +2094,8 @@
     "name": "HDB Shelter - Blk 524 Serangoon North Ave 4",
     "address": "Blk 524 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.372695078661039,
-    "longitude": 103.872856788426,
+    "latitude": 1.373012466825533,
+    "longitude": 103.8728760484213,
     "postalCode": "550523",
     "isGeocodeFallback": false
   },
@@ -2114,20 +2114,20 @@
     "name": "HDB Shelter - Blk 534 Serangoon North Ave 4",
     "address": "Blk 534 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.374218461690941,
+    "longitude": 103.8745788985367,
     "postalCode": "550534",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_213",
     "name": "HDB Shelter - Blk 540 Serangoon North Ave 4",
     "address": "Blk 540 Serangoon North Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.374618930857306,
-    "longitude": 103.8725735206377,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "550540",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_214",
@@ -2144,10 +2144,10 @@
     "name": "HDB Shelter - Blk 546 Serangoon North Ave 3",
     "address": "Blk 546 Serangoon North Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.374825233131285,
+    "longitude": 103.870146844732,
     "postalCode": "550546",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_216",
@@ -2164,10 +2164,10 @@
     "name": "HDB Shelter - Blk 554 Serangoon North Ave 3",
     "address": "Blk 554 Serangoon North Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.371967208492018,
-    "longitude": 103.8703901275672,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "550554",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_218",
@@ -2184,10 +2184,10 @@
     "name": "HDB Shelter - Blk 619 Ang Mo Kio Ave 4",
     "address": "Blk 619 Ang Mo Kio Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378588076851214,
-    "longitude": 103.8386396990648,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "560619",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_220",
@@ -2204,20 +2204,20 @@
     "name": "HDB Shelter - Blk 213 Bishan St 23",
     "address": "Blk 213 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.357178221245027,
+    "longitude": 103.8481529690315,
     "postalCode": "570213",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_222",
     "name": "HDB Shelter - Blk 214 Bishan St 23",
     "address": "Blk 214 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.357511896829854,
-    "longitude": 103.8483034158212,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570214",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_223",
@@ -2234,20 +2234,20 @@
     "name": "HDB Shelter - Blk 220 Bishan St 23",
     "address": "Blk 220 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.357476961033667,
+    "longitude": 103.8488361843597,
     "postalCode": "570220",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_225",
     "name": "HDB Shelter - Blk 221 Bishan St 23",
     "address": "Blk 221 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.357841204622222,
-    "longitude": 103.8489403680386,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570221",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_226",
@@ -2294,30 +2294,30 @@
     "name": "HDB Shelter - Blk 226 Bishan St 23",
     "address": "Blk 226 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.358546004728434,
-    "longitude": 103.8471273010003,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570226",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_231",
     "name": "HDB Shelter - Blk 227 Bishan St 23",
     "address": "Blk 227 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.358070546849953,
+    "longitude": 103.8471381167654,
     "postalCode": "570227",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_232",
     "name": "HDB Shelter - Blk 228 Bishan St 23",
     "address": "Blk 228 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.357949291317931,
+    "longitude": 103.8467676752567,
     "postalCode": "570228",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_233",
@@ -2334,18 +2334,18 @@
     "name": "HDB Shelter - Blk 230 Bishan St 23",
     "address": "Blk 230 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.357945799799487,
+    "longitude": 103.8454935933762,
     "postalCode": "570230",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_235",
     "name": "HDB Shelter - Blk 231 Bishan St 23",
     "address": "Blk 231 Bishan St 23",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.35729122280138,
-    "longitude": 103.8458456919147,
+    "latitude": 1.357291228549776,
+    "longitude": 103.8458456905549,
     "postalCode": "570231",
     "isGeocodeFallback": false
   },
@@ -2354,70 +2354,70 @@
     "name": "HDB Shelter - Blk 232 Bishan St 22",
     "address": "Blk 232 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.358245181917131,
+    "longitude": 103.845504295296,
     "postalCode": "570232",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_237",
     "name": "HDB Shelter - Blk 233 Bishan St 22",
     "address": "Blk 233 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.358576004594132,
-    "longitude": 103.8455927066188,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570233",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_238",
     "name": "HDB Shelter - Blk 234 Bishan St 22",
     "address": "Blk 234 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.358370577807194,
+    "longitude": 103.8460913554628,
     "postalCode": "570234",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_239",
     "name": "HDB Shelter - Blk 235 Bishan St 22",
     "address": "Blk 235 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.35847822127518,
-    "longitude": 103.8464080111342,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570235",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_240",
     "name": "HDB Shelter - Blk 236 Bishan St 22",
     "address": "Blk 236 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.359004909239442,
+    "longitude": 103.8470065750581,
     "postalCode": "570236",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_241",
     "name": "HDB Shelter - Blk 237 Bishan St 22",
     "address": "Blk 237 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.359419968443921,
-    "longitude": 103.8471503386835,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570237",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_242",
     "name": "HDB Shelter - Blk 238 Bishan St 22",
     "address": "Blk 238 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.35976080279005,
+    "longitude": 103.8446426401524,
     "postalCode": "570238",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_243",
@@ -2444,20 +2444,20 @@
     "name": "HDB Shelter - Blk 242 Bishan St 22",
     "address": "Blk 242 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.361341728519438,
-    "longitude": 103.8448747365511,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570242",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_246",
     "name": "HDB Shelter - Blk 243 Bishan St 22",
     "address": "Blk 243 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.361084979743003,
+    "longitude": 103.8446356461446,
     "postalCode": "570243",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_247",
@@ -2484,20 +2484,20 @@
     "name": "HDB Shelter - Blk 248 Bishan St 22",
     "address": "Blk 248 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.361397156438707,
-    "longitude": 103.8432812588246,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570248",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_250",
     "name": "HDB Shelter - Blk 249 Bishan St 22",
     "address": "Blk 249 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.361240910922445,
+    "longitude": 103.8437725897244,
     "postalCode": "570249",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_251",
@@ -2514,20 +2514,20 @@
     "name": "HDB Shelter - Blk 251 Bishan St 22",
     "address": "Blk 251 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.361910207049122,
+    "longitude": 103.8441706082736,
     "postalCode": "570251",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_253",
     "name": "HDB Shelter - Blk 253 Bishan St 22",
     "address": "Blk 253 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.362243147159911,
-    "longitude": 103.843102386534,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570253",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_254",
@@ -2564,10 +2564,10 @@
     "name": "HDB Shelter - Blk 257 Bishan St 22",
     "address": "Blk 257 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.359716873514467,
-    "longitude": 103.8431031052701,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570257",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_258",
@@ -2594,10 +2594,10 @@
     "name": "HDB Shelter - Blk 261 Bishan St 22",
     "address": "Blk 261 Bishan St 22",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.358986893322188,
-    "longitude": 103.8433244183763,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570261",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_261",
@@ -2634,10 +2634,10 @@
     "name": "HDB Shelter - Blk 269 Bishan St 24",
     "address": "Blk 269 Bishan St 24",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.356888656387221,
-    "longitude": 103.8426738764237,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570269",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_265",
@@ -2664,10 +2664,10 @@
     "name": "HDB Shelter - Blk 272 Bishan St 24",
     "address": "Blk 272 Bishan St 24",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.35629489446384,
-    "longitude": 103.8428225961268,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "570272",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_268",
@@ -2724,10 +2724,10 @@
     "name": "HDB Shelter - Blk 154 Yung Ho Road",
     "address": "Blk 154 Yung Ho Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.327124395872253,
-    "longitude": 103.7217816998424,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "610154",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_274",
@@ -2784,10 +2784,10 @@
     "name": "HDB Shelter - Blk 347 Kang Ching Road",
     "address": "Blk 347 Kang Ching Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.340500410442772,
-    "longitude": 103.720200006739,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "610347",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_280",
@@ -2824,10 +2824,10 @@
     "name": "HDB Shelter - Blk 362 Yung An Road",
     "address": "Blk 362 Yung An Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.336161552921267,
-    "longitude": 103.7197833964861,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "610362",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_284",
@@ -2864,10 +2864,10 @@
     "name": "HDB Shelter - Blk 690 Jurong West Central 1",
     "address": "Blk 690 Jurong West Central 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.341186885498542,
-    "longitude": 103.7067100113443,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640690",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_288",
@@ -2894,20 +2894,20 @@
     "name": "HDB Shelter - Blk 694 Jurong West Central 1",
     "address": "Blk 694 Jurong West Central 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.343121023492059,
+    "longitude": 103.7070519602013,
     "postalCode": "640694",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_291",
     "name": "HDB Shelter - Blk 705 Jurong West St 71",
     "address": "Blk 705 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.340912429457731,
-    "longitude": 103.6946509903976,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640705",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_292",
@@ -2924,10 +2924,10 @@
     "name": "HDB Shelter - Blk 711 Jurong West St 71",
     "address": "Blk 711 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343040858723352,
-    "longitude": 103.6956408161683,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640711",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_294",
@@ -2944,20 +2944,20 @@
     "name": "HDB Shelter - Blk 714 Jurong West St 71",
     "address": "Blk 714 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.34312002434277,
-    "longitude": 103.6966749828321,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640714",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_296",
     "name": "HDB Shelter - Blk 715 Jurong West St 71",
     "address": "Blk 715 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343754882046574,
-    "longitude": 103.6964099888134,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640715",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_297",
@@ -2974,10 +2974,10 @@
     "name": "HDB Shelter - Blk 717 Jurong West St 71",
     "address": "Blk 717 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343034962977746,
-    "longitude": 103.6975008842722,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640717",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_299",
@@ -3014,10 +3014,10 @@
     "name": "HDB Shelter - Blk 722 Jurong West St 71",
     "address": "Blk 722 Jurong West St 71",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343669446532267,
-    "longitude": 103.6982983462428,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640722",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_303",
@@ -3044,10 +3044,10 @@
     "name": "HDB Shelter - Blk 725 Jurong West Ave 5",
     "address": "Blk 725 Jurong West Ave 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.345453047895081,
-    "longitude": 103.6977155352537,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640725",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_306",
@@ -3074,10 +3074,10 @@
     "name": "HDB Shelter - Blk 729 Jurong West Ave 5",
     "address": "Blk 729 Jurong West Ave 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.346412628785693,
-    "longitude": 103.6978393478886,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640729",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_309",
@@ -3114,10 +3114,10 @@
     "name": "HDB Shelter - Blk 735 Jurong West St 75",
     "address": "Blk 735 Jurong West St 75",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.346155209419801,
-    "longitude": 103.7011693694002,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640735",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_313",
@@ -3154,10 +3154,10 @@
     "name": "HDB Shelter - Blk 748 Jurong West St 73",
     "address": "Blk 748 Jurong West St 73",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.347753371007199,
-    "longitude": 103.6979687131425,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640748",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_317",
@@ -3194,10 +3194,10 @@
     "name": "HDB Shelter - Blk 810 Jurong West St 81",
     "address": "Blk 810 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.346886273438402,
-    "longitude": 103.6954713629081,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640810",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_321",
@@ -3224,10 +3224,10 @@
     "name": "HDB Shelter - Blk 813 Jurong West St 81",
     "address": "Blk 813 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.34598386230772,
-    "longitude": 103.6958294461894,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640813",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_324",
@@ -3264,10 +3264,10 @@
     "name": "HDB Shelter - Blk 821 Jurong West St 81",
     "address": "Blk 821 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.346998108407977,
-    "longitude": 103.6945287592801,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640821",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_328",
@@ -3304,10 +3304,10 @@
     "name": "HDB Shelter - Blk 835 Jurong West St 81",
     "address": "Blk 835 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343503823346967,
-    "longitude": 103.6937070457729,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640835",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_332",
@@ -3334,20 +3334,20 @@
     "name": "HDB Shelter - Blk 840 Jurong West St 81",
     "address": "Blk 840 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.344019655090372,
+    "longitude": 103.6922408918723,
     "postalCode": "640840",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_335",
     "name": "HDB Shelter - Blk 845 Jurong West St 81",
     "address": "Blk 845 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.344860533003804,
-    "longitude": 103.6916842345703,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640845",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_336",
@@ -3374,20 +3374,20 @@
     "name": "HDB Shelter - Blk 854 Jurong West St 81",
     "address": "Blk 854 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.347316252759176,
+    "longitude": 103.6960614433294,
     "postalCode": "640854",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_339",
     "name": "HDB Shelter - Blk 859 Jurong West St 81",
     "address": "Blk 859 Jurong West St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.349230323094781,
-    "longitude": 103.696100644272,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "640859",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_340",
@@ -3414,20 +3414,20 @@
     "name": "HDB Shelter - Blk 285 Bukit Batok East Ave 3",
     "address": "Blk 285 Bukit Batok East Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.346176069485829,
+    "longitude": 103.7578342130305,
     "postalCode": "650285",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_343",
     "name": "HDB Shelter - Blk 290D Bukit Batok East Ave 3",
     "address": "Blk 290D Bukit Batok East Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.344095801855613,
-    "longitude": 103.7572753066879,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "650290",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_344",
@@ -3444,20 +3444,20 @@
     "name": "HDB Shelter - Blk 291B Bukit Batok",
     "address": "Blk 291B Bukit Batok",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.343156999820977,
-    "longitude": 103.755862270481,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "651291",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_346",
     "name": "HDB Shelter - Blk 288C Bukit Batok St 25",
     "address": "Blk 288C Bukit Batok St 25",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.346064976588582,
+    "longitude": 103.7599684923625,
     "postalCode": "652288",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_347",
@@ -3484,10 +3484,10 @@
     "name": "HDB Shelter - Blk 436 Fajar Road",
     "address": "Blk 436 Fajar Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.382259136451622,
-    "longitude": 103.7702688561731,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "670436",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_350",
@@ -3524,10 +3524,10 @@
     "name": "HDB Shelter - Blk 442 Fajar Rd",
     "address": "Blk 442 Fajar Rd",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.382251153493107,
-    "longitude": 103.7712356661097,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "670442",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_354",
@@ -3544,40 +3544,40 @@
     "name": "HDB Shelter - Blk 453 Fajar Rd",
     "address": "Blk 453 Fajar Rd",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.385414239203983,
+    "longitude": 103.7716808329087,
     "postalCode": "670453",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_356",
     "name": "HDB Shelter - Blk 501 Jelapang Road",
     "address": "Blk 501 Jelapang Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.383114735819797,
-    "longitude": 103.7669898790327,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "670501",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_357",
     "name": "HDB Shelter - Blk 505 Jelapang Road",
     "address": "Blk 505 Jelapang Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.384542267306593,
-    "longitude": 103.7676839037148,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "670505",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_358",
     "name": "HDB Shelter - Blk 171A Gangsa Road",
     "address": "Blk 171A Gangsa Road",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.379210453050081,
-    "longitude": 103.7663733515103,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "671171",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_359",
@@ -3594,10 +3594,10 @@
     "name": "HDB Shelter - Blk 151 Jalan Teck Whye",
     "address": "Blk 151 Jalan Teck Whye",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.37841061448899,
-    "longitude": 103.757251128701,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680151",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_361",
@@ -3624,10 +3624,10 @@
     "name": "HDB Shelter - Blk 203 Choa Chu Kang Ave 1",
     "address": "Blk 203 Choa Chu Kang Ave 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.381337281748812,
-    "longitude": 103.7494496713732,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680203",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_364",
@@ -3664,10 +3664,10 @@
     "name": "HDB Shelter - Blk 210 Choa Chu Kang Central",
     "address": "Blk 210 Choa Chu Kang Central",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.382525506075948,
-    "longitude": 103.7479371286357,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680210",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_368",
@@ -3694,10 +3694,10 @@
     "name": "HDB Shelter - Blk 215 Choa Chu Kang Central",
     "address": "Blk 215 Choa Chu Kang Central",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.382893630721774,
-    "longitude": 103.7471209044915,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680215",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_371",
@@ -3724,10 +3724,10 @@
     "name": "HDB Shelter - Blk 219 Choa Chu Kang Central",
     "address": "Blk 219 Choa Chu Kang Central",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3825152479655,
-    "longitude": 103.7453668571176,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680219",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_374",
@@ -3784,20 +3784,20 @@
     "name": "HDB Shelter - Blk 237 Choa Chu Kang Central",
     "address": "Blk 237 Choa Chu Kang Central",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.379447502628119,
-    "longitude": 103.7482873952269,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680237",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_380",
     "name": "HDB Shelter - Blk 252 Choa Chu Kang Ave 2",
     "address": "Blk 252 Choa Chu Kang Ave 2",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378035394346832,
-    "longitude": 103.7450206925291,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680252",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_381",
@@ -3814,10 +3814,10 @@
     "name": "HDB Shelter - Blk 284 Choa Chu Kang Ave 3",
     "address": "Blk 284 Choa Chu Kang Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.379713803349144,
+    "longitude": 103.7421342267046,
     "postalCode": "680284",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_383",
@@ -3834,10 +3834,10 @@
     "name": "HDB Shelter - Blk 286 Choa Chu Kang Ave 3",
     "address": "Blk 286 Choa Chu Kang Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.379610450643458,
-    "longitude": 103.7415307263052,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680286",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_385",
@@ -3874,10 +3874,10 @@
     "name": "HDB Shelter - Blk 294 Choa Chu Kang Ave 3",
     "address": "Blk 294 Choa Chu Kang Ave 3",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.378599847346463,
-    "longitude": 103.74097440321,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680294",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_389",
@@ -3904,10 +3904,10 @@
     "name": "HDB Shelter - Blk 297C Choa Chu Kang Ave 2",
     "address": "Blk 297C Choa Chu Kang Ave 2",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.377807754263785,
-    "longitude": 103.7430671846796,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680297",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_392",
@@ -3934,20 +3934,20 @@
     "name": "HDB Shelter - Blk 447 Choa Chu Kang Ave 4",
     "address": "Blk 447 Choa Chu Kang Ave 4",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.380631539899961,
+    "longitude": 103.7375414209629,
     "postalCode": "680447",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_395",
     "name": "HDB Shelter - Blk 504 Choa Chu Kang St 51",
     "address": "Blk 504 Choa Chu Kang St 51",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.389166314797612,
-    "longitude": 103.7426761420118,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680504",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_396",
@@ -3974,20 +3974,20 @@
     "name": "HDB Shelter - Blk 517 Choa Chu Kang St 51",
     "address": "Blk 517 Choa Chu Kang St 51",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.391072228456598,
-    "longitude": 103.7428974000081,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680517",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_399",
     "name": "HDB Shelter - Blk 530 Choa Chu Kang St 51",
     "address": "Blk 530 Choa Chu Kang St 51",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.392680075027118,
+    "longitude": 103.7418392767764,
     "postalCode": "680530",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_400",
@@ -4014,10 +4014,10 @@
     "name": "HDB Shelter - Blk 549 Choa Chu Kang St 52",
     "address": "Blk 549 Choa Chu Kang St 52",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.393390171981235,
-    "longitude": 103.7427471082855,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680549",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_403",
@@ -4054,10 +4054,10 @@
     "name": "HDB Shelter - Blk 610 Choa Chu Kang St 62",
     "address": "Blk 610 Choa Chu Kang St 62",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.399424100733348,
-    "longitude": 103.7437862965762,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680610",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_407",
@@ -4084,20 +4084,20 @@
     "name": "HDB Shelter - Blk 626 Choa Chu Kang St 62",
     "address": "Blk 626 Choa Chu Kang St 62",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.398320828708753,
-    "longitude": 103.745878081637,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680626",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_410",
     "name": "HDB Shelter - Blk 639 Choa Chu Kang St 64",
     "address": "Blk 639 Choa Chu Kang St 64",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.397821953101781,
+    "longitude": 103.7489980324117,
     "postalCode": "680639",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_411",
@@ -4124,10 +4124,10 @@
     "name": "HDB Shelter - Blk 704 Choa Chu Kang St 53",
     "address": "Blk 704 Choa Chu Kang St 53",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.390458744287935,
-    "longitude": 103.7457194643558,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680704",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_414",
@@ -4144,10 +4144,10 @@
     "name": "HDB Shelter - Blk 753 Choa Chu Kang North 5",
     "address": "Blk 753 Choa Chu Kang North 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.392340906278617,
+    "longitude": 103.7469435947791,
     "postalCode": "680753",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_416",
@@ -4164,10 +4164,10 @@
     "name": "HDB Shelter - Blk 764 Choa Chu Kang North 5",
     "address": "Blk 764 Choa Chu Kang North 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.393181296607498,
-    "longitude": 103.7491349535301,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680764",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_418",
@@ -4184,10 +4184,10 @@
     "name": "HDB Shelter - Blk 785 Choa Chu Kang Drive",
     "address": "Blk 785 Choa Chu Kang Drive",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.394855245081225,
-    "longitude": 103.748044130582,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "680785",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_420",
@@ -4214,10 +4214,10 @@
     "name": "HDB Shelter - Blk 351 Woodlands Ave 1",
     "address": "Blk 351 Woodlands Ave 1",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.432506001392731,
-    "longitude": 103.7840615997017,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730351",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_423",
@@ -4234,10 +4234,10 @@
     "name": "HDB Shelter - Blk 363 Woodlands Ave 5",
     "address": "Blk 363 Woodlands Ave 5",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.433928320520405,
-    "longitude": 103.785927938556,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730363",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_425",
@@ -4274,10 +4274,10 @@
     "name": "HDB Shelter - Blk 418 Woodlands St 41",
     "address": "Blk 418 Woodlands St 41",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.42885742321272,
-    "longitude": 103.7748180140823,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730418",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_429",
@@ -4314,10 +4314,10 @@
     "name": "HDB Shelter - Blk 702 Woodlands Dr 40",
     "address": "Blk 702 Woodlands Dr 40",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.441865182421918,
-    "longitude": 103.7965137202473,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730702",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_433",
@@ -4354,10 +4354,10 @@
     "name": "HDB Shelter - Blk 718 Woodlands Ave 6",
     "address": "Blk 718 Woodlands Ave 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.441666211265711,
-    "longitude": 103.8012715450701,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730718",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_437",
@@ -4384,20 +4384,20 @@
     "name": "HDB Shelter - Blk 729 Woodlands Circle",
     "address": "Blk 729 Woodlands Circle",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.442590538111256,
+    "longitude": 103.7985807885646,
     "postalCode": "730729",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_440",
     "name": "HDB Shelter - Blk 738 Woodlands Circle",
     "address": "Blk 738 Woodlands Circle",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.444046577910887,
-    "longitude": 103.7974897259851,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730738",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_441",
@@ -4424,20 +4424,20 @@
     "name": "HDB Shelter - Blk 747 Woodlands Circle",
     "address": "Blk 747 Woodlands Circle",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.443172760544035,
+    "longitude": 103.7950082135234,
     "postalCode": "730747",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_444",
     "name": "HDB Shelter - Blk 749 Woodlands Circle",
     "address": "Blk 749 Woodlands Circle",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.444534551301335,
-    "longitude": 103.7944689794104,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730749",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_445",
@@ -4474,10 +4474,10 @@
     "name": "HDB Shelter - Blk 791 Woodlands Ave 6",
     "address": "Blk 791 Woodlands Ave 6",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.442748109980978,
-    "longitude": 103.8022384616469,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730791",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_449",
@@ -4514,10 +4514,10 @@
     "name": "HDB Shelter - Blk 827 Woodlands St 81",
     "address": "Blk 827 Woodlands St 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.439871577879678,
-    "longitude": 103.7893554796129,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730827",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_453",
@@ -4554,10 +4554,10 @@
     "name": "HDB Shelter - Blk 871 Woodlands Street 81",
     "address": "Blk 871 Woodlands Street 81",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.443858158198846,
-    "longitude": 103.7891870093148,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730871",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_457",
@@ -4594,10 +4594,10 @@
     "name": "HDB Shelter - Blk 897A Woodlands Dr 50",
     "address": "Blk 897A Woodlands Dr 50",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.436490988140627,
-    "longitude": 103.7939720718468,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "730897",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_461",
@@ -4624,20 +4624,20 @@
     "name": "HDB Shelter - Blk 895B Woodlands Dr 50",
     "address": "Blk 895B Woodlands Dr 50",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.436009439197061,
+    "longitude": 103.7895074929104,
     "postalCode": "731894",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_464",
     "name": "HDB Shelter - Blk 899C Woodlands Dr 50",
     "address": "Blk 899C Woodlands Dr 50",
     "type": "Civil Defence Public Shelter (HDB)",
-    "latitude": 1.436569855789079,
-    "longitude": 103.7952612663338,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "732899",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_465",
@@ -4654,10 +4654,10 @@
     "name": "Labrador Park MRT Station (Circle Line)",
     "address": "701 Telok Blangah Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.272368386269524,
-    "longitude": 103.8034162320884,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "109029",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_467",
@@ -4674,10 +4674,10 @@
     "name": "Buona Vista MRT Station (Circle Line)",
     "address": "150 North Buona Vista Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.306275348232579,
-    "longitude": 103.7903632001254,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "139350",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_469",
@@ -4694,10 +4694,10 @@
     "name": "City Hall MRT Station (North-South Line)",
     "address": "150 North Bridge Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.292989907009234,
-    "longitude": 103.8525426303387,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "179100",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_471",
@@ -4734,10 +4734,10 @@
     "name": "Newton MRT Station (North-South Line)",
     "address": "49 Scotts Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.312570317306047,
-    "longitude": 103.8380315552143,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "228234",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_475",
@@ -4754,10 +4754,10 @@
     "name": "Somerset MRT Station(North-South Line)",
     "address": "1 Somerset Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.300252877105424,
-    "longitude": 103.8391583368474,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "238162",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_477",
@@ -4774,10 +4774,10 @@
     "name": "Tan Kah Kee MRT Station (Downtown Line)",
     "address": "651 Bukit Timah Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.326392241463519,
-    "longitude": 103.8065482016918,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "266268",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_479",
@@ -4794,10 +4794,10 @@
     "name": "Caldecott MRT Station (Circle Line)",
     "address": "38 Toa Payoh Rise",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.337749093653944,
-    "longitude": 103.8397983294785,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "298113",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_481",
@@ -4814,20 +4814,20 @@
     "name": "Boon Keng MRT Station (North-East Line)",
     "address": "900 Serangoon Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.319335709225138,
-    "longitude": 103.861569454156,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "328260",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_483",
     "name": "Geylang Bahru MRT Station (Downtown Line)",
     "address": "541 Kallang Bahru,",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.321301102283224,
+    "longitude": 103.8716226271413,
     "postalCode": "339355",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_484",
@@ -4854,10 +4854,10 @@
     "name": "Macpherson MRT Station (Circle Line)",
     "address": "10 Circuit Link",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.326284153191641,
-    "longitude": 103.8885277918672,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "378956",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_487",
@@ -4874,10 +4874,10 @@
     "name": "Mountbatten MRT Station (Circle Line)",
     "address": "301 Mountbatten Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.306154061289133,
-    "longitude": 103.8830451486952,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "398006",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_489",
@@ -4894,10 +4894,10 @@
     "name": "Bedok North MRT Station (Downtown Line)",
     "address": "651 Bedok North Road,",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.334560760188612,
-    "longitude": 103.9177123219542,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "479481",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_491",
@@ -4914,10 +4914,10 @@
     "name": "Upper Changi MRT Station (Downtown Line)",
     "address": "690 Upper Changi Road East,",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.341770384780389,
-    "longitude": 103.9611044325674,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "485990",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_493",
@@ -4934,10 +4934,10 @@
     "name": "Tampines East MRT Station (Downtown Line)",
     "address": "20 Tampines Avenue 7",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.356447048727504,
-    "longitude": 103.9545420987748,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "529623",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_495",
@@ -4954,10 +4954,10 @@
     "name": "Kovan MRT Station (North-East Line)",
     "address": "900 Upper Serangoon Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.359901919529756,
-    "longitude": 103.8844947251966,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "534799",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_497",
@@ -4974,10 +4974,10 @@
     "name": "Bartley MRT Station (Circle Line)",
     "address": "90 Bartley Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.342445438292511,
-    "longitude": 103.8801970871163,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "539788",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_499",
@@ -4994,10 +4994,10 @@
     "name": "Lorong Chuan MRT Station (Circle Line)",
     "address": "150 Serangoon Avenue 3",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.351531286215865,
-    "longitude": 103.8648121695135,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "554533",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_501",
@@ -5014,10 +5014,10 @@
     "name": "Mayflower MRT Station (Thomson-East Coast Line)",
     "address": "91 Ang Mo Kio Ave 4",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.372845111502447,
-    "longitude": 103.8367806838497,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "569900",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_503",
@@ -5054,10 +5054,10 @@
     "name": "King Albert Park MRT Station (Downtown Line)",
     "address": "2 Blackmore Drive",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.335661612622142,
-    "longitude": 103.7833991134405,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "599987",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_507",
@@ -5094,30 +5094,30 @@
     "name": "Woodlands MRT Station (Thomson-East Coast Line)",
     "address": "11 Woodlands Square",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.436596416850809,
-    "longitude": 103.7873469913567,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "737736",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_511",
     "name": "Lentor MRT Station (Thomson-East Coast Line)",
     "address": "1 Lentor Drive",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.3521,
-    "longitude": 103.8198,
+    "latitude": 1.384366114635543,
+    "longitude": 103.8366996795224,
     "postalCode": "789361",
-    "isGeocodeFallback": true
+    "isGeocodeFallback": false
   },
   {
     "id": "scdf_512",
     "name": "Marina Bay MRT Station (North-South Line)",
     "address": "21 Park Street",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.276410298754993,
-    "longitude": 103.8545955222629,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "18925",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_513",
@@ -5134,10 +5134,10 @@
     "name": "Chinatown MRT Station (North-East Line)",
     "address": "151 New Bridge Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.283964051875304,
-    "longitude": 103.8431419453903,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "59443",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_515",
@@ -5154,10 +5154,10 @@
     "name": "Outram Park MRT Station (North-East Line)",
     "address": "300 Eu Tong Sen Street",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.280241532808404,
-    "longitude": 103.8400521001357,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "59816",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_517",
@@ -5174,10 +5174,10 @@
     "name": "Mount Pleasant MRT Station (Thomson-East Coast Line)",
     "address": "14 Denham Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.328499046240754,
-    "longitude": 103.8357795570525,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "299781",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_519",
@@ -5194,10 +5194,10 @@
     "name": "Tanjong Rhu MRT Station (Thomson-East Coast Line)",
     "address": "2 Tanjong Rhu Place",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.296713088983163,
-    "longitude": 103.8733864960761,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "436488",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_521",
@@ -5214,10 +5214,10 @@
     "name": "Marine Terrace MRT Station (Thomson-East Coast Line)",
     "address": "304 Marine Parade Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.306665103448141,
-    "longitude": 103.9151067004998,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "449970",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_523",
@@ -5234,10 +5234,10 @@
     "name": "Bayshore MRT Station (Thomson-East Coast Line)",
     "address": "31 Bayshore Road",
     "type": "Civil Defence Public Shelter (MRT Station)",
-    "latitude": 1.312320322471787,
-    "longitude": 103.9410674308027,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "469958",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_525",
@@ -5254,10 +5254,10 @@
     "name": "The Atrium @ Orchard carpark",
     "address": "60 Orchard Road",
     "type": "Civil Defence Public Shelter (Public Development)",
-    "latitude": 1.299402394096363,
-    "longitude": 103.8455160221727,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "238889",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_527",
@@ -5284,10 +5284,10 @@
     "name": "Temasek Polytechnic",
     "address": "21 Tampines Avenue 1",
     "type": "Civil Defence Public Shelter (Public Development)",
-    "latitude": 1.346633998713773,
-    "longitude": 103.9312208815594,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "529757",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_530",
@@ -5304,10 +5304,10 @@
     "name": "BCA Academy",
     "address": "200 Braddell Road",
     "type": "Civil Defence Public Shelter (Public Development)",
-    "latitude": 1.344468383965868,
-    "longitude": 103.8587218359038,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "579700",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_532",
@@ -5324,10 +5324,10 @@
     "name": "Clementi Woods Secondary (Former)",
     "address": "170 West Coast Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.306142317460132,
-    "longitude": 103.7651725700941,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "127443",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_534",
@@ -5344,10 +5344,10 @@
     "name": "Queenstown Secondary",
     "address": "1 Strathmore Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.293521267746537,
-    "longitude": 103.8131909800548,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "148800",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_536",
@@ -5364,10 +5364,10 @@
     "name": "Henderson Secondary (Former)",
     "address": "100 Henderson Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.285363268441963,
-    "longitude": 103.8196990040374,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "159544",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_538",
@@ -5384,10 +5384,10 @@
     "name": "Cresent Girls' Secondary",
     "address": "357 Tanglin Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.293319470771038,
-    "longitude": 103.8175444617547,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "247961",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_540",
@@ -5404,10 +5404,10 @@
     "name": "Balestier Hill Secondary (Former)",
     "address": "11 Novena Rise",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.324558233947361,
-    "longitude": 103.8440610220122,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "307516",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_542",
@@ -5424,10 +5424,10 @@
     "name": "Cedar Girl�s School",
     "address": "1 Cedar Avenue",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.333758002163343,
-    "longitude": 103.8739330648855,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "349692",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_544",
@@ -5444,10 +5444,10 @@
     "name": "Dunman High",
     "address": "10 Tanjong Rhu Rd",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.299962160149622,
-    "longitude": 103.8829415598902,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "436895",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_546",
@@ -5464,10 +5464,10 @@
     "name": "Tanjong Katong Secondary",
     "address": "130 Haig Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.308735159553417,
-    "longitude": 103.8972251961986,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "438796",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_548",
@@ -5504,10 +5504,10 @@
     "name": "Meridian Secondary",
     "address": "31 Pasir Ris Street 51",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.367246849201311,
-    "longitude": 103.9489724836285,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "518901",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_552",
@@ -5524,10 +5524,10 @@
     "name": "Greenview Secondary (Former)",
     "address": "15 Pasir Ris Street 21",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.369330556966364,
-    "longitude": 103.9627629427641,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "518969",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_554",
@@ -5544,10 +5544,10 @@
     "name": "Junyuan Secondary",
     "address": "11 Tampines Street 84",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.353613152635378,
-    "longitude": 103.9338861658239,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "528933",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_556",
@@ -5564,10 +5564,10 @@
     "name": "Ngee Ann Secondary",
     "address": "1 Tampines Street 32",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.354475257558064,
-    "longitude": 103.9567472624953,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "529283",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_558",
@@ -5584,10 +5584,10 @@
     "name": "Changkat Changi Secondary",
     "address": "23 Simei Street 3",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.339506300728762,
-    "longitude": 103.9532455255639,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "529894",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_560",
@@ -5604,10 +5604,10 @@
     "name": "Bartley Secondary",
     "address": "10 Jalan Bunga Rampai",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.339954155878111,
-    "longitude": 103.8828062117046,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "538403",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_562",
@@ -5624,10 +5624,10 @@
     "name": "Zhonghua Secondary",
     "address": "13 Serangoon Ave 3",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.348407208462093,
-    "longitude": 103.869430481414,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "556123",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_564",
@@ -5644,10 +5644,10 @@
     "name": "Anderson Secondary",
     "address": "10 Ang Mo Kio Street 53",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.374340017011785,
-    "longitude": 103.8515541070679,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "569206",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_566",
@@ -5664,10 +5664,10 @@
     "name": "Deyi Secondary",
     "address": "1 Ang Mo Kio Street 42",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.365997025677177,
-    "longitude": 103.8525457724221,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "569277",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_568",
@@ -5684,10 +5684,10 @@
     "name": "Peirce Secondary",
     "address": "10 Sin Ming Walk",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.366659446538121,
-    "longitude": 103.83021606804,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "575566",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_570",
@@ -5714,10 +5714,10 @@
     "name": "Boon Lay Secondary",
     "address": "11 Jurong West Street 65",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.34272216334335,
-    "longitude": 103.7018914539119,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "648354",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_573",
@@ -5744,10 +5744,10 @@
     "name": "Yusof Ishak Secondary",
     "address": "11 Bukit Batok Street 25",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.342339214406242,
-    "longitude": 103.7600326283021,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "658712",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_576",
@@ -5764,10 +5764,10 @@
     "name": "Fajar Secondary",
     "address": "31 Gangsa Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.375600053443009,
-    "longitude": 103.7639989140813,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "678972",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_578",
@@ -5784,10 +5784,10 @@
     "name": "Teck Whye Secondary",
     "address": "31 Teck Whye Crescent",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.383334226370742,
-    "longitude": 103.7551032758298,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "688848",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_580",
@@ -5824,10 +5824,10 @@
     "name": "Admiralty Secondary",
     "address": "31 Woodlands Crescent",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.445890689109919,
-    "longitude": 103.8023981965959,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "737916",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_584",
@@ -5844,10 +5844,10 @@
     "name": "Woodgrove Secondary",
     "address": "3 Woodlands Avenue 6",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.428318281370131,
-    "longitude": 103.7960475853894,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "738990",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_586",
@@ -5864,10 +5864,10 @@
     "name": "Orchid Park Secondary",
     "address": "10 Yishun Street 81",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.415320327796348,
-    "longitude": 103.8378592413427,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "768454",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   },
   {
     "id": "scdf_588",
@@ -5884,9 +5884,9 @@
     "name": "Northbrook Secondary",
     "address": "585 Yishun Ring Road",
     "type": "Civil Defence Public Shelter (School)",
-    "latitude": 1.420812850206535,
-    "longitude": 103.8451473325277,
+    "latitude": 1.3521,
+    "longitude": 103.8198,
     "postalCode": "768692",
-    "isGeocodeFallback": false
+    "isGeocodeFallback": true
   }
 ]

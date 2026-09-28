@@ -1,8 +1,5 @@
-// This uses an up/down reorder UI that is touch friendly,
-// and avoids gesture-handler native crashes on device builds
-
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
 
 interface ProtocolStep {
   id: string;
@@ -24,9 +21,11 @@ interface Props {
 export const ProtocolSequencer: React.FC<Props> = ({ onSuccessXP }) => {
   const [steps, setSteps] = useState<ProtocolStep[]>(INITIAL_STEPS);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const moveStep = (index: number, direction: 'UP' | 'DOWN') => {
     if (isCompleted) return;
+    setErrorMessage(null); // Clear error on interaction
     const targetIndex = direction === 'UP' ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= steps.length) return;
 
@@ -36,15 +35,23 @@ export const ProtocolSequencer: React.FC<Props> = ({ onSuccessXP }) => {
     setSteps(updated);
   };
 
-  const handleVerifyOrder = () => {
+  const handleVerifyOrder = async () => {
+    setErrorMessage(null);
     const isCorrect = steps.every((step, index) => step.correctOrder === index);
 
     if (isCorrect) {
       setIsCompleted(true);
-      Alert.alert('🏆 Perfect Protocol Sequence!', 'You earned +250 XP for CPR/AED protocol mastery.');
-      if (onSuccessXP) onSuccessXP(250);
+      if (Platform.OS !== 'web') {
+        Alert.alert('🏆 Perfect Protocol Sequence!', 'You earned +250 XP for CPR/AED protocol mastery.');
+      }
+      if (onSuccessXP) {
+        await onSuccessXP(250);
+      }
     } else {
-      Alert.alert('⚠️ Incorrect Sequence', 'Review emergency guidelines and rearrange the steps in correct order.');
+      setErrorMessage('⚠️ Incorrect Sequence. Rearrange the steps into the correct CPR/AED survival order.');
+      if (Platform.OS !== 'web') {
+        Alert.alert('⚠️ Incorrect Sequence', 'Review emergency guidelines and rearrange the steps in correct order.');
+      }
     }
   };
 
@@ -68,6 +75,7 @@ export const ProtocolSequencer: React.FC<Props> = ({ onSuccessXP }) => {
                   disabled={index === 0}
                   style={[styles.arrowBtn, index === 0 && styles.disabledBtn]}
                   onPress={() => moveStep(index, 'UP')}
+                  activeOpacity={0.7}
                 >
                   <Text style={styles.arrowText}>▲</Text>
                 </TouchableOpacity>
@@ -76,6 +84,7 @@ export const ProtocolSequencer: React.FC<Props> = ({ onSuccessXP }) => {
                   disabled={index === steps.length - 1}
                   style={[styles.arrowBtn, index === steps.length - 1 && styles.disabledBtn]}
                   onPress={() => moveStep(index, 'DOWN')}
+                  activeOpacity={0.7}
                 >
                   <Text style={styles.arrowText}>▼</Text>
                 </TouchableOpacity>
@@ -84,6 +93,12 @@ export const ProtocolSequencer: React.FC<Props> = ({ onSuccessXP }) => {
           </View>
         ))}
       </View>
+
+      {errorMessage && (
+        <View style={styles.errorBox}>
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        </View>
+      )}
 
       {!isCompleted ? (
         <TouchableOpacity style={styles.verifyBtn} onPress={handleVerifyOrder} activeOpacity={0.8}>
@@ -154,7 +169,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabledBtn: {
     opacity: 0.3,
@@ -163,6 +180,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#2b6cb0',
     fontWeight: '800',
+  },
+  errorBox: {
+    backgroundColor: '#fff5f5',
+    borderColor: '#feb2b2',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 12,
+  },
+  errorText: {
+    color: '#c53030',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   verifyBtn: {
     backgroundColor: '#3182ce',

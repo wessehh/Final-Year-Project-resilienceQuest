@@ -34,7 +34,7 @@ export default function DevScreen() {
   const [diagLogs, setDiagLogs] = useState<string[]>([]);
   const [isRunningDiag, setIsRunningDiag] = useState<boolean>(false);
 
-  // week simulator for tasks 
+  // Week simulator for tasks 
   const { simulatedWeekOffset, setSimulatedWeekOffset } = useApp();
   const currentLabel = taskService.getCurrentWeekLabel(simulatedWeekOffset);
 
@@ -162,7 +162,19 @@ export default function DevScreen() {
     }
   };
 
-  // Force live API fetch from Data.gov.sg
+  // ⚡ Force Live/Fresh AED Sync
+  const handleForceAEDSync = async () => {
+    try {
+      await aedService.clearCache();
+      // Re-fetch AED dataset with forceReload set to true
+      const freshAeds = await aedService.getNearbyAEDs({ latitude: 1.2991, longitude: 103.8458 }, 10, true);
+      Alert.alert('⚡ AED Cache Refreshed', `Successfully synchronized ${freshAeds.length} AED records.`);
+    } catch (err) {
+      Alert.alert('Sync Warning', 'Could not refresh AED cache. Falling back to local seed.');
+    }
+  };
+
+  // Force live API fetch from Data.gov.sg for shelters
   const handleForceShelterSync = async () => {
     setSyncProgress(0);
     setIsSyncingShelters(true);
@@ -276,13 +288,23 @@ export default function DevScreen() {
             Purge local AED AsyncStorage cache to fix default fallback distances or force clean seed reload:
           </Text>
 
-          <TouchableOpacity
-            style={[styles.actionButton, styles.shelterPurgeBtn]}
-            onPress={handleClearAEDCache}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.shelterPurgeBtnText}>🧹 Purge AED Cache Only</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.shelterSyncBtn]}
+              onPress={handleForceAEDSync}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.shelterSyncBtnText}>⚡ Force Sync AED Cache</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionButton, styles.shelterPurgeBtn]}
+              onPress={handleClearAEDCache}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.shelterPurgeBtnText}>🧹 Purge AED Cache Only</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* SCDF Shelter Cache & Sync Utilities */}

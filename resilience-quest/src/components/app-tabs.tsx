@@ -23,6 +23,13 @@ export default function AppTabs() {
         }}
       />
       <Tabs.Screen
+        name="explore"
+        options={{
+          title: 'Explore',
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🧭</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="aed-search"
         options={{
           title: 'AED Search',
@@ -30,12 +37,13 @@ export default function AppTabs() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="game"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🧭</Text>,
+          title: 'Arcade',
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🎮</Text>,
         }}
       />
+      
       <Tabs.Screen
         name="guides"
         options={{
