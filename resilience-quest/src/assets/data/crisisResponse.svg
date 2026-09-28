@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="375" height="812" style="background:#FFF5F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Device Frame Outer Border -->
+  <rect x="0" y="0" width="375" height="812" rx="40" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="4"/>
+  
+  <!-- Status Bar / Notch Header -->
+  <path d="M 0 40 C 0 17.9 17.9 0 40 0 L 335 0 C 357.1 0 375 17.9 375 40 L 375 50 L 0 50 Z" fill="#C53030"/>
+  <rect x="130" y="12" width="115" height="18" rx="9" fill="#000000"/>
+  <text x="35" y="38" font-size="12" font-weight="600" fill="#FFFFFF">9:41</text>
+  
+  <!-- High-Contrast Crisis Header -->
+  <rect x="0" y="50" width="375" height="60" fill="#C53030"/>
+  <text x="187" y="87" font-size="16" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.2">🚨 CRITICAL HAZARD ALERT</text>
+
+  <!-- Section 1: Active Hazard Alert Banner -->
+  <rect x="20" y="125" width="335" height="100" rx="12" fill="#9B2C2C"/>
+  <text x="36" y="152" font-size="14" font-weight="800" fill="#FEB2B2">FLASH FLOOD WARNING — ZONE B</text>
+  <text x="36" y="176" font-size="13" font-weight="500" fill="#FFFFFF">Water levels rising rapidly in low-lying sectors.</text>
+  <text x="36" y="196" font-size="13" font-weight="700" fill="#FFFAF0">Evacuate to designated high ground immediately.</text>
+
+  <!-- Section 2: Step-by-Step Guidance Panel -->
+  <rect x="20" y="240" width="335" height="185" rx="12" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1.5"/>
+  <text x="36" y="268" font-size="14" font-weight="800" fill="#9B2C2C">ACTIVE EMERGENCY STEPS</text>
+  
+  <!-- Step 1 -->
+  <circle cx="48" cy="298" r="12" fill="#FED7D7"/>
+  <text x="48" y="303" font-size="11" font-weight="800" fill="#9B2C2C" text-anchor="middle">1</text>
+  <text x="70" y="302" font-size="13" font-weight="600" fill="#2D3748">Shut off main power circuit breakers.</text>
+
+  <!-- Step 2 -->
+  <circle cx="48" cy="338" r="12" fill="#FED7D7"/>
+  <text x="48" y="343" font-size="11" font-weight="800" fill="#9B2C2C" text-anchor="middle">2</text>
+  <text x="70" y="342" font-size="13" font-weight="600" fill="#2D3748">Grab 72-hour emergency go-bag.</text>
+
+  <!-- Step 3 -->
+  <circle cx="48" cy="378" r="12" fill="#FED7D7"/>
+  <text x="48" y="383" font-size="11" font-weight="800" fill="#9B2C2C" text-anchor="middle">3</text>
+  <text x="70" y="382" font-size="13" font-weight="600" fill="#2D3748">Proceed along offline shelter route below.</text>
+
+  <!-- Section 3: Offline GIS Coordinates Box -->
+  <rect x="20" y="440" width="335" height="150" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="36" y="468" font-size="14" font-weight="800" fill="#2B6CB0">NEAREST SHELTER (OFFLINE CACHE)</text>
+  <text x="36" y="488" font-size="13" font-weight="700" fill="#2D3748">Community Sports Complex Shelter</text>
+  
+  <!-- Monospace Coordinate Readout Grid -->
+  <rect x="36" y="500" width="303" height="38" rx="6" fill="#EBF8FF"/>
+  <text x="48" y="524" font-family="Courier, monospace" font-size="12" font-weight="700" fill="#2B6CB0">LAT: 1.3521 N  |  LON: 103.8198 E</text>
+
+  <!-- High-Contrast Navigation CTA -->
+  <rect x="36" y="546" width="303" height="32" rx="6" fill="#3182CE"/>
+  <text x="187" y="567" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">OPEN OFFLINE DIRECTION ROUTE</text>
+
+  <!-- Emergency Acknowledge / Dismiss Button -->
+  <rect x="20" y="610" width="335" height="52" rx="12" fill="#E53E3E"/>
+  <text x="187" y="642" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">ACKNOWLEDGE &amp; DISMISS</text>
+
+  <!-- Persistent Bottom Emergency Bar -->
+  <rect x="0" y="722" width="375" height="90" fill="#C53030"/>
+  <text x="187" y="762" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">📞 CALL EMERGENCY SERVICES (995)</text>
+</svg>

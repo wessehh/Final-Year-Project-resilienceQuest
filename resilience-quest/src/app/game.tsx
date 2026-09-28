@@ -1,14 +1,37 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { ProtocolSequencer } from '@/components/gamification/ProtocolSequencer';
 import { useApp } from '@/context/AppContext';
+import { useRouter } from 'expo-router';
 
 export default function GameScreen() {
-  const { addXp, xp } = useApp();
+  const { addXp, xp, isCrisisMode } = useApp();
+  const router = useRouter();
 
   const handleXPGranted = (xpAmount: number) => {
     addXp(xpAmount);
   };
+
+  if (isCrisisMode) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.crisisContainer}>
+          <Text style={styles.alertIcon}>🚨</Text>
+          <Text style={styles.crisisTitle}>Emergency Mode Active</Text>
+          <Text style={styles.crisisSubtitle}>
+            The Preparedness Arcade is temporarily unavailable during an active emergency threat.
+          </Text>
+          <TouchableOpacity
+            style={styles.safetyButton}
+            onPress={() => router.replace('/')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.safetyButtonText}>Return to Safety Dashboard</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -68,5 +91,41 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '800',
     fontSize: 13,
+  },
+  crisisContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: '#fff5f5',
+  },
+  alertIcon: {
+    fontSize: 48,
+    marginBottom: 12,
+  },
+  crisisTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#e53e3e',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  crisisSubtitle: {
+    fontSize: 14,
+    color: '#4a5568',
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  safetyButton: {
+    backgroundColor: '#e53e3e',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  safetyButtonText: {
+    color: '#ffffff',
+    fontWeight: '800',
+    fontSize: 14,
   },
 });

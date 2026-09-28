@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="375" height="812" style="background:#FFF5F5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Outer Device Frame -->
+  <rect x="0" y="0" width="375" height="812" rx="40" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="4"/>
+  
+  <!-- Notch & Status Bar -->
+  <path d="M 0 40 C 0 17.9 17.9 0 40 0 L 335 0 C 357.1 0 375 17.9 375 40 L 375 50 L 0 50 Z" fill="#FFFFFF"/>
+  <rect x="130" y="12" width="115" height="18" rx="9" fill="#000000"/>
+  <text x="35" y="38" font-size="12" font-weight="600" fill="#1A202C">9:41</text>
+
+  <!-- Screen Title Header -->
+  <rect x="0" y="50" width="375" height="55" fill="#FFFFFF"/>
+  <text x="20" y="85" font-size="18" font-weight="800" fill="#9B2C2C">Offline First Aid Guide</text>
+  <rect x="260" y="66" width="95" height="24" rx="12" fill="#FED7D7"/>
+  <text x="307" y="82" font-size="11" font-weight="800" fill="#9B2C2C" text-anchor="middle">100% CACHED</text>
+
+  <!-- Category Selection Pills -->
+  <!-- Active Tab: CPR & Bleeding -->
+  <rect x="20" y="115" width="110" height="32" rx="16" fill="#E53E3E"/>
+  <text x="75" y="135" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">CPR &amp; Breathing</text>
+  
+  <!-- Tab 2: Burns -->
+  <rect x="138" y="115" width="80" height="32" rx="16" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1"/>
+  <text x="178" y="135" font-size="12" font-weight="600" fill="#718096" text-anchor="middle">Burns</text>
+
+  <!-- Tab 3: Fractures -->
+  <rect x="226" y="115" width="90" height="32" rx="16" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1"/>
+  <text x="271" y="135" font-size="12" font-weight="600" fill="#718096" text-anchor="middle">Fractures</text>
+
+  <!-- Content Section Title -->
+  <text x="20" y="175" font-size="15" font-weight="800" fill="#2D3748">Hands-Only CPR Protocol</text>
+
+  <!-- Step 1 Card -->
+  <rect x="20" y="190" width="335" height="110" rx="12" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1"/>
+  <circle cx="48" cy="220" r="16" fill="#9B2C2C"/>
+  <text x="48" y="225" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="76" y="222" font-size="14" font-weight="800" fill="#1A202C">Check Responsiveness</text>
+  <text x="76" y="242" font-size="12" fill="#4A5568">Tap shoulders firmly and shout loudly. Check for breathing or chest movement.</text>
+  <rect x="76" y="266" width="180" height="20" rx="4" fill="#FFF5F5"/>
+  <text x="84" y="280" font-size="11" font-weight="700" fill="#C53030">⚠️ Call 995 immediately if non-responsive.</text>
+
+  <!-- Step 2 Card -->
+  <rect x="20" y="312" width="335" height="110" rx="12" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1"/>
+  <circle cx="48" cy="342" r="16" fill="#9B2C2C"/>
+  <text x="48" y="347" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="76" y="344" font-size="14" font-weight="800" fill="#1A202C">Position Hands</text>
+  <text x="76" y="364" font-size="12" fill="#4A5568">Place heel of one hand in the center of the chest. Interlock fingers of second hand on top.</text>
+
+  <!-- Step 3 Card -->
+  <rect x="20" y="434" width="335" height="110" rx="12" fill="#FFFFFF" stroke="#FEB2B2" stroke-width="1"/>
+  <circle cx="48" cy="464" r="16" fill="#9B2C2C"/>
+  <text x="48" y="469" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="76" y="466" font-size="14" font-weight="800" fill="#1A202C">Compress Fast &amp; Hard</text>
+  <text x="76" y="486" font-size="12" fill="#4A5568">Push down 5–6 cm at a rate of 100–120 beats per minute (to the beat of 'Staying Alive').</text>
+
+  <!-- Persistent Emergency Action Trigger Bar -->
+  <rect x="0" y="722" width="375" height="90" fill="#9B2C2C"/>
+  <text x="187" y="762" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">🚨 EMERGENCY DIAL: CALL 995 (SCDF)</text>
+</svg>

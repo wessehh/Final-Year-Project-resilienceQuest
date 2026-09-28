@@ -23,8 +23,16 @@ const LAST_SYNC_KEY = '@resiliencequest_scdf_shelters_last_sync';
  */
 export default function DevScreen() {
   const { completeAllTasks, resetAllData } = useApp();
+
+  // Shelter Sync State
   const [isSyncingShelters, setIsSyncingShelters] = useState<boolean>(false);
   const [syncProgress, setSyncProgress] = useState<number>(0);
+
+  // AED Sync State
+  const [isSyncingAeds, setIsSyncingAeds] = useState<boolean>(false);
+  const [aedSyncProgress, setAedSyncProgress] = useState<number>(0);
+
+  // Inspector & Storage State
   const [cachedSheltersPreview, setCachedSheltersPreview] = useState<string>('Loading...');
   const [cachedCount, setCachedCount] = useState<number>(0);
   const [lastSyncTimeStr, setLastSyncTimeStr] = useState<string>('Never');
@@ -38,15 +46,26 @@ export default function DevScreen() {
   const { simulatedWeekOffset, setSimulatedWeekOffset } = useApp();
   const currentLabel = taskService.getCurrentWeekLabel(simulatedWeekOffset);
 
-  // Subscribe globally to shelter sync progress from ANY caller (Dev Suite or Explore)
+  // Subscribe globally to shelter and AED sync progress
   useEffect(() => {
-    const unsubscribe = shelterService.subscribeProgress((progress) => {
+    const unsubscribeShelter = shelterService.subscribeProgress((progress) => {
       setSyncProgress(progress);
       if (progress > 0 && progress < 1) {
         setIsSyncingShelters(true);
       }
     });
-    return () => unsubscribe();
+
+    const unsubscribeAed = aedService.subscribeProgress((progress) => {
+      setAedSyncProgress(progress);
+      if (progress > 0 && progress < 1) {
+        setIsSyncingAeds(true);
+      }
+    });
+
+    return () => {
+      unsubscribeShelter();
+      unsubscribeAed();
+    };
   }, []);
 
   // Load current AsyncStorage inspection state 
@@ -58,11 +77,9 @@ export default function DevScreen() {
         const parsed: SCDFShelter[] = JSON.parse(rawCache);
         setCachedCount(parsed.length);
 
-        // Filter out shelters that required fallback coordinates
         const failed = parsed.filter((s) => s.isGeocodeFallback);
         setFailedSheltersList(failed);
 
-        // Display sample records for inspection
         setCachedSheltersPreview(JSON.stringify(parsed.slice(0, 5), null, 2));
       } else {
         setCachedCount(0);
@@ -91,20 +108,16 @@ export default function DevScreen() {
     const logs: string[] = [];
 
     try {
-      // 1. geoUtils
       const dist = calculateDistanceKm(1.3048, 103.8318, 1.2838, 103.8591);
       logs.push(`✅ geoUtils: Orchard -> MBS = ${dist.toFixed(2)} km`);
 
-      // 2. aedService
       const aeds = await aedService.getNearbyAEDs({ latitude: 1.2991, longitude: 103.8458 }, 2);
       logs.push(`✅ aedService: ${aeds.length} AEDs nearby (Nearest: ${aeds[0]?.buildingName || 'N/A'})`);
 
-      // 3. taskService
       const tasks = taskService.getWeeklyTasks();
       const weekLabel = taskService.getCurrentWeekLabel();
       logs.push(`✅ taskService: Loaded ${tasks.length} quests for "${weekLabel}"`);
 
-      // 4. hazardAlertService
       const alerts = await hazardAlertService.getAllActiveAlerts();
       logs.push(`✅ hazardAlertService: ${alerts.length} active threat alert(s) returned`);
 
@@ -138,7 +151,6 @@ export default function DevScreen() {
       const freshShelters = await shelterService.loadShelters(true, (progress) => {
         setSyncProgress(progress);
       });
-      console.log('Sample Geocoded Shelter:', freshShelters[0]);
 
       await refreshStoragePreview();
 
@@ -162,15 +174,27 @@ export default function DevScreen() {
     }
   };
 
-  // ⚡ Force Live/Fresh AED Sync
+  // ⚡ Force Live/Fresh AED Sync with Progress
   const handleForceAEDSync = async () => {
+    setAedSyncProgress(0);
+    setIsSyncingAeds(true);
+
     try {
       await aedService.clearCache();
-      // Re-fetch AED dataset with forceReload set to true
-      const freshAeds = await aedService.getNearbyAEDs({ latitude: 1.2991, longitude: 103.8458 }, 10, true);
+      const freshAeds = await aedService.getNearbyAEDs(
+        { latitude: 1.2991, longitude: 103.8458 },
+        10,
+        true,
+        (progress) => setAedSyncProgress(progress)
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 400));
       Alert.alert('⚡ AED Cache Refreshed', `Successfully synchronized ${freshAeds.length} AED records.`);
     } catch (err) {
       Alert.alert('Sync Warning', 'Could not refresh AED cache. Falling back to local seed.');
+    } finally {
+      setIsSyncingAeds(false);
+      setAedSyncProgress(0);
     }
   };
 
@@ -180,7 +204,7 @@ export default function DevScreen() {
     setIsSyncingShelters(true);
 
     try {
-      const shelters = await shelterService.loadShelters(true /* forceRefresh */, (progress) => {
+      const shelters = await shelterService.loadShelters(true, (progress) => {
         setSyncProgress(progress);
       });
       await refreshStoragePreview();
@@ -202,6 +226,7 @@ export default function DevScreen() {
   };
 
   const syncPercentage = Math.round(syncProgress * 100);
+  const aedSyncPercentage = Math.round(aedSyncProgress * 100);
 
   return (
     <View style={styles.viewport}>
@@ -225,9 +250,9 @@ export default function DevScreen() {
             Offset: {simulatedWeekOffset === 0 ? '0 (Current Real Week)' : `${simulatedWeekOffset > 0 ? '+' : ''}${simulatedWeekOffset} Week(s)`}
           </Text>
 
-          <View style={styles.buttonRow}>
+          <View style={styles.buttonRowHorizontal}>
             <TouchableOpacity
-              style={styles.actionButton}
+              style={styles.actionButtonFlex}
               onPress={() => setSimulatedWeekOffset((prev) => prev - 1)}
               activeOpacity={0.7}
             >
@@ -235,7 +260,7 @@ export default function DevScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.actionButton, styles.resetBtn]}
+              style={[styles.actionButtonFlex, styles.resetBtn]}
               onPress={() => setSimulatedWeekOffset(0)}
               activeOpacity={0.7}
             >
@@ -243,7 +268,7 @@ export default function DevScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.actionButton}
+              style={styles.actionButtonFlex}
               onPress={() => setSimulatedWeekOffset((prev) => prev + 1)}
               activeOpacity={0.7}
             >
@@ -288,23 +313,35 @@ export default function DevScreen() {
             Purge local AED AsyncStorage cache to fix default fallback distances or force clean seed reload:
           </Text>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.shelterSyncBtn]}
-              onPress={handleForceAEDSync}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.shelterSyncBtnText}>⚡ Force Sync AED Cache</Text>
-            </TouchableOpacity>
+          {isSyncingAeds ? (
+            <View style={styles.progressBarContainer}>
+              <View style={styles.progressHeader}>
+                <Text style={styles.progressLabel}>⏳ Fetching & Processing AED Data...</Text>
+                <Text style={styles.progressPercentText}>{aedSyncPercentage}%</Text>
+              </View>
+              <View style={styles.progressTrack}>
+                <View style={[styles.progressFill, { width: `${aedSyncPercentage}%` }]} />
+              </View>
+            </View>
+          ) : (
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.shelterSyncBtn]}
+                onPress={handleForceAEDSync}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.shelterSyncBtnText}>⚡ Force Sync AED Cache</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.actionButton, styles.shelterPurgeBtn]}
-              onPress={handleClearAEDCache}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.shelterPurgeBtnText}>🧹 Purge AED Cache Only</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.shelterPurgeBtn]}
+                onPress={handleClearAEDCache}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.shelterPurgeBtnText}>🧹 Purge AED Cache Only</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
         {/* SCDF Shelter Cache & Sync Utilities */}
@@ -345,99 +382,35 @@ export default function DevScreen() {
           )}
         </View>
 
-        {/* Live Geocode Failures / Fallback */}
-        <View style={styles.utilityCard}>
-          <Text style={styles.metaText}>
-            • Live Geocode Failures / Fallbacks: <Text style={styles.highlight}>{failedSheltersList.length}</Text> items
-          </Text>
-
-          {failedSheltersList.length > 0 && (
-            <>
-              <Text style={[styles.codeLabel, { color: '#dd6b20' }]}>
-                ⚠️ Shelters Using Fallback Coordinates ({failedSheltersList.length}):
-              </Text>
-              <View style={styles.codeBox}>
-                <ScrollView 
-                  nestedScrollEnabled={true} 
-                  style={styles.verticalScrollContainer}
-                  indicatorStyle="black"
-                  persistentScrollbar={true}
-                >
-                  {failedSheltersList.map((item, idx) => (
-                    <Text key={item.id || idx} style={{ fontSize: 11, color: '#fbd38d', marginBottom: 2 }}>
-                      • {item.name} ({item.address || 'No Address'})
-                    </Text>
-                  ))}
-                </ScrollView>
-              </View>
-            </>
-          )}
-        </View>
-
-        {/* Storage & Seed Data Inspection Card */}
+        {/* Storage & Seed Inspector */}
         <View style={styles.utilityCard}>
           <View style={styles.inspectorHeader}>
-            <Text style={styles.utilityTitle}>Storage & Seed Inspector</Text>
+            <Text style={styles.utilityTitle}>🔍 Storage & Seed Inspector</Text>
             <TouchableOpacity onPress={refreshStoragePreview}>
-              <Text style={styles.refreshText}>Refresh View</Text>
+              <Text style={styles.refreshText}>🔄 Refresh View</Text>
             </TouchableOpacity>
           </View>
 
           <Text style={styles.metaText}>
+            • Bundled Seed Shelters: <Text style={styles.bold}>{seedShelters.length}</Text> items
+          </Text>
+          <Text style={styles.metaText}>
             • Cached Shelters in <Text style={styles.bold}>AsyncStorage</Text>: <Text style={styles.highlight}>{cachedCount}</Text> items
           </Text>
           <Text style={styles.metaText}>
-            • Last Live sync: <Text style={styles.bold}>{lastSyncTimeStr}</Text>
+            • Geocode Fallbacks (0,0): <Text style={styles.bold}>{failedSheltersList.length}</Text> items
+          </Text>
+          <Text style={styles.metaText}>
+            • Last Live Sync: <Text style={styles.bold}>{lastSyncTimeStr}</Text>
           </Text>
 
-          {/* AsyncStorage JSON Inspector ScrollView */}
-          <Text style={styles.codeLabel}>AsyncStorage Preview (Scrollable):</Text>
-          <View style={styles.codeBox}>
-            <ScrollView 
-              nestedScrollEnabled={true} 
-              style={styles.verticalScrollContainer}
-              indicatorStyle="black"
-              persistentScrollbar={true}
-            >
-              <ScrollView 
-                horizontal 
-                nestedScrollEnabled={true} 
-                style={styles.codeScroll}
-                indicatorStyle="black"
-                persistentScrollbar={true}
-              >
-                <Text style={styles.codeText}>{cachedSheltersPreview}</Text>
-              </ScrollView>
-            </ScrollView>
-          </View>
-
-          {/* Seed JSON Inspector ScrollView */}
-          <Text style={[styles.codeLabel, { marginTop: 12 }]}>
-            Bundled Static Seed Asset (<Text style={styles.bold}>sg_shelters.json</Text> - {seedShelters.length} items):
-          </Text>
-          <View style={styles.codeBox}>
-            <ScrollView 
-              nestedScrollEnabled={true} 
-              style={styles.verticalScrollContainer}
-              indicatorStyle="black"
-              persistentScrollbar={true}
-            >
-              <ScrollView 
-                horizontal 
-                nestedScrollEnabled={true} 
-                style={styles.codeScroll}
-                indicatorStyle="black"
-                persistentScrollbar={true}
-              >
-                <Text style={styles.codeText}>
-                  {JSON.stringify(seedShelters.slice(0, 5), null, 2)}
-                </Text>
-              </ScrollView>
-            </ScrollView>
-          </View>
+          <Text style={styles.jsonLabel}>AsyncStorage Cache Preview (First 5 records):</Text>
+          <ScrollView style={styles.codePreviewBox} nestedScrollEnabled>
+            <Text style={styles.codeText}>{cachedSheltersPreview}</Text>
+          </ScrollView>
         </View>
 
-        {/* Demo Fast-Action Utilities */}
+        {/* Fast Demo Utilities */}
         <View style={styles.utilityCard}>
           <Text style={styles.utilityTitle}>⚡ Fast Demo Utilities</Text>
           <Text style={styles.utilitySubtitle}>
@@ -458,7 +431,7 @@ export default function DevScreen() {
               onPress={handleConfirmReset}
               activeOpacity={0.8}
             >
-              <Text style={styles.resetBtnText}>🔄 Wipe Cache & Reset XP</Text>
+              <Text style={styles.resetBtnText}>🚨 Wipe Cache & Reset XP</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -511,11 +484,23 @@ const styles = StyleSheet.create({
   buttonRow: {
     gap: 10,
   },
+  buttonRowHorizontal: {
+    flexDirection: 'row',
+    gap: 8,
+  },
   actionButton: {
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 8,
     alignItems: 'center',
+  },
+  actionButtonFlex: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: '#edf2f7',
   },
   disabledBtn: {
     opacity: 0.6,
@@ -556,7 +541,7 @@ const styles = StyleSheet.create({
     borderColor: '#e53e3e',
   },
   resetBtnText: {
-    color: '#090707',
+    color: '#c53030',
     fontSize: 12,
     fontWeight: '800',
   },
@@ -580,7 +565,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '800',
   },
-  /* Progress Bar Styles */
   progressBarContainer: {
     backgroundColor: '#e6fffa',
     borderColor: '#319795',
@@ -616,6 +600,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#319795',
     borderRadius: 4,
   },
+  inspectorHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  refreshText: {
+    fontSize: 12,
+    color: '#3182ce',
+    fontWeight: '700',
+  },
   metaText: {
     fontSize: 12,
     color: '#4a5568',
@@ -628,40 +623,23 @@ const styles = StyleSheet.create({
     color: '#2b6cb0',
     fontWeight: '800',
   },
-  codeLabel: {
+  jsonLabel: {
     fontSize: 11,
     fontWeight: '700',
     color: '#718096',
     marginTop: 8,
     marginBottom: 4,
   },
-  codeBox: {
+  codePreviewBox: {
     backgroundColor: '#1a202c',
     borderRadius: 6,
     padding: 10,
-    maxHeight: 180,
-  },
-  verticalScrollContainer: {
-    maxHeight: 160,
-  },
-  codeScroll: {
-    flexGrow: 0,
+    maxHeight: 120,
   },
   codeText: {
+    color: '#e2e8f0',
     fontFamily: 'Courier',
-    fontSize: 11,
-    color: '#68d391',
-  },
-  inspectorHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  refreshText: {
-    fontSize: 12,
-    color: '#3182ce',
-    fontWeight: '700',
+    fontSize: 10,
   },
   statusText: {
     fontSize: 12,

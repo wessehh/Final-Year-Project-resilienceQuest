@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="375" height="812" style="background:#F7FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Device Frame Outer Border -->
+  <rect x="0" y="0" width="375" height="812" rx="40" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="4"/>
+  
+  <!-- Status Bar / Notch Header -->
+  <path d="M 0 40 C 0 17.9 17.9 0 40 0 L 335 0 C 357.1 0 375 17.9 375 40 L 375 50 L 0 50 Z" fill="#FFFFFF"/>
+  <rect x="130" y="12" width="115" height="18" rx="9" fill="#000000"/>
+  <text x="35" y="38" font-size="12" font-weight="600" fill="#1A202C">9:41</text>
+  
+  <!-- App Header -->
+  <rect x="0" y="50" width="375" height="60" fill="#FFFFFF"/>
+  <text x="20" y="85" font-size="20" font-weight="800" fill="#2B6CB0">RESILIENCEQUEST</text>
+  <rect x="275" y="68" width="80" height="26" rx="13" fill="#EBF8FF"/>
+  <text x="290" y="85" font-size="12" font-weight="700" fill="#2B6CB0">LEVEL 3</text>
+
+  <!-- Section 1: Daily Quest & Progress Card -->
+  <rect x="20" y="125" width="335" height="135" rx="16" fill="#2B6CB0"/>
+  <text x="36" y="152" font-size="12" font-weight="700" fill="#BEE3F8" letter-spacing="0.5">CURRENT QUEST</text>
+  <text x="36" y="176" font-size="16" font-weight="700" fill="#FFFFFF">Prepare 72h Emergency Go-Bag</text>
+  
+  <!-- Progress Bar Container -->
+  <rect x="36" y="195" width="263" height="10" rx="5" fill="#4299E1"/>
+  <rect x="36" y="195" width="197" height="10" rx="5" fill="#48BB78"/>
+  <text x="307" y="204" font-size="12" font-weight="700" fill="#FFFFFF">75%</text>
+  <text x="36" y="232" font-size="12" font-weight="500" fill="#EBF8FF">3 of 4 items verified (+150 XP pending)</text>
+
+  <!-- Section 2: Preparedness Quizzes -->
+  <text x="20" y="285" font-size="16" font-weight="700" fill="#2D3748">Interactive Quizzes</text>
+  
+  <!-- Quiz Card 1 -->
+  <rect x="20" y="298" width="160" height="90" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="32" y="312" width="28" height="28" rx="6" fill="#FEFCBF"/>
+  <text x="40" y="331" font-size="14">🌊</text>
+  <text x="32" y="358" font-size="13" font-weight="700" fill="#2D3748">Flood Safety</text>
+  <text x="32" y="374" font-size="11" fill="#718096">5 Questions • +50 XP</text>
+
+  <!-- Quiz Card 2 -->
+  <rect x="195" y="298" width="160" height="90" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="207" y="312" width="28" height="28" rx="6" fill="#FEEBC8"/>
+  <text x="215" y="331" font-size="14">🔥</text>
+  <text x="207" y="358" font-size="13" font-weight="700" fill="#2D3748">Fire Evacuation</text>
+  <text x="207" y="374" font-size="11" fill="#718096">4 Questions • +40 XP</text>
+
+  <!-- Section 3: Earned Badges Grid -->
+  <text x="20" y="420" font-size="16" font-weight="700" fill="#2D3748">Earned Achievements</text>
+  
+  <!-- Badge Item 1 -->
+  <rect x="20" y="435" width="102" height="110" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <circle cx="71" cy="472" r="22" fill="#EBF8FF"/>
+  <text x="61" y="478" font-size="20">🎒</text>
+  <text x="30" y="512" font-size="12" font-weight="700" fill="#2D3748" text-anchor="middle" x="71">Kit Builder</text>
+
+  <!-- Badge Item 2 -->
+  <rect x="136" y="435" width="102" height="110" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <circle cx="187" cy="472" r="22" fill="#F0FFF4"/>
+  <text x="177" y="478" font-size="20">🩺</text>
+  <text x="146" y="512" font-size="12" font-weight="700" fill="#2D3748" text-anchor="middle" x="187">First Responder</text>
+
+  <!-- Badge Item 3 (Locked) -->
+  <rect x="253" y="435" width="102" height="110" rx="12" fill="#F7FAFC" stroke="#EDF2F7" stroke-width="1"/>
+  <circle cx="304" cy="472" r="22" fill="#EDF2F7"/>
+  <text x="294" y="478" font-size="20">📍</text>
+  <text x="263" y="512" font-size="12" font-weight="600" fill="#A0AEC0" text-anchor="middle" x="304">Route Master</text>
+
+  <!-- CTA Action Button -->
+  <rect x="20" y="570" width="335" height="52" rx="12" fill="#3182CE"/>
+  <text x="187" y="602" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">START NEXT QUEST</text>
+
+  <!-- Bottom Navigation Bar -->
+  <rect x="0" y="722" width="375" height="90" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="62" y="755" font-size="18" text-anchor="middle">🏠</text>
+  <text x="62" y="772" font-size="10" font-weight="700" fill="#3182CE" text-anchor="middle">Home</text>
+  
+  <text x="187" y="755" font-size="18" text-anchor="middle">🎯</text>
+  <text x="187" y="772" font-size="10" font-weight="500" fill="#718096" text-anchor="middle">Quests</text>
+  
+  <text x="312" y="755" font-size="18" text-anchor="middle">👤</text>
+  <text x="312" y="772" font-size="10" font-weight="500" fill="#718096" text-anchor="middle">Profile</text>
+</svg>

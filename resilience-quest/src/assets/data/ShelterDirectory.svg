@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="375" height="812" style="background:#F7FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Outer Device Frame -->
+  <rect x="0" y="0" width="375" height="812" rx="40" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="4"/>
+  
+  <!-- Notch & Status Bar -->
+  <path d="M 0 40 C 0 17.9 17.9 0 40 0 L 335 0 C 357.1 0 375 17.9 375 40 L 375 50 L 0 50 Z" fill="#FFFFFF"/>
+  <rect x="130" y="12" width="115" height="18" rx="9" fill="#000000"/>
+  <text x="35" y="38" font-size="12" font-weight="600" fill="#1A202C">9:41</text>
+  
+  <!-- Navigation Header -->
+  <rect x="0" y="50" width="375" height="55" fill="#FFFFFF"/>
+  <text x="20" y="85" font-size="18" font-weight="800" fill="#2D3748">SCDF Public Shelters</text>
+  <rect x="255" y="66" width="100" height="24" rx="12" fill="#C6F6D5"/>
+  <text x="305" y="82" font-size="11" font-weight="700" fill="#22543D" text-anchor="middle">● Offline Ready</text>
+
+  <!-- Search Input Bar -->
+  <rect x="20" y="115" width="335" height="42" rx="10" fill="#EDF2F7" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="36" y="141" font-size="13" fill="#A0AEC0">🔍 Search MRT, postal code, or zone...</text>
+
+  <!-- Offline Vector Map Preview Box -->
+  <rect x="20" y="170" width="335" height="180" rx="12" fill="#E2E8F0"/>
+  <!-- Map Grid Lines -->
+  <path d="M 20 220 L 355 220 M 20 280 L 355 280 M 120 170 L 120 350 M 240 170 L 240 350" stroke="#CBD5E0" stroke-width="2" stroke-dasharray="4"/>
+  <!-- Vector Road Overlay -->
+  <path d="M 30 330 C 100 320 150 250 200 240 C 250 230 300 200 340 180" stroke="#A0AEC0" stroke-width="8" fill="none"/>
+  <!-- Map Markers -->
+  <!-- User Location -->
+  <circle cx="150" cy="260" r="10" fill="#3182CE" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="150" cy="260" r="18" fill="#3182CE" opacity="0.25"/>
+  <!-- Shelter Marker 1 -->
+  <path d="M 230 200 L 240 220 L 220 220 Z" fill="#E53E3E"/>
+  <circle cx="230" cy="205" r="8" fill="#E53E3E"/>
+  <text x="230" y="208" font-size="9" fill="#FFFFFF" font-weight="800" text-anchor="middle">S1</text>
+  <!-- Shelter Marker 2 -->
+  <circle cx="80" cy="290" r="8" fill="#3182CE"/>
+  <text x="80" y="293" font-size="9" fill="#FFFFFF" font-weight="800" text-anchor="middle">S2</text>
+
+  <!-- Section Title -->
+  <text x="20" y="375" font-size="15" font-weight="700" fill="#2D3748">Nearby Emergency Evacuation Points</text>
+
+  <!-- Shelter Card 1 (Nearest Primary) -->
+  <rect x="20" y="390" width="335" height="110" rx="12" fill="#FFFFFF" stroke="#3182CE" stroke-width="2"/>
+  <rect x="32" y="405" width="60" height="20" rx="4" fill="#EBF8FF"/>
+  <text x="62" y="419" font-size="10" font-weight="800" fill="#2B6CB0" text-anchor="middle">0.4 KM NEAR</text>
+  <text x="32" y="442" font-size="15" font-weight="700" fill="#2D3748">Community Sports Complex Shelter</text>
+  <text x="32" y="460" font-size="12" fill="#718096">21 Tampines Ave 4 • Capacity: 1,200</text>
+  
+  <!-- Card 1 Buttons -->
+  <rect x="32" y="472" width="145" height="20" rx="6" fill="#3182CE"/>
+  <text x="104" y="486" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">📍 Start Route</text>
+  <rect x="187" y="472" width="150" height="20" rx="6" fill="#EDF2F7"/>
+  <text x="262" y="486" font-size="11" font-weight="700" fill="#4A5568" text-anchor="middle">📞 Call Warden (Offline)</text>
+
+  <!-- Shelter Card 2 -->
+  <rect x="20" y="512" width="335" height="95" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="32" y="525" width="60" height="20" rx="4" fill="#EDF2F7"/>
+  <text x="62" y="539" font-size="10" font-weight="800" fill="#4A5568" text-anchor="middle">1.2 KM</text>
+  <text x="32" y="560" font-size="14" font-weight="700" fill="#2D3748">Tampines Primary School Shelter</text>
+  <text x="32" y="578" font-size="12" fill="#718096">2 Tampines St 12 • Capacity: 850</text>
+
+  <!-- Shelter Card 3 -->
+  <rect x="20" y="617" width="335" height="85" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="32" y="642" font-size="14" font-weight="700" fill="#2D3748">Civic Community Hall Emergency Base</text>
+  <text x="32" y="660" font-size="12" fill="#718096">10 Tampines Central 1 • Capacity: 500</text>
+
+  <!-- Bottom Navigation Bar -->
+  <rect x="0" y="722" width="375" height="90" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="62" y="755" font-size="18" text-anchor="middle">🏠</text>
+  <text x="62" y="772" font-size="10" font-weight="500" fill="#718096" text-anchor="middle">Home</text>
+  <text x="187" y="755" font-size="18" text-anchor="middle">📍</text>
+  <text x="187" y="772" font-size="10" font-weight="700" fill="#3182CE" text-anchor="middle">Shelters</text>
+  <text x="312" y="755" font-size="18" text-anchor="middle">👤</text>
+  <text x="312" y="772" font-size="10" font-weight="500" fill="#718096" text-anchor="middle">Profile</text>
+</svg>

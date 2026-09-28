@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 812" width="375" height="812" style="background:#F7FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Outer Device Frame -->
+  <rect x="0" y="0" width="375" height="812" rx="40" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="4"/>
+  
+  <!-- Notch & Status Bar -->
+  <path d="M 0 40 C 0 17.9 17.9 0 40 0 L 335 0 C 357.1 0 375 17.9 375 40 L 375 50 L 0 50 Z" fill="#FFFFFF"/>
+  <rect x="130" y="12" width="115" height="18" rx="9" fill="#000000"/>
+  <text x="35" y="38" font-size="12" font-weight="600" fill="#1A202C">9:41</text>
+
+  <!-- Quiz Top Header -->
+  <rect x="0" y="50" width="375" height="60" fill="#FFFFFF"/>
+  <text x="20" y="85" font-size="16" font-weight="800" fill="#2D3748">FLOOD SAFETY QUIZ</text>
+  <rect x="270" y="68" width="85" height="26" rx="13" fill="#FEFCBF"/>
+  <text x="312" y="85" font-size="12" font-weight="800" fill="#744210" text-anchor="middle">⚡ +50 XP</text>
+
+  <!-- Progress Bar (Question 2 of 5) -->
+  <rect x="20" y="120" width="335" height="6" rx="3" fill="#EDF2F7"/>
+  <rect x="20" y="120" width="134" height="6" rx="3" fill="#3182CE"/>
+  <text x="20" y="142" font-size="12" font-weight="600" fill="#718096">Question 2 of 5</text>
+
+  <!-- Question Card Container -->
+  <rect x="20" y="160" width="335" height="150" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="36" y="192" font-size="15" font-weight="700" fill="#1A202C">What is the most critical immediate action if rapid floodwaters begin entering your home?</text>
+  <text x="36" y="270" font-size="12" fill="#718096">Select one answer to earn module XP points.</text>
+
+  <!-- Multiple Choice Options -->
+  <!-- Option A -->
+  <rect x="20" y="325" width="335" height="60" rx="12" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1"/>
+  <circle cx="50" cy="355" r="12" fill="#EDF2F7"/>
+  <text x="50" y="359" font-size="12" font-weight="700" fill="#4A5568" text-anchor="middle">A</text>
+  <text x="75" y="360" font-size="13" font-weight="600" fill="#2D3748">Open all ground floor windows for drainage.</text>
+
+  <!-- Option B (Selected / Active) -->
+  <rect x="20" y="395" width="335" height="60" rx="12" fill="#EBF8FF" stroke="#3182CE" stroke-width="2"/>
+  <circle cx="50" cy="425" r="12" fill="#3182CE"/>
+  <text x="50" y="429" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">B</text>
+  <text x="75" y="430" font-size="13" font-weight="700" fill="#2B6CB0">Shut off power breakers & move to high floor.</text>
+
+  <!-- Option C -->
+  <rect x="20" y="465" width="335" height="60" rx="12" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1"/>
+  <circle cx="50" cy="495" r="12" fill="#EDF2F7"/>
+  <text x="50" y="499" font-size="12" font-weight="700" fill="#4A5568" text-anchor="middle">C</text>
+  <text x="75" y="500" font-size="13" font-weight="600" fill="#2D3748">Wait in basement area for official instructions.</text>
+
+  <!-- Option D -->
+  <rect x="20" y="535" width="335" height="60" rx="12" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1"/>
+  <circle cx="50" cy="565" r="12" fill="#EDF2F7"/>
+  <text x="50" y="569" font-size="12" font-weight="700" fill="#4A5568" text-anchor="middle">D</text>
+  <text x="75" y="570" font-size="13" font-weight="600" fill="#2D3748">Attempt to drive through flowing water.</text>
+
+  <!-- Submit Answer Button -->
+  <rect x="20" y="620" width="335" height="52" rx="12" fill="#3182CE"/>
+  <text x="187" y="652" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">SUBMIT ANSWER</text>
+
+  <!-- Bottom Helper Note -->
+  <text x="187" y="700" font-size="11" fill="#A0AEC0" text-anchor="middle">🔒 Answers backed by Singapore Civil Defence Force Guidelines</text>
+</svg>

@@ -1,8 +1,11 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Text } from 'react-native';
+import { useApp } from '@/context/AppContext';
 
 export default function AppTabs() {
+  const { isEmergencyActive } = useApp();
+
   return (
     <Tabs
       screenOptions={{
@@ -33,13 +36,17 @@ export default function AppTabs() {
         name="aed-search"
         options={{
           title: 'AED Search',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 18 }}>⚡</Text>,
+          tabBarIcon: () => <Text style={{ fontSize: 18 }}>⚡</Text>,
         }}
       />
+      
+      {/* Arcade Tab — hidden during crisis mode */}
       <Tabs.Screen
         name="game"
         options={{
           title: 'Arcade',
+          href: isEmergencyActive ? null : '/game',
+          tabBarItemStyle: isEmergencyActive ? { display: 'none' } : undefined,
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 16 }}>🎮</Text>,
         }}
       />
